@@ -30,6 +30,10 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
+  electron.ipcMain.on("resizeWindow", (event, width, height) => {
+    console.log("width: " + width + "height" + height);
+    mainWindow.setSize(width, height);
+  });
 }
 electron.app.whenReady().then(() => {
   utils.electronApp.setAppUserModelId("com.electron");

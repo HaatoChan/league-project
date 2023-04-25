@@ -1,8 +1,17 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+	/**
+	 * Testing thing.
+	 * @param {number} width - Thw width to resize the window.
+	 * @param {number} height - The height to resize the window to.
+	 */
+	resizeWindow: (width, height) => {
+		ipcRenderer.send('resizeWindow', width, height)
+	}
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
