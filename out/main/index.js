@@ -15,6 +15,8 @@ function createWindow() {
       sandbox: false
     },
     resizable: false
+    // Make your own eventually?
+    //	frame: false
   });
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();

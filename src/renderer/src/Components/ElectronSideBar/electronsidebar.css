@@ -3,4 +3,6 @@
     width: 4%;
     height: 100vh;
     z-index: 4;
+    position: absolute;
+    transition: width 0.3s ease-in-out;
 }

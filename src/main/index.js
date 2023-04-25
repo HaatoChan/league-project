@@ -15,7 +15,9 @@ function createWindow() {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false
 		},
-		resizable: false
+		resizable: false,
+	// Make your own eventually?
+	//	frame: false
 	})
 
 	mainWindow.on('ready-to-show', () => {
