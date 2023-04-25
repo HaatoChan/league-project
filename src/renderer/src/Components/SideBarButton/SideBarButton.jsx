@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './sidebarbutton.css'
 
 /**
@@ -5,15 +6,17 @@ import './sidebarbutton.css'
  * @param {object} root0 - The react props object.
  * @param {string} root0.text - The text to display in the button.
  * @param {string} root0.imgSource - The img source.
- * @param {Function} root0.onClick - The onclick event to fire when the user presses the div.
+ * @param {string} root0.linkHref - The path to link to.
  * @returns {HTMLElement} - Returns a HTML button element.
  */
-const SideBarButton = ({text, imgSource, onClick}) => {
+const SideBarButton = ({text, imgSource, linkHref}) => {
 	return ( 
 		<>
-			<div className="sidebarbutton" onClick={onClick}>			
-				<img src={imgSource} alt="" className="buttonimg" />
-				<p className='buttonText'>{text}</p> 
+			<div className="sidebarbutton">
+				<Link className='sidebarA' to={linkHref}>	
+					<img src={imgSource} alt="" className="buttonimg" />
+					<p className='buttonText'>{text}</p>
+				</Link>
 			</div>
 		</>
 	)

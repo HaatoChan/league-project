@@ -3,13 +3,18 @@ import CampSelectionContextProvider from './Contexts/CampSelectionContext'
 import { CampSelectionContext } from './Contexts/CampSelectionContext' */
 import ElectronSideBar from './Components/ElectronSideBar/ElectronSideBar'
 import HomePage from './Components/Pages/HomePage/Homepage'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
 	return (
-		<div className="container">
-			<ElectronSideBar />
-			<HomePage />
-			{ /*
+		<BrowserRouter>
+			<div className="container">
+				<ElectronSideBar />
+				<Routes>
+					<Route path="/" element={<HomePage />}/>
+					<Route path="settings" />
+				</Routes>
+				{ /*
 			<CampSelectionContextProvider>
 				<CampSelectionContext.Consumer>
 					{() => {
@@ -20,7 +25,8 @@ function App() {
 				</CampSelectionContext.Consumer>
 			</CampSelectionContextProvider>
 				*/}
-		</div>
+			</div>
+		</BrowserRouter>
 	)
 }
 

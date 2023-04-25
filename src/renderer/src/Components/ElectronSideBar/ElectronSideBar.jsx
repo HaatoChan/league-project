@@ -1,6 +1,7 @@
 import './electronsidebar.css'
 import SideBarButton from '../SideBarButton/SideBarButton'
 import settings from '../../assets/settings-gear-icon.svg'
+import Home from '../../assets/home-icon.svg'
 
 /**
  * Defines a sidebar for the electron app.
@@ -8,14 +9,6 @@ import settings from '../../assets/settings-gear-icon.svg'
  */
 const ElectronSideBar = () => {
     
-
-	/**
-	 * Fired when the user clicks the settings button.
-	 */
-	const settingOnClick = () => {
-		console.log('clicked settings')
-	}
-
 	/**
 	 * Fired when user mouses over the sidebar.
 	 */
@@ -34,7 +27,8 @@ const ElectronSideBar = () => {
 
 	return ( 
 		<div className="elesidebar" onMouseEnter={mouseEnter} id='elesidebar' onMouseLeave={mouseLeave}>
-			<SideBarButton text='Settings' imgSource={settings} onClick={settingOnClick}></SideBarButton>
+			<SideBarButton text='Home' imgSource={Home} linkHref='/'></SideBarButton>
+			<SideBarButton text='Settings' imgSource={settings} linkHref='settings'></SideBarButton>
 		</div>
 	)
 }
