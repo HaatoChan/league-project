@@ -1,0 +1,6 @@
+.elesidebar {
+    background-color: rgb(67, 153, 153);
+    width: 4%;
+    height: 100vh;
+    z-index: 4;
+}

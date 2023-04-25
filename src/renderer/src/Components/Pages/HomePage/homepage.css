@@ -1,0 +1,44 @@
+.homepagecontainer {
+    display: grid;
+    grid-template-columns: 0.5fr repeat(3, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    width: 100%;
+}
+
+.titleholder {
+    grid-row: 1;
+    grid-column: 2 / span 2;
+    background-color: azure;
+    margin-top: 1%;
+}
+
+.about {
+    grid-row: 2;
+    grid-column: 2 / span 2;
+    background-color: cadetblue;
+}
+
+.toollinks {
+    grid-row: 3;
+    grid-column: 2 / span 2;
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    height: 200px;
+    margin-bottom: 1%;
+}
+
+.toollinks img {
+    width: 50%;
+}
+
+.empty {
+    grid-row: 1 / span 3;
+    background-color: darkgreen;
+    grid-column: 4;
+    margin-right: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
