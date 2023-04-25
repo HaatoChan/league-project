@@ -1,9 +1,9 @@
 .buttonimg {
     width: 40px;
     height: 40px;
-    margin-left: 13px;
     margin-top: 2px;
     user-select: none;
+    margin-left: 20px;
 }
 
 .sidebarA {
@@ -13,13 +13,21 @@
     align-items: center;
     color: black;
     text-decoration: none;
+    padding-bottom: 5px;
 }
 
 .buttonText {
-    margin-left: 20px;
+    margin-left: 23.5px;
     font-size: 1.5rem;
     user-select: none;
+    white-space: pre;
 }
 .sidebarbutton:hover {
     background-color: white;
 }
+
+@media screen and (width: 1584px) {
+    .buttonimg {
+        margin-left: 10px;
+    }
+}    

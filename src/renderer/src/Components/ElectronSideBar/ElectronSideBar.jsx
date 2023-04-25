@@ -2,6 +2,7 @@ import './electronsidebar.css'
 import SideBarButton from '../SideBarButton/SideBarButton'
 import settings from '../../assets/settings-gear-icon.svg'
 import Home from '../../assets/home-icon.svg'
+import JungleIcon from '../../assets/garden-grass-solid-icon.svg'
 
 /**
  * Defines a sidebar for the electron app.
@@ -25,10 +26,12 @@ const ElectronSideBar = () => {
 		sidebar.style.width = '4%'
 	}
 
+
 	return ( 
 		<div className="elesidebar" onMouseEnter={mouseEnter} id='elesidebar' onMouseLeave={mouseLeave}>
-			<SideBarButton text='Home' imgSource={Home} linkHref='/'></SideBarButton>
-			<SideBarButton text='Settings' imgSource={settings} linkHref='settings'></SideBarButton>
+			<SideBarButton text='Home' imgSource={Home} linkHref='/' />
+			<SideBarButton text='Jungle Tool' imgSource={JungleIcon} linkHref='jungletool' />
+			<SideBarButton text='Settings' imgSource={settings} linkHref='settings' />
 		</div>
 	)
 }

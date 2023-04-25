@@ -1,6 +1,6 @@
 import './settingspage.css'
 import Title from '../../Title/Title'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 /**
  * Defines a settings page.
@@ -8,16 +8,12 @@ import { useEffect, useState } from 'react'
  */
 const SettingsPage = () => {
 
-	const [sizes, setSizes] = useState([])
-
 	useEffect(() => {
 		/**
 		 * Gets the sizes from the renderer
 		 */
 		const getSizesFromRenderer = async () => {
 			const sizes = await window.api.getSizes()
-			setSizes(sizes)
-			console.log(sizes)
 			if (sizes[0] === 1920) {
 				const radio = document.getElementById('1920x1080')
 				radio.defaultChecked = true
