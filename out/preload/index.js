@@ -9,6 +9,14 @@ const api = {
    */
   resizeWindow: (width, height) => {
     electron.ipcRenderer.send("resizeWindow", width, height);
+  },
+  /**
+   * Gets the size of the window and returns it.
+   * @returns {Array} - Returns an array containing the width and height of the window.
+   */
+  getSizes: async () => {
+    const sizes = await electron.ipcRenderer.invoke("getSizes");
+    return sizes;
   }
 };
 if (process.contextIsolated) {

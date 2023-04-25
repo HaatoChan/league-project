@@ -1,11 +1,34 @@
 import './settingspage.css'
 import Title from '../../Title/Title'
+import { useEffect, useState } from 'react'
 
 /**
  * Defines a settings page.
  * @returns {HTMLElement} - Returns a div containing the page content.
  */
 const SettingsPage = () => {
+
+	const [sizes, setSizes] = useState([])
+
+	useEffect(() => {
+		/**
+		 * Gets the sizes from the renderer
+		 */
+		const getSizesFromRenderer = async () => {
+			const sizes = await window.api.getSizes()
+			setSizes(sizes)
+			console.log(sizes)
+			if (sizes[0] === 1920) {
+				const radio = document.getElementById('1920x1080')
+				radio.defaultChecked = true
+			} else if (sizes[0] === 1600) {
+				const radio = document.getElementById('1600x900')
+				radio.defaultChecked = true
+			}
+		}
+		getSizesFromRenderer()
+	}, [])
+
 	return ( 
 		<div className="settingspagecontainer">
 			<div className="titleholder">			
@@ -16,11 +39,11 @@ const SettingsPage = () => {
 					<p>Select your resolution</p>
 					<div className="radioinputres">
 						<label>
-							<input type="radio" name="resolution" id="1920x1080" />
+							<input type="radio" name="resolution" id="1920x1080"/> 
                           1920x1080
 						</label>
 						<label>
-							<input type="radio" name="resolution" id="1600x900" />
+							<input type="radio" name="resolution" id="1600x900"/> 
                            1600x900
 						</label>
 					</div>
@@ -29,7 +52,17 @@ const SettingsPage = () => {
 					<p>Description for other setting</p>
 				</div>
 				<input type="button" value="OK" id="oksetting" onClick={() => {
-					window.api.resizeWindow(500, 500)
+					const resolutions = document.getElementsByName('resolution')
+					let width
+					let height
+					for (let i = 0; i < resolutions.length; i++) {
+						if(resolutions[i].checked) {
+							const dimensions = resolutions[i].id.split('x')
+							width = Number(dimensions[0])
+							height = Number(dimensions[1])
+						}
+					}
+					window.api.resizeWindow(width, height)
 				}}/>
 			</div>
 		</div>

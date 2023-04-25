@@ -5,8 +5,8 @@ const utils = require("@electron-toolkit/utils");
 const icon = path.join(__dirname, "../../resources/icon.png");
 function createWindow() {
   const mainWindow = new electron.BrowserWindow({
-    width: 1600,
-    height: 900,
+    width: 1920,
+    height: 1080,
     show: false,
     autoHideMenuBar: true,
     ...process.platform === "linux" ? { icon } : {},
@@ -31,8 +31,15 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
   electron.ipcMain.on("resizeWindow", (event, width, height) => {
-    console.log("width: " + width + "height" + height);
-    mainWindow.setSize(width, height);
+    const currentSize = mainWindow.getSize();
+    if (currentSize[0] !== width || currentSize[1] !== height) {
+      mainWindow.setResizable(true);
+      mainWindow.setSize(width, height);
+      mainWindow.setResizable(false);
+    }
+  });
+  electron.ipcMain.handle("getSizes", () => {
+    return mainWindow.getSize();
   });
 }
 electron.app.whenReady().then(() => {

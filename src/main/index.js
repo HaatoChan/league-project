@@ -6,8 +6,8 @@ import icon from '../../resources/icon.png?asset'
 function createWindow() {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
-		width: 1600,
-		height: 900,
+		width: 1920,
+		height: 1080,
 		show: false,
 		autoHideMenuBar: true,
 		...(process.platform === 'linux' ? { icon } : {}),
@@ -39,8 +39,18 @@ function createWindow() {
 
 
 	ipcMain.on('resizeWindow', (event, width, height) => {
-		mainWindow.setSize(width, height)
+		const currentSize = mainWindow.getSize()
+		if (currentSize[0] !== width || currentSize[1] !== height) {
+			mainWindow.setResizable(true)
+			mainWindow.setSize(width, height)
+			mainWindow.setResizable(false)
+		}
 	})
+
+	ipcMain.handle('getSizes', () => {
+		return mainWindow.getSize()
+	}) 
+
 }
 
 // This method will be called when Electron has finished
