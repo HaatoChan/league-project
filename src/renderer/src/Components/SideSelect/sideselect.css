@@ -1,0 +1,42 @@
+.sidebox {
+    width: 30px;
+    height: 30px;
+    margin-top: 5%;
+    margin: 0;
+    cursor: pointer;
+}
+
+#bluebox {
+    accent-color: blue;
+}
+#redbox {
+    accent-color: red;
+}
+
+.selectsidep {
+    margin: 0;
+    font-weight: bold;
+}
+
+.sidebox-label {
+    display: inline-block;
+    font-size: 0px; /* adjust the font size of the label */
+    padding: 0;
+    margin: 2%;
+    cursor: pointer;
+  }
+  
+  #redlabel {
+    border: 2px solid red;
+  }
+
+  #bluelabel {
+    border: 2px solid blue;
+  }
+
+  /* Adjust the vertical alignment of the checkbox */
+  .sidebox-label input[type="checkbox"] {
+    vertical-align: middle;
+  }
+
+  

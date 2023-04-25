@@ -1,0 +1,23 @@
+.valuedisplay {
+    position: absolute;
+    width: 23%;
+    left: -23%;
+    top: 0%;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    height: auto;
+    background-color: #1a1a1f;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .valuedisplay[data-isactive="true"] {
+    left: 4.5%;
+  }
+
+  .value-display-th {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  

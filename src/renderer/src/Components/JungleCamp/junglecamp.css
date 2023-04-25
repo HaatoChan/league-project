@@ -1,0 +1,124 @@
+ @font-face {
+    font-family: 'Rowdies-Regular';
+    src: url('../../../public/font/Rowdies-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+ }
+
+.buttonCamp {
+    position: absolute;
+    left: 50%;
+    width: 5%;
+    height: 5%;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+}
+
+.campImage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 105%;
+    max-height: 105%;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+    user-select: none;
+}
+.campOrder{
+    position: absolute;
+    top: -190%;
+    right: -75%;
+    font-family: 'Rowdies-Regular';
+    display: inline;
+    pointer-events: none;
+    z-index: 5000;
+    font-size: 2rem;
+    user-select: none;
+}
+
+#bluesentinelimg, #redbramblebackimg {
+    max-width: 120%;
+    max-height: 120%;
+}
+
+.buttonCamp[data-iscampselected="true"] {
+    box-shadow: 0 0 10px 7px gold;
+}
+
+#Gromp-Blue {
+    top: 41%;
+    left: 13%;
+}
+
+#Blue-Sentinel-Blue {
+    top: 43.7%;
+    left: 23.5%;
+}
+
+#Murkwolf-Blue {
+    top: 53%;
+    left: 24%;
+}
+
+#Raptor-Blue {
+    top: 61.7%;
+    left: 45.3%;
+}
+
+#Red-Brambleback-Blue {
+    top: 70.5%;
+}
+
+#Krugs-Blue {
+    top: 79.5%;
+    left: 54%;
+}
+
+#Gromp-Red {
+    top: 54%;
+    left: 82.3%;
+}
+
+#Blue-Sentinel-Red {
+    top: 51%;
+    left: 72%;
+}
+
+#Murkwolf-Red {
+    top: 41.5%;
+    left: 71.65%;
+}
+
+#Raptor-Red {
+    top: 33%;
+    left: 50.2%;
+}
+
+#Red-Brambleback-Red {
+    top: 24%;
+    left: 45.6%;
+}
+
+#Krugs-Red {
+    left: 41.5%;
+    top: 15%;
+}
+
+#Scuttlecrab-Bottom {
+    top: 61.5%;
+    left: 68%;
+}
+
+#Scuttlecrab-Top {
+    top: 32.5%;
+    left: 27%;
+}
+
+@media screen and (min-height: 1250px) {
+    .campOrder {
+      top: -135%;
+    }
+  }

@@ -1,0 +1,13 @@
+.copied {
+    background-color: #1a1a1f;
+    position: absolute;
+    width: 10%;
+    border: 1px solid white;
+    z-index: 200;
+    left: 4.5%; 
+    top: -200%;
+    transition: all 0.3s ease-in-out;
+}
+.copied[data-isdisplayed="true"] {
+    top: 10%;
+}

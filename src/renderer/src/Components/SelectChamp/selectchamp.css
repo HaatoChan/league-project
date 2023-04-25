@@ -1,0 +1,117 @@
+.champcontainer {
+    height: 30%;
+    max-height: 200%;
+    width: 21%;
+    position: absolute;
+    bottom: 12%;
+    left: 7%;
+}
+
+.champimages {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 1.34%;
+    padding-bottom: 1%;
+}
+
+
+.champInput {
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    height: 50%;
+}
+
+.selectedChampImage {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.searchbarcontainer {
+    background-color: rgba(39, 39, 46, 0.76);
+    height: 20%;
+    width: 100%;
+    position: relative;
+    /* Added */
+}
+
+.options {
+    background-color: rgb(3, 58, 58);
+    position: absolute;
+    width: 100%;
+    max-height: 400%;
+    overflow-y: auto;
+    top: 0%;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-100%);
+}
+
+.optul {
+    list-style: none;
+    padding-left: 0;
+    height: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Added */
+    margin-bottom: 0;
+}
+.optli:nth-child(1) {
+    border-top: 1px solid white;
+}
+
+.optli {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid white;
+    height: 3rem;
+    background-color: #1a1a1f;
+}
+
+.optli:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    cursor: pointer;
+}
+
+.championImg {
+    height: 40px;
+    width: 40px;
+    margin-left: 1rem;
+    margin-right: 0;
+}
+
+.optli-text {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    justify-content: center;
+    flex: 1;
+}
+
+.resetchamps {
+    position: absolute;
+    background-color: rgba(161, 41, 41, 0.438);
+    border: none;
+    font-weight: bold;
+    height: 60%;
+    width: 8%;
+    top: 50%;
+    left: 90%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.resetchamps:hover {
+    background-color: rgba(161, 41, 41);
+}

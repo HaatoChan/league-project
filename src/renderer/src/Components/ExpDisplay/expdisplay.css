@@ -1,0 +1,142 @@
+@font-face {
+    font-family: 'Rowdies-Regular';
+    src: url('../../../public/font/Rowdies-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+ }
+
+ .expDisplay {
+    height: auto;
+    background-color: rgba(39, 39, 46, 0.76);
+    display: inline-block;
+    grid-row: 1 / span auto;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+.undermapcontainer {
+    position: absolute;
+    display: flex;
+    z-index: 1;
+    top: 77.6%;
+    left: -122.3%;
+    width: 114.2%;
+    background-color: rgba(39, 39, 46, 0.76);
+    height: 9%;
+    align-items: top;
+    gap: 5%; /* set gap between flex items */
+}
+
+.golddiv, .expbar, .sideselect {
+    margin-top: 1%;
+    flex: 1 0 25%;
+
+}
+
+.golddiv {
+    width: 200px; /* adjust to desired width */
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .coin {
+    display: inline-block;
+    width: 25%;
+    height: 90%;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  
+.coinTd {
+    display: inline;
+    width: 25%;
+    height: 25%;
+    margin-right: -2%;
+    margin-left: 3%;
+    user-select: none;
+}
+
+  .totalGold {
+    display: inline-block; /* make sure it's an inline element */
+    margin-right: 10px; /* add some spacing between totalGold and coin */
+    color:#FFD700;
+    font-weight: bold;
+  }
+
+.expbar {
+    width: 30%;
+    height: 31%;
+    border: 1px solid gold;
+    background-color: rgba(255, 255, 255, 0.288);
+    transform: translate(0%);
+    z-index: 500; /* Set a z-index for the parent element */
+}
+
+.expbar-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(255, 0, 234, 0.534);
+    z-index: 100;
+  }
+
+.totalExp {
+    display: inline;
+    z-index: 5000;
+    font-weight: bold;
+    position: relative; /* Add a relative position */
+}
+.requiredExp {
+    color: black;
+    position: relative; /* Add a relative position */
+    z-index: 5000;
+}
+
+.expDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    table-layout: fixed;
+  }
+  
+.exp-count-th {
+    background-color: rgba(255, 255, 255, 0.062);
+    color: white;
+    text-align: center;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    width: 120px;
+    white-space: nowrap;
+  }
+  
+  td {
+    border-bottom: 1px solid #ddd;
+    
+  }
+
+  .campName-td {
+    text-align: left;
+    padding-left: 2%;
+  }
+
+  @media screen and (min-height: 1250px) {
+    .undermapcontainer {
+      top: 72.5%;
+      height: 7%;
+      left: -122.3%;
+      width: 113.7%;
+    }
+    .expbar {
+      height: 30%;
+    }
+  }
