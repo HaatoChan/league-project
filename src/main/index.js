@@ -1,7 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import fs from 'fs'
+import path from 'path'
+
 
 function createWindow() {
 	// Create the browser window.
@@ -37,7 +39,7 @@ function createWindow() {
 		mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 	}
 
-
+	// ipcHandlers and events
 	// Resizes the window if the current window size does not match the passed values.
 	ipcMain.on('resizeWindow', (event, width, height) => {
 		const currentSize = mainWindow.getSize()
@@ -47,10 +49,35 @@ function createWindow() {
 			mainWindow.setResizable(false)
 		}
 	})
-
+	// Returns the current size of the window
 	ipcMain.handle('getSizes', () => {
 		return mainWindow.getSize()
 	}) 
+
+	ipcMain.handle('readRoutesFile', async () => {
+		const filePath = path.join(app.getPath('userData'), 'routes.json')
+		return new Promise((resolve, reject) => {
+			fs.readFile(filePath, 'utf-8', (err, data) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve(data)
+				}
+			})
+		})
+	})
+
+	ipcMain.on('writeRoutesFile', async (event, data) => {
+		const filePath = path.join(app.getPath('userData'), 'routes.json')
+		fs.writeFile(filePath, JSON.stringify(data), (err) => {
+			if (err) {
+				console.error(err)
+				return
+			}
+			console.log('File rewritten successfully!')
+		})
+	})
+
 
 }
 
@@ -60,6 +87,31 @@ function createWindow() {
 app.whenReady().then(() => {
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
+
+	const filepath = path.join(app.getPath('userData'), 'routes.json')
+	const data = {
+		routes:
+		[
+			{
+				name: 'Route One',
+				distance: 10,
+				duration: 120
+			},
+			{
+				name: 'Route Two',
+				distance: 5,
+				duration: 60
+			},
+			{
+				name: 'Route Three',
+				distance: 15,
+				duration: 180
+			}
+		],
+	}
+
+
+	createFileIfNotExists(filepath, data)
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -88,3 +140,25 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+function createFileIfNotExists(filepath, data) {
+	if(!checkIfFileExists(filepath)) {
+		fs.writeFile(filepath, JSON.stringify(data), (err) => {
+			if (err) {
+				console.error(err)
+				return
+			}
+			console.log('File created successfully!')
+		})
+	} 
+}
+
+function checkIfFileExists(filepath) {
+	try {
+		return fs.existsSync(filepath)
+	} catch (err) {
+		console.error(err)
+		return false
+	}
+}
+  

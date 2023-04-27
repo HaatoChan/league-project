@@ -17,6 +17,21 @@ const api = {
   getSizes: async () => {
     const sizes = await electron.ipcRenderer.invoke("getSizes");
     return sizes;
+  },
+  /**
+   * Reads and logs a text file.
+   * @returns {object} - Returns an object with the routes.
+   */
+  readRoutesFile: async () => {
+    const textFile = await electron.ipcRenderer.invoke("readRoutesFile");
+    return JSON.parse(textFile);
+  },
+  /**
+   * Writes the passed data to the JSON file.
+   * @param {object} data - An object containing routes data.
+   */
+  writeRoutesFile: (data) => {
+    electron.ipcRenderer.send("writeRoutesFile", data);
   }
 };
 if (process.contextIsolated) {

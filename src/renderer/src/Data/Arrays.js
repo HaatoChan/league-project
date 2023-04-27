@@ -53,7 +53,7 @@ export const championNames = [
 	},
 	{
 		name: 'Bel\'Veth',
-		image: (async () => (await import('../assets/championimages/Bel\'Veth.png')).default)()
+		image: (async () => (await import('../assets/championimages/BelVeth.png')).default)()
 	},
 	{
 		name: 'Blitzcrank',
@@ -81,7 +81,7 @@ export const championNames = [
 	},
 	{
 		name: 'Cho\'Gath',
-		image: (async () => (await import('../assets/championimages/Cho\'Gath.png')).default)()
+		image: (async () => (await import('../assets/championimages/ChoGath.png')).default)()
 	},
 	{
 		name: 'Corki',
@@ -205,11 +205,11 @@ export const championNames = [
 	},
 	{
 		name: 'KSante',
-		image: (async () => (await import('../assets/championimages/K\'Sante.png')).default)()
+		image: (async () => (await import('../assets/championimages/KSante.png')).default)()
 	},
 	{
 		name: 'Kai\'Sa',
-		image: (async () => (await import('../assets/championimages/Kai\'Sa.png')).default)()
+		image: (async () => (await import('../assets/championimages/KaiSa.png')).default)()
 	},
 	{
 		name: 'Kalista',
@@ -245,7 +245,7 @@ export const championNames = [
 	},
 	{
 		name: 'Kha\'Zix',
-		image: (async () => (await import('../assets/championimages/Kha\'Zix.png')).default)()
+		image: (async () => (await import('../assets/championimages/KhaZix.png')).default)()
 	},
 	{
 		name: 'Kindred',
@@ -257,7 +257,7 @@ export const championNames = [
 	},
 	{
 		name: 'Kog\'Maw',
-		image: (async () => (await import('../assets/championimages/Kog\'Maw.png')).default)()
+		image: (async () => (await import('../assets/championimages/KogMaw.png')).default)()
 	},
 	{
 		name: 'LeBlanc',
@@ -397,7 +397,7 @@ export const championNames = [
 	},
 	{
 		name: 'Rek\'Sai',
-		image: (async () => (await import('../assets/championimages/Rek\'Sai.png')).default)()
+		image: (async () => (await import('../assets/championimages/RekSai.png')).default)()
 	},
 	{
 		name: 'Rell',
@@ -561,7 +561,7 @@ export const championNames = [
 	},
 	{
 		name: 'Vel\'Koz',
-		image: (async () => (await import('../assets/championimages/Vel\'Koz.png')).default)()
+		image: (async () => (await import('../assets/championimages/VelKoz.png')).default)()
 	},
 	{
 		name: 'Vex',

@@ -8,6 +8,7 @@ import SideBarContextProvider from '../../../Contexts/SideBarContext'
 import ValuesDisplay from './ValuesDisplay/ValuesDisplay'
 import Copied from './Copied/Copied'
 import SelectChamp from './SelectChamp/SelectChamp'
+import RouteSearch from './RouteSearch/RouteSearch'
 
 /**
  * Defines the jungle tool page.
@@ -37,6 +38,9 @@ const JungleToolPage = () => {
 				<Copied></Copied>
 				<SideBar />
 			</SideBarContextProvider>
+			<div className="routesearchcontainer">
+				<RouteSearch />
+			</div>
 		</div>
 	)
 }

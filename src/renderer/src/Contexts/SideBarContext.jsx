@@ -72,6 +72,38 @@ const SideBarContextProvider = ({children}) => {
 		}
 	}
 	
+	/**
+	 * Saves the current route to JSON file.
+	 */
+	const saveOnClick = async () => {
+		const str = window.location.href
+		
+		const match = str.match(/^https?:\/\/[^/]+\/([^/]+)\/([^/]+)/)
+		
+		if (match) {
+			const sides = match[1]
+			const path = match[2] ? match[2] : null
+			const parts = str.split('/')
+			const champs = parts.slice(5).join('/') || null
+			console.log(champs)
+			console.log(parts)
+			const routeToObject = {
+				name: 'Just testing',
+				side: sides,
+				route: path,
+				champions: champs
+			}
+			const data = await window.api.readRoutesFile()
+			data.routes.push(routeToObject)
+			window.api.writeRoutesFile(data)
+		} else {
+			// Display something for the user
+		}
+		
+		
+
+
+	}
 
 	return <SideBarContext.Provider
 		value={{
@@ -82,7 +114,8 @@ const SideBarContextProvider = ({children}) => {
 			valuesOnClick: valuesOnClick,
 			importOnClick: importOnClick,
 			exportOnClick: exportOnClick,
-			copiedActive: copiedActive
+			copiedActive: copiedActive,
+			saveOnClick: saveOnClick
 		}}
 	>
 		{children}

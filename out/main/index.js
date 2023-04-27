@@ -2,7 +2,7 @@
 const electron = require("electron");
 const path = require("path");
 const utils = require("@electron-toolkit/utils");
-const icon = path.join(__dirname, "../../resources/icon.png");
+const fs = require("fs");
 function createWindow() {
   const mainWindow = new electron.BrowserWindow({
     width: 1920,
@@ -41,9 +41,52 @@ function createWindow() {
   electron.ipcMain.handle("getSizes", () => {
     return mainWindow.getSize();
   });
+  electron.ipcMain.handle("readRoutesFile", async () => {
+    const filePath = path.join(electron.app.getPath("userData"), "routes.json");
+    return new Promise((resolve, reject) => {
+      fs.readFile(filePath, "utf-8", (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  });
+  electron.ipcMain.on("writeRoutesFile", async (event, data) => {
+    const filePath = path.join(electron.app.getPath("userData"), "routes.json");
+    fs.writeFile(filePath, JSON.stringify(data), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("File rewritten successfully!");
+    });
+  });
 }
 electron.app.whenReady().then(() => {
   utils.electronApp.setAppUserModelId("com.electron");
+  const filepath = path.join(electron.app.getPath("userData"), "routes.json");
+  const data = {
+    routes: [
+      {
+        name: "Route One",
+        distance: 10,
+        duration: 120
+      },
+      {
+        name: "Route Two",
+        distance: 5,
+        duration: 60
+      },
+      {
+        name: "Route Three",
+        distance: 15,
+        duration: 180
+      }
+    ]
+  };
+  createFileIfNotExists(filepath, data);
   electron.app.on("browser-window-created", (_, window) => {
     utils.optimizer.watchWindowShortcuts(window);
   });
@@ -58,3 +101,22 @@ electron.app.on("window-all-closed", () => {
     electron.app.quit();
   }
 });
+function createFileIfNotExists(filepath, data) {
+  if (!checkIfFileExists(filepath)) {
+    fs.writeFile(filepath, JSON.stringify(data), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("File created successfully!");
+    });
+  }
+}
+function checkIfFileExists(filepath) {
+  try {
+    return fs.existsSync(filepath);
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}

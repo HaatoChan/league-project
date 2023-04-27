@@ -11,7 +11,7 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
  */
 const SideBar = () => {
 
-	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave} = useContext(SideBarContext)
+	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, saveOnClick} = useContext(SideBarContext)
 
 	return ( 
 		<>
@@ -19,6 +19,7 @@ const SideBar = () => {
 				<SideBarContext.Consumer>
 					{() => {
 						return <>
+							<Button Text="Save" onClick={saveOnClick}/>
 							<Button Text="Values" onClick={valuesOnClick}onMouseEnter={valuesOnEnter} onMouseLeave={valuesOnLeave}/>
 							<Button Text="Import" onClick={importOnClick}/>
 							<Button Text="Export" onClick={exportOnClick}/>	
