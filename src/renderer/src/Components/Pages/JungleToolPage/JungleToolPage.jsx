@@ -3,6 +3,10 @@ import Map from './Map/Map'
 import CampSelectionContextProvider from '../../../Contexts/CampSelectionContext'
 import Title from '../../Title/Title'
 import ExpDisplay from './ExpDisplay/ExpDisplay'
+import SideBar from './SideBar/SideBar'
+import SideBarContextProvider from '../../../Contexts/SideBarContext'
+import ValuesDisplay from './ValuesDisplay/ValuesDisplay'
+import Copied from './Copied/Copied'
 
 /**
  * Defines the jungle tool page.
@@ -21,13 +25,16 @@ const JungleToolPage = () => {
 				<div className="expdisplaycontainer">
 					<ExpDisplay></ExpDisplay>
 				</div>
-				<div className="valuesdisplaycontainer">
-
-				</div>
 				<div className="champselectcontainer">
-					<p className="test">testing testing</p>
 				</div>
 			</CampSelectionContextProvider>
+			<SideBarContextProvider>
+				<div className="valuesdisplaycontainer">
+					<ValuesDisplay />
+				</div>
+				<Copied></Copied>
+				<SideBar />
+			</SideBarContextProvider>
 		</div>
 	)
 }

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import './copied.css'
-import { SideBarContext } from '../../Contexts/SideBarContext'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Returns a div telling the user something was copied.

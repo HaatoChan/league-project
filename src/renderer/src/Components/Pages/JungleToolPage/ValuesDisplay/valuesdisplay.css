@@ -1,17 +1,19 @@
 .valuedisplay {
     position: absolute;
-    width: 23%;
-    left: -23%;
-    top: 0%;
+    width: 100%;
+    right: -140%;
     border-right: 1px solid white;
     border-left: 1px solid white;
     height: auto;
     background-color: #1a1a1f;
     transition: all 0.3s ease-in-out;
+    color: white;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    z-index: 50;
   }
   
   .valuedisplay[data-isactive="true"] {
-    left: 4.5%;
+    right: 0;
   }
 
   .value-display-th {

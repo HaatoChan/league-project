@@ -1,8 +1,12 @@
 .sideBarDiv {
     position: fixed;
-    left: 0;
+    left: 4%;
+    bottom: 0;
     background-color: #1a1a1f;
-    height: 100vh;
-    width: 4.5%;
+    height: 6%;
+    width: 96%;
     z-index: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }

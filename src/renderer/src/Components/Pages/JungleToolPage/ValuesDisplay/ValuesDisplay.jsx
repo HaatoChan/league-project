@@ -1,8 +1,8 @@
 import './valuesdisplay.css'
 import { useContext } from 'react'
-import { SideBarContext } from '../../Contexts/SideBarContext'
-import coinImage from '../../assets/currency_rp_490px.png'
-import { campValues } from '../../Data/Arrays'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
+import coinImage from '../../../../assets/currency_rp_490px.png'
+import { campValues } from '../../../../Data/Arrays'
 
 /**
  * Defines a JSX elements for camp values.

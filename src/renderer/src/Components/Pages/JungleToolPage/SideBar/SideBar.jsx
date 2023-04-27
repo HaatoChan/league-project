@@ -1,7 +1,7 @@
 import './sidebar.css'
 import { useContext } from 'react'
 import Button from '../Button/Button'
-import  { SideBarContext } from '../../Contexts/SideBarContext'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 
 

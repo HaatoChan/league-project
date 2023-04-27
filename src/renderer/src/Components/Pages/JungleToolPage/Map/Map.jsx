@@ -10,7 +10,6 @@ import { camps } from '../../../../Data/Arrays'
  * @returns {HTMLElement} Returns a map element.
  */
 const Map = () => {
-	console.log(camps[0].image)
 	return (
 		<CampSelectionContext.Consumer>
 			{() => (

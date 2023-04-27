@@ -12,6 +12,8 @@
     grid-row: 1 / span auto;
     border-left: 1px solid white;
     border-right: 1px solid white;
+    color: white;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .undermapcontainer {
@@ -39,14 +41,14 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    font-family: Rowdies-Regular;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: normal;
   }
   
   .coin {
     display: inline-block;
     width: 25%;
-    height: 80%;
+    height: 70%;
     pointer-events: none;
     user-select: none;
   }
@@ -97,8 +99,7 @@
     color: black;
     position: relative; /* Add a relative position */
     z-index: 5000;
-    font-family: Rowdies-Regular;
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .expDisplay {
@@ -132,13 +133,13 @@
   .campName-td {
     text-align: left;
     padding-left: 2%;
+    white-space: nowrap;
   }
 
 
   .currentlevel {
     color: white;
-    font-weight: normal;
-    font-family: Rowdies-Regular;
+    font-weight: bold;
   }
 
   @media screen and (height: 1051px) {

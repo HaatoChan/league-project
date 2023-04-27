@@ -23,7 +23,6 @@
 }
 
 .expdisplaycontainer {
-    background-color: coral;
     grid-row: 2;
     grid-column: 3;
 }
@@ -39,4 +38,12 @@
     background-color: darkmagenta;
     grid-row: 2;
     grid-column: 4;
+    position: relative;
+}
+
+.sidebarcontainer {
+    background-color: aqua;
+    position: absolute;
+    bottom: 0;
+    left: 30%;
 }
