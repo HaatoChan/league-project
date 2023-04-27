@@ -170,71 +170,85 @@ export 	const camps = [
 		position:'Gromp-Blue',
 		expValue: 200,
 		goldValue: 80,
+		image: (async () => (await import('../assets/junglecampimages/Gromp.png')).default)()
 	},
 	{
 		position: 'Blue-Sentinel-Blue',
 		expValue: 175,
-		goldValue: 90,    
+		goldValue: 90,
+		image: (async () => (await import('../assets/junglecampimages/Blue-Sentinel.png')).default)()
 	},
 	{
 		position: 'Murkwolf-Blue',
 		expValue: 160,
 		goldValue: 85,
+		image: (async () => (await import('../assets/junglecampimages/Murkwolf.png')).default)()
 	},
 	{
 		position: 'Raptor-Blue',
 		expValue: 150,
 		goldValue: 75,
+		image: (async () => (await import('../assets/junglecampimages/Raptor.png')).default)()
 	},
 	{
 		position: 'Red-Brambleback-Blue',
 		expValue: 175,
 		goldValue: 90,
+		image: (async () => (await import('../assets/junglecampimages/Red-Brambleback.png')).default)()
 	},
 	{
 		position: 'Krugs-Blue',
 		expValue: 201,
 		goldValue: 109,
+		image: (async () => (await import('../assets/junglecampimages/Krugs.png')).default)()
 	},
 	{
 		position: 'Scuttlecrab-Top',
 		expValue: 180,
 		goldValue: 55,
+		image: (async () => (await import('../assets/junglecampimages/Scuttlecrab.png')).default)()
 	},
 	{
 		position: 'Scuttlecrab-Bottom',
 		expValue: 180,
 		goldValue: 55,
+		image: (async () => (await import('../assets/junglecampimages/Scuttlecrab.png')).default)()
 	}, 	
 	{
 		position:'Gromp-Red',
 		expValue: 200,
 		goldValue: 80,
+		image: (async () => (await import('../assets/junglecampimages/Gromp.png')).default)()
 	},
 	{
 		position: 'Blue-Sentinel-Red',
 		expValue: 175,
 		goldValue: 90,    
+		image: (async () => (await import('../assets/junglecampimages/Blue-Sentinel.png')).default)()
 	},
 	{
 		position: 'Murkwolf-Red',
 		expValue: 160,
 		goldValue: 85,
+		image: (async () => (await import('../assets/junglecampimages/Murkwolf.png')).default)()
 	},
 	{
 		position: 'Raptor-Red',
 		expValue: 150,
 		goldValue: 75,
+		image: (async () => (await import('../assets/junglecampimages/Raptor.png')).default)()
 	},
 	{
 		position: 'Red-Brambleback-Red',
 		expValue: 175,
 		goldValue: 90,
+		image: (async () => (await import('../assets/junglecampimages/Red-Brambleback.png')).default)()
 	},
 	{
 		position: 'Krugs-Red',
 		expValue: 201,
 		goldValue: 109,
+		image: (async () => (await import('../assets/junglecampimages/Krugs.png')).default)()
 	},
 ]
 

@@ -38,6 +38,7 @@ function createWindow() {
 	}
 
 
+	// Resizes the window if the current window size does not match the passed values.
 	ipcMain.on('resizeWindow', (event, width, height) => {
 		const currentSize = mainWindow.getSize()
 		if (currentSize[0] !== width || currentSize[1] !== height) {

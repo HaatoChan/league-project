@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import './junglecamp.css'
-import { CampSelectionContext } from '../../Contexts/CampSelectionContext'
+import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext.jsx'
 
 
 /**
@@ -9,14 +9,24 @@ import { CampSelectionContext } from '../../Contexts/CampSelectionContext'
  * @param {string} root0.theCamp - The name of the camp.
  * @param {string} root0.goldValue  - The gold value of the camp.
  * @param {string} root0.expValue - The exp value of the camp.
+ * @param {ImageData} root0.image - The image to display.
  * @returns {HTMLElement} - Returns a jungle camp element.
  */
-const JungleCamp = ({ theCamp, goldValue, expValue }) => {
+const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 	
 	const {campNumber, addToCampNumber, removeFromCampNumber, selectedCamps} = useContext(CampSelectionContext)
 	const [campSelected, setCampSelected] = useState(false)
 	const [orderInRoute, setOrderInRoute] = useState(null)
 	const [positionInArray, setPositionInArray] = useState(null)
+	const [imageUrl, setImageUrl] = useState(null)
+
+	useEffect(() => {
+		(async () => {
+			const url = await image
+			setImageUrl(url)
+		})()
+	}, [image])
+
 	// Some camps use - dashes
 	const lastDashIndex = theCamp.lastIndexOf('-')
 	const campName = theCamp.substring(0, lastDashIndex)
@@ -52,7 +62,7 @@ const JungleCamp = ({ theCamp, goldValue, expValue }) => {
 				}
 			}}>
 				{campSelected && <p className="campOrder" data-testid={theCamp}>{orderInRoute}</p>}
-				<img src={`/images/${campName}.png`} alt={campName} className="campImage" id={campName + 'img'}></img> 
+				<img src={imageUrl} alt={campName} className="campImage" id={campName + 'img'}></img> 
 			</button>
 		</>
 	)

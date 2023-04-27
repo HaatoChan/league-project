@@ -1,5 +1,5 @@
 import './resetbutton.css'
-import { CampSelectionContext } from '../../Contexts/CampSelectionContext'
+import {CampSelectionContext} from '../../../../Contexts/CampSelectionContext'
 import { useContext } from 'react'
 
 /**

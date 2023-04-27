@@ -16,6 +16,8 @@
 .selectsidep {
     margin: 0;
     font-weight: bold;
+    color: white;
+    margin-left: 17%;
 }
 
 .sidebox-label {
@@ -32,6 +34,7 @@
 
   #bluelabel {
     border: 2px solid blue;
+    margin-left: 20%;
   }
 
   /* Adjust the vertical alignment of the checkbox */

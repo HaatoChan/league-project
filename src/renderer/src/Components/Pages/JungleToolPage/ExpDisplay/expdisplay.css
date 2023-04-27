@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Rowdies-Regular';
-    src: url('../../../public/font/Rowdies-Regular.ttf');
+    src: url('../../../../assets//font/Rowdies-Regular.ttf');
     font-weight: normal;
     font-style: normal;
  }
@@ -18,11 +18,11 @@
     position: absolute;
     display: flex;
     z-index: 1;
-    top: 77.6%;
-    left: -122.3%;
-    width: 114.2%;
-    background-color: rgba(39, 39, 46, 0.76);
-    height: 9%;
+    top: 68.3%;
+    left: 16.5%;
+    width: 31.9%;
+    background-color: rgba(39, 39, 46, 0.76); 
+    height: 8%;
     align-items: top;
     gap: 5%; /* set gap between flex items */
 }
@@ -36,15 +36,17 @@
 .golddiv {
     width: 200px; /* adjust to desired width */
     display: flex;
-    align-items: top;
+    align-items: center;
     justify-content: center;
     overflow: hidden;
+    font-family: Rowdies-Regular;
+    font-weight: normal;
   }
   
   .coin {
     display: inline-block;
     width: 25%;
-    height: 90%;
+    height: 80%;
     pointer-events: none;
     user-select: none;
   }
@@ -85,15 +87,18 @@
   }
 
 .totalExp {
-    display: inline;
     z-index: 5000;
     font-weight: bold;
     position: relative; /* Add a relative position */
+    text-align: center !important;
+    margin-top: 1%;
 }
 .requiredExp {
     color: black;
     position: relative; /* Add a relative position */
     z-index: 5000;
+    font-family: Rowdies-Regular;
+    font-weight: normal;
 }
 
 .expDisplay {
@@ -121,12 +126,29 @@
   
   td {
     border-bottom: 1px solid #ddd;
-    
+    text-align: center;
   }
 
   .campName-td {
     text-align: left;
     padding-left: 2%;
+  }
+
+
+  .currentlevel {
+    color: white;
+    font-weight: normal;
+    font-family: Rowdies-Regular;
+  }
+
+  @media screen and (height: 1051px) {
+    .totalExp {
+      margin-top: 1.9%;
+    }
+    .undermapcontainer {
+      height: 7%;
+      top: 68%;
+    }
   }
 
   @media screen and (min-height: 1250px) {

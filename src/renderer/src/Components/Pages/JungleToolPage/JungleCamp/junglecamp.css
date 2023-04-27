@@ -29,14 +29,15 @@
 }
 .campOrder{
     position: absolute;
-    top: -190%;
-    right: -75%;
+    top: -130%;
+    right: -80%;
     font-family: 'Rowdies-Regular';
     display: inline;
     pointer-events: none;
     z-index: 5000;
     font-size: 2rem;
     user-select: none;
+    color: white;
 }
 
 #bluesentinelimg, #redbramblebackimg {

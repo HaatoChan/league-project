@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState } from 'react'
 import './expdisplay.css'
-import { CampSelectionContext } from '../../Contexts/CampSelectionContext'
-import coinImage from '../../assets/currency_rp_490px.png'
-import { expThresholds } from '../../Data/Arrays'
+import {CampSelectionContext} from '../../../../Contexts/CampSelectionContext'
+import coinImage from '../../../../assets/currency_rp_490px.png'
+import { expThresholds } from '../../../../Data/Arrays'
 import SideSelect from '../SideSelect/SideSelect'
 
 /**
@@ -70,7 +70,7 @@ const ExpDisplay = () => {
 				</div>
 				<div className="expbar">		
 					<div className="expbar-inner" style={{width: `${totalExp/totalRequired[level-1]*100}%`}}></div>
-					<p className="totalExp" data-testid="totalExp"><span className="requiredExp">{totalExp}/{totalRequired[level -1]}</span> <br /> Level {level}</p>
+					<p className="totalExp" data-testid="totalExp"><span className="requiredExp">{totalExp}/{totalRequired[level -1]}</span> <br /><span className="currentlevel"> Level {level}</span></p>
 				</div>
 				<div className="sideselect"><SideSelect /></div>
 			</div>
