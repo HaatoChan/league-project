@@ -142,7 +142,7 @@
     font-weight: bold;
   }
 
-  @media screen and (height: 1051px) {
+  @media screen and (min-height: 1041px) {
     .totalExp {
       margin-top: 1.9%;
     }

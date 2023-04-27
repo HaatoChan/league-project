@@ -1,10 +1,7 @@
 .champcontainer {
-    height: 30%;
-    max-height: 200%;
-    width: 21%;
-    position: absolute;
-    bottom: 12%;
-    left: 7%;
+    width: 100%;
+    height: 100%;
+    color: white;
 }
 
 .champimages {
@@ -27,6 +24,15 @@
     left: 5%;
     transform: translateY(-50%);
     height: 50%;
+    background-color: #0f0c0c69;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    color: white;
+    text-indent: 1rem;
+}
+
+.champInput:focus {
+    outline: none;
+    box-shadow: 0 0 3px 3px rgba(255, 255, 255, 0.322);
 }
 
 .selectedChampImage {
@@ -38,7 +44,7 @@
 
 .searchbarcontainer {
     background-color: rgba(39, 39, 46, 0.76);
-    height: 20%;
+    height: 70%;
     width: 100%;
     position: relative;
     /* Added */
@@ -54,6 +60,7 @@
     display: flex;
     flex-direction: column;
     transform: translateY(-100%);
+    z-index:500;
 }
 
 .optul {
@@ -110,8 +117,37 @@
     left: 90%;
     transform: translateY(-50%);
     cursor: pointer;
+    color: white;
 }
 
 .resetchamps:hover {
     background-color: rgba(161, 41, 41);
 }
+
+/* Set the scrollbar width and height */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #2c2b2b;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: #777;
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  /* Corner */
+  ::-webkit-scrollbar-corner {
+    background: #1a1a1a;
+  }
+  

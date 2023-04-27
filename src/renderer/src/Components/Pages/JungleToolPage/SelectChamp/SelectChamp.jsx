@@ -1,8 +1,9 @@
 import './selectchamp.css'
 import { useContext } from 'react'
 import { useState } from 'react'
-import { championNames } from '../../Data/Arrays'
-import { CampSelectionContext } from '../../Contexts/CampSelectionContext'
+import { championNames } from '../../../../Data/Arrays'
+import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
+import { useEffect } from 'react'
 
 /**
  * Defines a champion selector element.
@@ -13,6 +14,31 @@ const SelectChamp = () => {
 	const {selectedChampions, setSelectedChampions} = useContext(CampSelectionContext)
 	const [input, setInput] = useState('')
 	const [matches, setMatches] = useState([])
+	const [newChampions, setNewChampions] = useState([])
+	const [selectedChampsToDisplay, setSelectedChampsToDisplay] = useState([])
+	useEffect(() => {
+		const promises = championNames.map(async (champion) => {
+			const image = await champion.image
+			return {
+				...champion,
+				image,
+			}
+		})
+	
+		Promise.all(promises).then((updatedChampionNames) => {
+			setNewChampions(updatedChampionNames)
+		})
+	}, [])
+
+	useEffect(() => {
+		if (selectedChampions.length > 0) {
+			const updatedSelectedChampions = selectedChampions.map((championName) => {
+				const champion = newChampions.find((c) => c.name === championName)
+				return champion ? champion : championName
+			})
+			setSelectedChampsToDisplay(updatedSelectedChampions)
+		}
+	}, [newChampions, selectedChampions])
 	
 
 	/**
@@ -23,8 +49,9 @@ const SelectChamp = () => {
 		const input = event.target.value
 		const inputToLower = input.toLowerCase()
 		// Find matching names that are not already selected
-		const matches = championNames.filter(name => 
-			name.toLowerCase().includes(inputToLower) && !selectedChampions.includes(name)
+		const matches = newChampions.filter(index => {
+			return index.name.toLowerCase().includes(inputToLower) && !selectedChampions.includes(index.name)
+		}
 		)
 		setInput(input)
 		setMatches(matches)
@@ -58,26 +85,29 @@ const SelectChamp = () => {
 	const handleBlur = () => {
 		setTimeout(() => {
 			setMatches([])
-		}, 400) 
+		}, 200) 
 	}
 
 	return ( 
 		<div className="champcontainer">
 			<div className="champimages">
-				{selectedChampions.length > 0 && selectedChampions.map((champ) => (
-					<img src={`/images/${champ}.png`} alt="" className="selectedChampImage" key={champ} onClick={imgClick} data-champion={champ}/>
+				{selectedChampsToDisplay.length > 0 && selectedChampsToDisplay.map((champ) => (
+					<img src={champ.image} alt="" className="selectedChampImage" key={champ.name} onClick={imgClick} data-champion={champ.name}/>
 				))} 
 			</div>
 			<div className="searchbarcontainer">
 				<input type="text" value={input} onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} className='champInput' placeholder='Search for your champion'/>
-				<button className="resetchamps" onClick={() => { setSelectedChampions([]) }}>X</button>
+				<button className="resetchamps" onClick={() => { 
+					setSelectedChampions([]) 
+					setSelectedChampsToDisplay([])
+				}}>X</button>
 				{matches.length > 0 && (
 					<div className="options">
 						<ul className="optul">
 							{matches.map(match => (
-								<li key={match} data-value={match} className='optli' onClick={(e) => { liClick(e.target) }}>
-									<img src={`/images/${match}.png`} alt={match} className="championImg" data-value={match}/>
-									<div className="optli-text" data-value={match}>{match}</div>
+								<li key={match.name} data-value={match.name} className='optli' onClick={(e) => { liClick(e.target) }}>
+									<img src={match.image} alt={match.name} className="championImg" data-value={match.name}/>
+									<div className="optli-text" data-value={match.name}>{match.name}</div>
 								</li>
 							))}
 						</ul>

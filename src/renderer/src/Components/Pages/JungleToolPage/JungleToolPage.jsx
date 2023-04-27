@@ -7,6 +7,7 @@ import SideBar from './SideBar/SideBar'
 import SideBarContextProvider from '../../../Contexts/SideBarContext'
 import ValuesDisplay from './ValuesDisplay/ValuesDisplay'
 import Copied from './Copied/Copied'
+import SelectChamp from './SelectChamp/SelectChamp'
 
 /**
  * Defines the jungle tool page.
@@ -16,7 +17,7 @@ const JungleToolPage = () => {
 	return ( 
 		<div className="jungletoolpagecontainer">
 			<div className="titleholder">
-				<Title titleText='Jungle Gap'></Title>
+				<Title titleText='Jungle Gap' color='white'></Title>
 			</div>
 			<CampSelectionContextProvider>
 				<div className="mapcontainer">
@@ -26,6 +27,7 @@ const JungleToolPage = () => {
 					<ExpDisplay></ExpDisplay>
 				</div>
 				<div className="champselectcontainer">
+					<SelectChamp></SelectChamp>
 				</div>
 			</CampSelectionContextProvider>
 			<SideBarContextProvider>
