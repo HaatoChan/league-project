@@ -14,7 +14,7 @@ const SideBarContextProvider = ({children}) => {
 	const [valuesActive, setValuesActive] = useState(false)
 	const [valuesClicked, setValuesClicked] = useState(false)
 	const [copiedActive, setCopiedActive] = useState(false)
-
+	const [currentlySelected, setCurrentlySelected] = useState()
 	/**
 	 * Shows the values element when mousing over.
 	 */
@@ -82,15 +82,16 @@ const SideBarContextProvider = ({children}) => {
 		const sides = parts[3]
 		const path = parts[4] || null
 		const champs = parts.slice(5).join('/') || null
-		const routeToObject = {
-			name: 'Just testing',
-			side: sides,
-			route: path,
-			champions: champs
+		if (currentlySelected) {
+			const data = await window.api.readRoutesFile()
+			const matchingRoute = data.routes.find(route => route.name === currentlySelected.name)
+			matchingRoute.side = sides
+			matchingRoute.route = path
+			matchingRoute.champions = champs
+			window.api.writeRoutesFile(data)
+		} else {
+			// Display error message?
 		}
-		const data = await window.api.readRoutesFile()
-		data.routes.push(routeToObject)
-		window.api.writeRoutesFile(data)
 	}
 
 	return <SideBarContext.Provider
@@ -103,7 +104,9 @@ const SideBarContextProvider = ({children}) => {
 			importOnClick: importOnClick,
 			exportOnClick: exportOnClick,
 			copiedActive: copiedActive,
-			saveOnClick: saveOnClick
+			saveOnClick: saveOnClick,
+			currentlySelected: currentlySelected,
+			setCurrentlySelected: setCurrentlySelected
 		}}
 	>
 		{children}

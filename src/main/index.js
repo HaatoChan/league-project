@@ -5,11 +5,12 @@ import fs from 'fs'
 import path from 'path'
 
 
-function createWindow() {
+async function createWindow() {
+	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
-		width: 1920,
-		height: 1080,
+		width: width,
+		height: height,
 		show: false,
 		autoHideMenuBar: true,
 		...(process.platform === 'linux' ? { icon } : {}),
@@ -41,12 +42,16 @@ function createWindow() {
 
 	// ipcHandlers and events
 	// Resizes the window if the current window size does not match the passed values.
-	ipcMain.on('resizeWindow', (event, width, height) => {
+	ipcMain.on('resizeWindow', async (event, width, height) => {
 		const currentSize = mainWindow.getSize()
 		if (currentSize[0] !== width || currentSize[1] !== height) {
 			mainWindow.setResizable(true)
 			mainWindow.setSize(width, height)
 			mainWindow.setResizable(false)
+			const data = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json')))
+			data.resolution.width = width
+			data.resolution.height = height
+			writeFile(data, path.join(app.getPath('userData'), 'settings.json'))
 		}
 	})
 	// Returns the current size of the window
@@ -55,27 +60,11 @@ function createWindow() {
 	}) 
 
 	ipcMain.handle('readRoutesFile', async () => {
-		const filePath = path.join(app.getPath('userData'), 'routes.json')
-		return new Promise((resolve, reject) => {
-			fs.readFile(filePath, 'utf-8', (err, data) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(data)
-				}
-			})
-		})
+		return readFile(path.join(app.getPath('userData'), 'routes.json'))
 	})
 
 	ipcMain.on('writeRoutesFile', async (event, data) => {
-		const filePath = path.join(app.getPath('userData'), 'routes.json')
-		fs.writeFile(filePath, JSON.stringify(data), (err) => {
-			if (err) {
-				console.error(err)
-				return
-			}
-			console.log('File rewritten successfully!')
-		})
+		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
 
 
@@ -88,15 +77,24 @@ app.whenReady().then(() => {
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
 
-	const filepath = path.join(app.getPath('userData'), 'routes.json')
-	const data = {
+	const routesfilepath = path.join(app.getPath('userData'), 'routes.json')
+	const routesData = {
 		routes:
 		[
 		],
 	}
 
+	const settingsFilePath = path.join(app.getPath('userData'), 'settings.json')
 
-	createFileIfNotExists(filepath, data)
+	const settingsData = {
+		resolution:  {
+			width: 1600,
+			height: 900
+		}
+	}
+
+	createFileIfNotExists(settingsFilePath, settingsData)
+	createFileIfNotExists(routesfilepath, routesData)
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -147,3 +145,25 @@ function checkIfFileExists(filepath) {
 	}
 }
   
+
+function readFile(path) {
+	return new Promise((resolve, reject) => {
+		fs.readFile(path, 'utf-8', (err, data) => {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(data)
+			}
+		})
+	})
+}
+
+function writeFile(data, path) {
+	fs.writeFile(path, JSON.stringify(data), (err) => {
+		if (err) {
+			console.error(err)
+			return
+		}
+		console.log('File rewritten successfully!')
+	})
+}

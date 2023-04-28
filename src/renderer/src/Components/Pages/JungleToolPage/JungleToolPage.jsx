@@ -37,10 +37,10 @@ const JungleToolPage = () => {
 				</div>
 				<Copied></Copied>
 				<SideBar />
+				<div className="routesearchcontainer">
+					<RouteSearch />
+				</div>
 			</SideBarContextProvider>
-			<div className="routesearchcontainer">
-				<RouteSearch />
-			</div>
 		</div>
 	)
 }

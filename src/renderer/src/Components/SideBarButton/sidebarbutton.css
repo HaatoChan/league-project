@@ -4,6 +4,7 @@
     margin-top: 2px;
     user-select: none;
     margin-left: 20px;
+    filter: invert(50%) sepia(100%) saturate(0%) hue-rotate(180deg);
 }
 
 .sidebarA {
@@ -11,9 +12,10 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    color: black;
+    color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     padding-bottom: 5px;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .buttonText {
@@ -22,8 +24,17 @@
     user-select: none;
     white-space: pre;
 }
+
 .sidebarbutton:hover {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.sidebarbutton:hover .buttonText {
+    color: white;
+}
+
+.sidebarbutton:hover .buttonimg {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(180deg);
 }
 
 @media screen and (max-width: 1594px) {

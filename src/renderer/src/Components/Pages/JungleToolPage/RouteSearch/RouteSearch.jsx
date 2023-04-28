@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './routesearch.css'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a route search component.
@@ -9,7 +10,7 @@ const RouteSearch = () => {
 
 	const [namingRoute, setNamingRoute] = useState(false)
 	const [allRoutes, setAllRoutes] = useState([])
-	const [currentlySelected, setCurrentlySelected] = useState('Test Route')
+	const {currentlySelected, setCurrentlySelected} = useContext(SideBarContext)
 	const [matches, setMatches] = useState([])
 	/**
 	 * Spawns a div for the user to enter the new route name on click.
@@ -41,11 +42,18 @@ const RouteSearch = () => {
 			route: null,
 			champions: null
 		}
+		const error = document.getElementById('routenameerror')
 		const data = await window.api.readRoutesFile()
-		data.routes.push(routeObject)
-		window.api.writeRoutesFile(data)
-		setAllRoutes(data.routes)
-		setNamingRoute(false)
+		if (!data.routes.find(route => route.name === routeObject.name)) {
+			error.style.display = 'none'
+			data.routes.push(routeObject)
+			window.api.writeRoutesFile(data)
+			setAllRoutes(data.routes)
+			setCurrentlySelected(routeObject)
+			setNamingRoute(false)
+		} else {
+			error.style.display = 'Inline'
+		}
 	}
 
 	/**
@@ -75,13 +83,13 @@ const RouteSearch = () => {
 	 * @param {object} routeObject - The matching route object.
 	 */
 	const liClick = (routeObject) => {
-		
+		setCurrentlySelected(routeObject)
 	}
 
 	return ( 
 		<div className="routesearch">
-			<p className="nameOfCurrentlySelected" style={{ color: 'white'}}>{currentlySelected}</p>
-			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onBlur={handleBlur}/>
+			<p className="nameOfCurrentlySelected" style={{ color: 'white'}}>{currentlySelected?.name}</p>
+			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur}/>
 			<button className='addRoute' onClick={addOnClick}>+</button>
 			{ matches.length > 0 &&
 				<div className="routeoptions">
@@ -100,6 +108,7 @@ const RouteSearch = () => {
 				<div className="namingSpace" onClick={(e) => e.stopPropagation()}>
 					<p className="popupP">Name your route</p>
 					<input type="text" name="" id="routename" className="namerouteinput" placeholder='Name your route' required/>
+					<p className="errormessage" id="routenameerror">A route with that name already exists</p>
 					<button className='create' onClick={createOnClick}>Create</button>
 					<button className="cancel" onClick={() => setNamingRoute(false)}>X</button>
 				</div>
