@@ -2,7 +2,7 @@
     background-color: rgb(67, 153, 153);
     width: 4%;
     height: 100vh;
-    z-index: 4;
+    z-index: 5001;
     position: absolute;
     transition: width 0.3s ease-in-out;
 }

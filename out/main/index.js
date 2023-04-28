@@ -68,23 +68,7 @@ electron.app.whenReady().then(() => {
   utils.electronApp.setAppUserModelId("com.electron");
   const filepath = path.join(electron.app.getPath("userData"), "routes.json");
   const data = {
-    routes: [
-      {
-        name: "Route One",
-        distance: 10,
-        duration: 120
-      },
-      {
-        name: "Route Two",
-        distance: 5,
-        duration: 60
-      },
-      {
-        name: "Route Three",
-        distance: 15,
-        duration: 180
-      }
-    ]
+    routes: []
   };
   createFileIfNotExists(filepath, data);
   electron.app.on("browser-window-created", (_, window) => {

@@ -92,21 +92,6 @@ app.whenReady().then(() => {
 	const data = {
 		routes:
 		[
-			{
-				name: 'Route One',
-				distance: 10,
-				duration: 120
-			},
-			{
-				name: 'Route Two',
-				distance: 5,
-				duration: 60
-			},
-			{
-				name: 'Route Three',
-				distance: 15,
-				duration: 180
-			}
 		],
 	}
 

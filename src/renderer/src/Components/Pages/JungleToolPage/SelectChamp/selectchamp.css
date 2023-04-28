@@ -82,6 +82,8 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
     height: 3rem;
     background-color: #1a1a1f;
 }
@@ -111,13 +113,14 @@
     background-color: rgba(161, 41, 41, 0.438);
     border: none;
     font-weight: bold;
-    height: 60%;
-    width: 8%;
+    height: 62%;
+    width: 9%;
     top: 50%;
-    left: 90%;
+    left: 89%;
     transform: translateY(-50%);
     cursor: pointer;
     color: white;
+    font-size: 1.5rem;
 }
 
 .resetchamps:hover {

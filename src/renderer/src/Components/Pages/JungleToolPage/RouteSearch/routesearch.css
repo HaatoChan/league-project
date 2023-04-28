@@ -1,8 +1,8 @@
-.routesearchinput {
+.routesearchinput, .namerouteinput {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 3%;
+    transform: translateY(-50%);
     width: 80%;
     height: 45%;
     text-indent: 1rem;
@@ -11,7 +11,189 @@
     color: white;
 }
 
-.routesearchinput:focus {
+.routesearchinput:focus, .namerouteinput:focus {
     outline: none;
     box-shadow: 0 0 3px 3px rgba(255, 255, 255, 0.322);
 }
+
+.addRoute {
+    position: absolute;
+    height: 60%;
+    width: 10%;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(15, 105, 27);
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.nameRoute {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(240, 248, 255, 0.336);
+    z-index: 5000;
+}
+
+.namingSpace {
+    z-index: 6000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 20%;
+    background-color: rgba(39, 39, 46);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.popupP {
+    color: white;
+}
+
+.namerouteinput {
+    height: 20%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.create {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    width: 40%;
+    height: 20%;
+    background-color: rgba(9, 29, 18, 0.678);
+    color: white;
+    cursor: pointer;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 1.2rem;
+}
+
+.cancel {
+    position: absolute;
+    top: 4%;
+    right: 3%;
+    cursor: pointer;
+    background-color: red;
+    border: none;
+    font-weight: bold;
+    width: 5%;
+    height: 10%;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    border-radius: 50%;
+    color: white;
+}
+
+.popupP {
+    position: absolute;
+    top: 20%;
+    left: 44%;
+    transform: translateX(-40%);
+    font-size: 1.5rem;
+    user-select: none;
+}
+
+.justtesttodisplay {
+    	color: white;
+        position: absolute;
+        top: -600%;
+}
+
+/* May need to change this for 1920 */
+.nameOfCurrentlySelected {
+    position: absolute;
+    left: -93%;
+    top: -100%;
+    font-size: 1.5rem;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.routeoptions {
+    position: absolute;
+    width: 100%;
+    max-height: 315%;
+    overflow-y: auto;
+    top: 0%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-100%);
+    z-index: 500;
+}
+
+.routeul {
+    list-style: none;
+    padding-left: 0;
+    height: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.routeli {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    height: 2rem;
+    background-color: #1a1a1f;
+    overflow-x: hidden;
+}
+
+.routeli:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    cursor: pointer;
+}
+
+.routelitext {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    justify-content: center;
+    flex: 1;
+}
+
+.routeli:nth-child(1) {
+    border-top: 1px solid white;
+}
+
+/* Set the scrollbar width and height */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #2c2b2b;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: #777;
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  /* Corner */
+  ::-webkit-scrollbar-corner {
+    background: #1a1a1a;
+  }
