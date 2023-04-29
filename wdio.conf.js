@@ -1,12 +1,7 @@
-const join = require('path')
 const fs = require('fs')
-const getDirname = require('cross-dirname')
 
-//const dirname = getDirname()
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
-const {
-	name: { productName },
-} = packageJson
+const productName = packageJson.name
 
 exports.config = {
 	outputDir: 'all-logs',
@@ -34,7 +29,7 @@ exports.config = {
 	// will be called from there.
 	//
 	specs: [
-		'./test/specs/**/*.js'
+		'./test/specs/**/*.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
@@ -115,7 +110,7 @@ exports.config = {
 			'electron',
 			{
 				appPath: './dist',
-				appName: 'electron-league-app',
+				appName: productName,
 				appArgs: ['foo', 'bar=baz'],
 				chromedriver: {
 					port: 9519,
