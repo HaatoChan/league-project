@@ -3,6 +3,7 @@ import SideBarButton from '../SideBarButton/SideBarButton'
 import settings from '../../assets/settings-gear-icon.svg'
 import Home from '../../assets/home-icon.svg'
 import JungleIcon from '../../assets/garden-grass-solid-icon.svg'
+import LeagueIcon from '../../assets/LoL_icon.svg.png'
 
 /**
  * Defines a sidebar for the electron app.
@@ -29,6 +30,7 @@ const ElectronSideBar = () => {
 
 	return ( 
 		<div className="elesidebar" onMouseEnter={mouseEnter} id='elesidebar' onMouseLeave={mouseLeave}>
+			<SideBarButton imgSource={LeagueIcon} style={{ filter: 'none'}} text='Lobby' linkHref='lobby-screen'/>
 			<SideBarButton text='Home' imgSource={Home} linkHref='/' />
 			<SideBarButton text='Jungle Tool' imgSource={JungleIcon} linkHref='jungletool' />
 			<SideBarButton text='Settings' imgSource={settings} linkHref='settings' />

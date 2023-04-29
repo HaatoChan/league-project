@@ -1,0 +1,50 @@
+.lobbypagecontainer {
+    display: grid;
+    grid-template-columns: 0.6fr 1fr 1fr 0.5fr 1fr   auto;
+    grid-template-rows: auto 1fr 1fr 0.5fr 1fr  auto;
+    width: 100%;
+    background-color: #0f0f11d7;
+    row-gap: 1%;
+    column-gap: 1%;
+}
+
+.teamcomp {
+    margin-top: 1%;
+    background-color: aqua;
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 3;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.teamcomp > div {
+    height: 50%;
+    background-color: beige;
+    width: calc(20% - 2px); /* subtract 2px for the border */
+    border: 1px solid black;
+}
+
+.statistics {
+    background-color: rgb(59, 59, 23);
+    grid-column: 2;
+    grid-row: 5;
+}
+
+.mapdiv {
+    grid-column: 4 / span 2;
+    grid-row: 2 / span 2;
+    background-color: blueviolet;
+    margin-top: 1%;
+}
+
+.routeselector {
+    grid-column: 3;
+    grid-row: 5;
+    background-color: brown;
+}
+
+.camporder {
+    grid-column: 4 / span 2;
+    grid-row: 4 / span 2;
+    background-color: aquamarine;
+}
