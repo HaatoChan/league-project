@@ -35,4 +35,37 @@ describe('application loading', () => {
 		await expect(sizes[0]).toEqual(1920)
 		await expect(sizes[1]).toEqual(1080)
 	})
+	it('Selecting 1600x900 and pressing OK should change resolution', async () => {
+		// Grab the elements
+		const bigResRadio = await screen.getByTestId('1600x900')
+		await bigResRadio.click()
+		const okButton = await screen.getByTestId('okButton')
+		await okButton.click()
+		// Get the size of the window from electron api
+		const sizes = await browser.electron.browserWindow('getSize')
+		// Assert the size
+		await expect(sizes[0]).toEqual(1600)
+		await expect(sizes[1]).toEqual(900)
+	})
+	// Currently doesn't work, probably because it doesn't have a settings file?
+	it('Setting resolution to 1920x1080 and relaunching app should keep the resolution', async () => {
+		// Grab the elements
+		const bigResRadio = await screen.getByTestId('1920x1080')
+		await bigResRadio.click()
+		const okButton = await screen.getByTestId('okButton')
+		await okButton.click()
+		// Grab the sizes and assert their size
+		const sizes = await browser.electron.browserWindow('getSize')
+		await expect(sizes[0]).toEqual(1920)
+		await expect(sizes[1]).toEqual(1080)
+		// Relaunch it
+		await browser.reloadSession()
+		// Wait for it to launch
+		await sleepForX(5000)
+		// Get the size of the window from electron api
+		const newSizes = await browser.electron.browserWindow('getSize')
+		// Assert the size
+		await expect(newSizes[0]).toEqual(1920)
+		await expect(newSizes[1]).toEqual(1080)
+	})
 })
