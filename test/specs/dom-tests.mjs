@@ -136,14 +136,14 @@ describe('application loading', () => {
 			await champInput.addValue('Zac')
 			const zacLi = await screen.getByTestId('Zac')
 			await zacLi.click()
-			await expect(await screen.getByTestId('Zacimage'))
+			await expect(await screen.getByTestId('Zacimage')).toExist()
 			const imageArray = []
 			imageArray.push(await screen.getByTestId('Zacimage'))
 			await champInput.clearValue()
 			await champInput.addValue('Ezreal')
 			const ezrealLi = await screen.getByTestId('Ezreal')
 			await ezrealLi.click()
-			await expect(await screen.getByTestId('Ezrealimage'))
+			await expect(await screen.getByTestId('Ezrealimage')).toExist()
 			imageArray.push(await screen.getByTestId('Ezrealimage'))
 
 			// Push the reset button
@@ -153,6 +153,31 @@ describe('application loading', () => {
 			for (const element of imageArray) {
 				await expect(element).not.toExist()
 			}
+		})
+		it('Pressing champion image should remove the element from the DOM', async () => {
+			// Grab the champion input
+			const champInput = await screen.getByTestId('champInput')
+			await sleepForX(2000)
+			await champInput.clearValue()
+			// Grab two champions
+			await champInput.addValue('Ahri')
+			const ahriLi = await screen.getByTestId('Ahri')
+			await ahriLi.click()
+			await champInput.clearValue()
+			await champInput.addValue('Soraka')
+			const sorakaLi = await screen.getByTestId('Soraka')
+			await sorakaLi.click()
+			// Assert that their images are in the DOM
+			await expect(await screen.getByTestId('Ahriimage')).toExist()
+			await expect(await screen.getByTestId('Sorakaimage')).toExist()
+			const sorakaImage = await screen.getByTestId('Sorakaimage')
+			// Click sorakaImage and clear input
+			await sorakaImage.click()
+			await sleepForX(2000)
+			await champInput.clearValue()
+			// Assert that sorakas image is no longer in the DOM but that Ahris image is.
+			await expect(sorakaImage).not.toExist()
+			await expect(await screen.getByTestId('Ahriimage')).toExist()
 		})
 	})
 })
