@@ -49,6 +49,7 @@ const SideSelect = () => {
 					defaultChecked
 					onChange={(e) => sidesOnChange(e.target)}
 					data-side="Blue"
+					data-testid='BlueSide'
 				/>
 			</label>
 			<label className="sidebox-label" htmlFor="redbox" id="redlabel">
@@ -59,6 +60,7 @@ const SideSelect = () => {
 					defaultChecked
 					onChange={(e) => sidesOnChange(e.target)}
 					data-side="Red"
+					data-testid='RedSide'
 				/>
 			</label>
 		</>

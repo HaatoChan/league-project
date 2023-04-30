@@ -1,5 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { isTest } from '../util'
+
+if (isTest) {
+	import('wdio-electron-service/preload')
+}
 
 // Custom APIs for renderer
 const api = {

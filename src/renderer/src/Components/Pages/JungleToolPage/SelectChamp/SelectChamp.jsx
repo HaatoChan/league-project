@@ -97,7 +97,7 @@ const SelectChamp = () => {
 				))} 
 			</div>
 			<div className="searchbarcontainer">
-				<input type="text" value={input} onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} className='champInput' placeholder='Search for your champion'/>
+				<input type="text" value={input} onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid='champInput' className='champInput' placeholder='Search for your champion'/>
 				<button className="resetchamps" onClick={() => { 
 					setSelectedChampions([]) 
 					setSelectedChampsToDisplay([])
@@ -106,7 +106,7 @@ const SelectChamp = () => {
 					<div className="options">
 						<ul className="optul">
 							{matches.map(match => (
-								<li key={match.name} data-value={match.name} className='optli' onClick={(e) => { liClick(e.target) }}>
+								<li key={match.name} data-value={match.name} data-testid={match.name} className='optli' onClick={(e) => { liClick(e.target) }}>
 									<img src={match.image} alt={match.name} className="championImg" data-value={match.name}/>
 									<div className="optli-text" data-value={match.name}>{match.name}</div>
 								</li>

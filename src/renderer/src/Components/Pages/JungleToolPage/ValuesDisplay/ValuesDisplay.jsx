@@ -14,7 +14,7 @@ const ValuesDisplay = () => {
 
 	return ( 
 		<>
-			<div className="valuedisplay" data-isactive={valuesActive}>
+			<div className="valuedisplay" data-isactive={valuesActive} data-testid="valuesdisplay">
 				<table>
 					<thead>
 						<tr>

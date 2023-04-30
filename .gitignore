@@ -25,6 +25,6 @@ out
 *.sln
 *.sw?
 junit.xml
-
+.env
 .npmrc
 .editorconfig

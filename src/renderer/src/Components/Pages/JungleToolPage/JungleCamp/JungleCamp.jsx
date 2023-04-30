@@ -50,7 +50,7 @@ const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 
 	return ( 
 		<>
-			<button className="buttonCamp" id={theCamp} data-expvalue={expValue} data-goldvalue={goldValue} data-iscampselected={campSelected} onClick={(e) => {
+			<button className="buttonCamp" data-testid={theCamp} id={theCamp} data-expvalue={expValue} data-goldvalue={goldValue} data-iscampselected={campSelected} onClick={(e) => {
 				if(campSelected === false) {
 					setCampSelected(true)
 					setPositionInArray(selectedCamps.length)

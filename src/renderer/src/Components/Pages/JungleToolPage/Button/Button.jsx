@@ -7,12 +7,13 @@ import './button.css'
  * @param {Function} root0.onClick - The onClick event handler.
  * @param {Function} root0.onMouseEnter - The onMouseEnter event handler.
  * @param {Function} root0.onMouseLeave - The onMouseLeave event handler.
+ * @param {string} root0.testid - The testid.
  * @returns {HTMLElement} - Returns a button element.
  */
-const Button = ({Text, onClick, onMouseEnter, onMouseLeave}) => {
+const Button = ({Text, onClick, onMouseEnter, onMouseLeave, testid}) => {
 	return ( 
 		<>
-			<button className="sideB" onClick={onClick} onMouseEnter={onMouseEnter && onMouseEnter} onMouseLeave={onMouseLeave && onMouseLeave}>{Text}</button>
+			<button className="sideB" data-testid={testid} onClick={onClick} onMouseEnter={onMouseEnter && onMouseEnter} onMouseLeave={onMouseLeave && onMouseLeave}>{Text}</button>
 		</>
 	)
 }

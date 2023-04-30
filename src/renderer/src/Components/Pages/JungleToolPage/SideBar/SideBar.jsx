@@ -15,14 +15,14 @@ const SideBar = () => {
 
 	return ( 
 		<>
-			<div className="sideBarDiv">
+			<div className="sideBarDiv" data-testid='sideBarDivTest'>
 				<SideBarContext.Consumer>
 					{() => {
 						return <>
-							<Button Text="Save" onClick={saveOnClick}/>
-							<Button Text="Values" onClick={valuesOnClick}onMouseEnter={valuesOnEnter} onMouseLeave={valuesOnLeave}/>
-							<Button Text="Import" onClick={importOnClick}/>
-							<Button Text="Export" onClick={exportOnClick}/>	
+							<Button Text="Save" onClick={saveOnClick} testid="saveButton"/>
+							<Button Text="Values" onClick={valuesOnClick}onMouseEnter={valuesOnEnter} onMouseLeave={valuesOnLeave} testid="valuesButton"/>
+							<Button Text="Import" onClick={importOnClick} testid="importButton"/>
+							<Button Text="Export" onClick={exportOnClick} testid="exportButton"/>	
 						</>
 					}}	
 				</SideBarContext.Consumer>

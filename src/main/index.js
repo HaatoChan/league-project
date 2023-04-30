@@ -3,10 +3,15 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import path from 'path'
+import { isTest } from '../util'
 
+if (isTest) {
+	import('wdio-electron-service/main')
+}
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
+	console.log(isTest)
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		width: width,
@@ -24,6 +29,7 @@ async function createWindow() {
 	})
 
 	mainWindow.on('ready-to-show', () => {
+		mainWindow.title = 'this is the title of the main window'
 		mainWindow.show()
 	})
 
@@ -67,6 +73,8 @@ async function createWindow() {
 		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
 
+	// For testing
+	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
 
 }
 
