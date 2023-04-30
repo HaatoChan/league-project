@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import { browser } from 'wdio-electron-service'
 import { setupBrowser } from '@testing-library/webdriverio'
+import { Key } from 'webdriverio'
+
 
 /**
  * Sleeps for passed amount in miliseocnds
@@ -16,7 +18,7 @@ describe('application loading', () => {
 	before(async () => {
 		screen = setupBrowser(browser)
 	})
-	describe('DOM', async () => {
+	describe('Jungle DOM', async () => {
 		it('should load the home page on launch', async () => {
 			await expect(await browser.getByTestId('jungleA')).toExist()
 		})
@@ -178,6 +180,18 @@ describe('application loading', () => {
 			// Assert that sorakas image is no longer in the DOM but that Ahris image is.
 			await expect(sorakaImage).not.toExist()
 			await expect(await screen.getByTestId('Ahriimage')).toExist()
+		})
+		it('Pressing export should save value to clipboard', async () => {
+			// Assert that export button exists and click it
+			await expect(await screen.getByTestId('exportButton')).toExist()
+			const exportButton = await screen.getByTestId('exportButton')
+			await exportButton.click()
+			// Grab the champion input and focus it
+			const champInput = await screen.getByTestId('champInput')
+			await champInput.click()
+			// Paste the value and assert that it contains something part of an URL
+			await browser.keys([Key.Ctrl, 'v'])
+			await expect(champInput).toHaveValueContaining('://')
 		})
 	})
 })
