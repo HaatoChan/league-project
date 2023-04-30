@@ -91,7 +91,30 @@ describe('application loading', () => {
 			const routeLi = await screen.getByTestId('Test')
 			await routeLi.click()
 			await expect(await screen.getByTestId('currentlySelectedTest')).toExist()
-			await sleepForX(3000)
-		}) 
+		})
+		it('Pressing jungle camp reset should unselect all camps', async () => {
+			const campArray = []
+			campArray.push(await screen.getByTestId('Blue-Sentinel-Blue'))
+			campArray.push(await screen.getByTestId('Gromp-Blue'))
+			campArray.push(await screen.getByTestId('Murkwolf-Blue'))
+			campArray.push(await screen.getByTestId('Raptor-Blue'))
+			campArray.push(await screen.getByTestId('Red-Brambleback-Blue'))
+			campArray.push(await screen.getByTestId('Krugs-Blue'))
+			for (const element of campArray) {
+				await element.click()
+			}
+		
+			for (const element of campArray) {
+				await expect(element).toHaveAttribute('data-iscampselected', 'true')
+			}
+	
+			const resetButton = await screen.getByTestId('resetButtonMap')
+			await resetButton.click()
+	
+			for (const element of campArray) {
+				await expect(element).not.toHaveAttribute('data-iscampselected', 'true')
+			}
+	
+		})
 	})
 })
