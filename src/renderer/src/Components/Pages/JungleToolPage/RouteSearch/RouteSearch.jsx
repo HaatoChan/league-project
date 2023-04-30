@@ -88,15 +88,15 @@ const RouteSearch = () => {
 
 	return ( 
 		<div className="routesearch">
-			<p className="nameOfCurrentlySelected" style={{ color: 'white'}}>{currentlySelected?.name}</p>
-			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur}/>
-			<button className='addRoute' onClick={addOnClick}>+</button>
+			<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + currentlySelected?.name} style={{ color: 'white'}}>{currentlySelected?.name}</p>
+			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid="routesearchinput"/>
+			<button className='addRoute' onClick={addOnClick} data-testid="addRouteButton">+</button>
 			{ matches.length > 0 &&
 				<div className="routeoptions">
 					<ul className="routeul">
 						{
 							matches.map((route, index) => (
-								<li className="routeli" key={route.name + index} data-value={route.name} onClick={() => liClick(matches[index]) }>
+								<li className="routeli" key={route.name + index} data-testid={route.name} data-value={route.name} onClick={() => liClick(matches[index]) }>
 									<div className="routelitext" data-value={route.name}>{route.name}</div>
 								</li>
 							))
@@ -107,9 +107,9 @@ const RouteSearch = () => {
 			{namingRoute && <div className='nameRoute' onClick={() => setNamingRoute(false)}>
 				<div className="namingSpace" onClick={(e) => e.stopPropagation()}>
 					<p className="popupP">Name your route</p>
-					<input type="text" name="" id="routename" className="namerouteinput" placeholder='Name your route' required/>
+					<input type="text" name="" id="routename" className="namerouteinput" placeholder='Name your route' required data-testid="nameRouteInput"/>
 					<p className="errormessage" id="routenameerror">A route with that name already exists</p>
-					<button className='create' onClick={createOnClick}>Create</button>
+					<button className='create' onClick={createOnClick} data-testid="createButton">Create</button>
 					<button className="cancel" onClick={() => setNamingRoute(false)}>X</button>
 				</div>
 			</div>}

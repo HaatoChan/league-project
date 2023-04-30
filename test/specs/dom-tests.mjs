@@ -46,13 +46,11 @@ describe('application loading', () => {
 			// Get the champion selector input and select akshan
 			const champInput = await screen.getByTestId('champInput')
 			await champInput.addValue('Akshan')
-			await sleepForX(1000)
 			// Assert that Akshan option is visible
 			await expect(await screen.getByTestId('Akshan')).toExist()
 			// Click it and assert that URL updated
 			const akshanLi = await screen.getByTestId('Akshan')
 			await akshanLi.click()
-			await sleepForX(2000)
 			await expect(browser).toHaveUrlContaining('Akshan')
 			// Clear the value and select Ahri
 			await champInput.clearValue()
@@ -64,7 +62,6 @@ describe('application loading', () => {
 			await AhriLi.click()
 			await expect(browser).toHaveUrlContaining('Akshan:Ahri')
 			// Select side which should update the URL
-			await sleepForX(2000)
 			const blueSide = await screen.getByTestId('BlueSide')
 			await blueSide.click()
 			await expect(browser).toHaveUrlContaining('Red')
@@ -74,9 +71,27 @@ describe('application loading', () => {
 			await expect(await screen.getByTestId('valuesButton')).toExist()
 			const valuesButton = await screen.getByTestId('valuesButton')
 			await valuesButton.click()
-			await sleepForX(1000)
 			const valuesDisplay = await screen.getByTestId('valuesdisplay')
 			await expect(valuesDisplay).toHaveAttribute('data-isactive', 'true')
 		})
+		it('Should display route options when input field is selected', async () => {
+			await expect(await screen.getByTestId('routesearchinput')).toExist()
+			const routeInput = await screen.getByTestId('routesearchinput')
+			const addRouteButton = await screen.getByTestId('addRouteButton')
+			await addRouteButton.click()
+			await expect(await screen.getByTestId('nameRouteInput')).toExist()
+			const nameRouteInput = await screen.getByTestId('nameRouteInput')
+			await nameRouteInput.addValue('Test')
+			const createButton = await screen.getByTestId('createButton')
+			await createButton.click()
+			await routeInput.addValue('Test')
+			await expect(await screen.getByTestId('Test')).toExist()
+		})
+		it('Should display route name when option is clicked', async () => {
+			const routeLi = await screen.getByTestId('Test')
+			await routeLi.click()
+			await expect(await screen.getByTestId('currentlySelectedTest')).toExist()
+			await sleepForX(3000)
+		}) 
 	})
 })
