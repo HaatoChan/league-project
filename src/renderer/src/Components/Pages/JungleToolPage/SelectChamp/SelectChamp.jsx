@@ -93,12 +93,12 @@ const SelectChamp = () => {
 		<div className="champcontainer">
 			<div className="champimages">
 				{selectedChampsToDisplay.length > 0 && selectedChampsToDisplay.map((champ) => (
-					<img src={champ.image} alt="" className="selectedChampImage" key={champ.name} onClick={imgClick} data-champion={champ.name}/>
+					<img src={champ.image} alt="" className="selectedChampImage" key={champ.name} data-testid={champ.name + 'image'} onClick={imgClick} data-champion={champ.name}/>
 				))} 
 			</div>
 			<div className="searchbarcontainer">
 				<input type="text" value={input} onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid='champInput' className='champInput' placeholder='Search for your champion'/>
-				<button className="resetchamps" onClick={() => { 
+				<button className="resetchamps" data-testid="champUnselectAll" onClick={() => { 
 					setSelectedChampions([]) 
 					setSelectedChampsToDisplay([])
 				}}>X</button>

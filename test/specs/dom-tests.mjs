@@ -68,22 +68,29 @@ describe('application loading', () => {
 			console.log('Browser URL: ' + await browser.getUrl())
 		})
 		it('Should make camp values visible when values is pressed', async () => {
+			// Assert that button is in DOM and click it.
 			await expect(await screen.getByTestId('valuesButton')).toExist()
 			const valuesButton = await screen.getByTestId('valuesButton')
 			await valuesButton.click()
+			// Assert that the attribute changes
 			const valuesDisplay = await screen.getByTestId('valuesdisplay')
 			await expect(valuesDisplay).toHaveAttribute('data-isactive', 'true')
 		})
 		it('Should display route options when input field is selected', async () => {
+			// Assert that rotuesearchinput is in DOM
 			await expect(await screen.getByTestId('routesearchinput')).toExist()
 			const routeInput = await screen.getByTestId('routesearchinput')
 			const addRouteButton = await screen.getByTestId('addRouteButton')
+			// Open the route creator
 			await addRouteButton.click()
+			// Assert that it's in the DOM
 			await expect(await screen.getByTestId('nameRouteInput')).toExist()
 			const nameRouteInput = await screen.getByTestId('nameRouteInput')
+			// Name and create our route
 			await nameRouteInput.addValue('Test')
 			const createButton = await screen.getByTestId('createButton')
 			await createButton.click()
+			// Assert that the new route is visisble
 			await routeInput.addValue('Test')
 			await expect(await screen.getByTestId('Test')).toExist()
 		})
@@ -94,27 +101,58 @@ describe('application loading', () => {
 		})
 		it('Pressing jungle camp reset should unselect all camps', async () => {
 			const campArray = []
+			// Grab the entire blue side jungle
 			campArray.push(await screen.getByTestId('Blue-Sentinel-Blue'))
 			campArray.push(await screen.getByTestId('Gromp-Blue'))
 			campArray.push(await screen.getByTestId('Murkwolf-Blue'))
 			campArray.push(await screen.getByTestId('Raptor-Blue'))
 			campArray.push(await screen.getByTestId('Red-Brambleback-Blue'))
 			campArray.push(await screen.getByTestId('Krugs-Blue'))
+			// Click all the elemtns
 			for (const element of campArray) {
 				await element.click()
 			}
-		
+			// Assert that they are selected
 			for (const element of campArray) {
 				await expect(element).toHaveAttribute('data-iscampselected', 'true')
 			}
-	
+			// Get the reset button and click it
 			const resetButton = await screen.getByTestId('resetButtonMap')
 			await resetButton.click()
-	
+			// Assert that they are no longer selected
 			for (const element of campArray) {
 				await expect(element).not.toHaveAttribute('data-iscampselected', 'true')
 			}
 	
+		})
+		it('Pressing champ selector reset button should unselect all champions', async () => {
+			// Assert that the reset button is in the DOM
+			await expect(await screen.getByTestId('champUnselectAll')).toExist()
+			const champUnselectButton = await screen.getByTestId('champUnselectAll')
+			// Grab the input field
+			const champInput = await screen.getByTestId('champInput')
+			await champInput.clearValue()
+			// Add champions to image array and assert that they have been selected
+			await champInput.addValue('Zac')
+			const zacLi = await screen.getByTestId('Zac')
+			await zacLi.click()
+			await expect(await screen.getByTestId('Zacimage'))
+			const imageArray = []
+			imageArray.push(await screen.getByTestId('Zacimage'))
+			await champInput.clearValue()
+			await champInput.addValue('Ezreal')
+			const ezrealLi = await screen.getByTestId('Ezreal')
+			await ezrealLi.click()
+			await expect(await screen.getByTestId('Ezrealimage'))
+			imageArray.push(await screen.getByTestId('Ezrealimage'))
+
+			// Push the reset button
+			await champUnselectButton.click()
+
+			// Assert that the images have been removed from the DOM
+			for (const element of imageArray) {
+				await expect(element).not.toExist()
+			}
 		})
 	})
 })
