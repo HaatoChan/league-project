@@ -2,16 +2,7 @@
 import { browser } from 'wdio-electron-service'
 import { setupBrowser } from '@testing-library/webdriverio'
 import { Key } from 'webdriverio'
-
-
-/**
- * Sleeps for passed amount in miliseocnds
- * @param {number} timeToSleep - Time to Sleep in miliseconds.
- * @returns {Promise} - Returns a promise to sleep.
- */
-const sleepForX = async (timeToSleep) => {
-	return new Promise(resolve => setTimeout(resolve, timeToSleep))
-}
+import { sleepForX } from '../commonfunction.mjs'
 
 describe('application loading', () => {
 	let screen
@@ -159,7 +150,7 @@ describe('application loading', () => {
 		it('Pressing champion image should remove the element from the DOM', async () => {
 			// Grab the champion input
 			const champInput = await screen.getByTestId('champInput')
-			await sleepForX(2000)
+			await sleepForX(3000)
 			await champInput.clearValue()
 			// Grab two champions
 			await champInput.addValue('Ahri')

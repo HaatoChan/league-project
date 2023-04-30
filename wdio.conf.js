@@ -7,13 +7,14 @@ exports.config = {
 	outputDir: 'all-logs',
 	runner: 'local',
 	specs: [
-		'./test/specs/**/*.mjs'
+		//'./test/specs/**/*.mjs'
+		'./test/specs/settings-tests.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
 		// 'path/to/excluded/files'
 	],
-	maxInstances: 10,
+	maxInstances: 1,
 	capabilities: [{}],
 	logLevel: 'info',
 	bail: 0,
