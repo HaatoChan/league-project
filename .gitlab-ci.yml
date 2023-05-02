@@ -14,7 +14,7 @@ unit-test:
   stage: test
   services:
    - name: selenium/standalone-chrome:latest 
-  before_Script:
+  before_script:
    - npm install
   script:
    - npm run wdio
