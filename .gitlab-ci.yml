@@ -10,7 +10,7 @@ stages:
 - lint
 
 unit-test:
-  image: node:latest
+  image: selenium/standalone-chrome:latest 
   stage: test
   services:
    - name: selenium/standalone-chrome:latest 
