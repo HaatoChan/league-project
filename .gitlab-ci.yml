@@ -10,7 +10,7 @@ stages:
 - lint
 
 unit-test:
-  image: node-latest
+  image: node:latest
   stage: test
   before_script:
    - npm install
