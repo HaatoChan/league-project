@@ -12,7 +12,7 @@ stages:
 unit-test:
   image: node-latest
   stage: test
-  before_Script:
+  before_script:
    - npm install
   script:
    - npm run wdio
