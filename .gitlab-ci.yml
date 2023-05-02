@@ -10,9 +10,11 @@ stages:
 - lint
 
 unit-test:
-  image: node-latest
+  image: node:latest
   stage: test
-  before_Script:
+  services:
+   - name: selenium/standalone-chrome:latest 
+  before_script:
    - npm install
   script:
    - npm run wdio
