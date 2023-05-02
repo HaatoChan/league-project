@@ -12,6 +12,8 @@ stages:
 unit-test:
   image: node:latest
   stage: test
+  services:
+   - name: selenium/standalone-chrome:latest 
   before_Script:
    - npm install
   script:
