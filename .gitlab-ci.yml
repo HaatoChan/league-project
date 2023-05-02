@@ -12,9 +12,7 @@ stages:
 unit-test:
   image: node:latest
   stage: test
-  services:
-   - name: selenium/standalone-chrome:latest 
-  before_script:
+  before_Script:
    - npm install
   script:
    - npm run wdio
