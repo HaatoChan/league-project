@@ -1,5 +1,6 @@
 const fs = require('fs')
-
+const dotenv = require('dotenv')
+dotenv.config()
 const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 const productName = packageJson.name
 
@@ -15,7 +16,9 @@ exports.config = {
 		// 'path/to/excluded/files'
 	],
 	maxInstances: 1,
-	capabilities: [{}],
+	capabilities: [{
+		browserName: getCapabilities() 
+	}],
 	logLevel: 'info',
 	bail: 0,
 	baseUrl: 'http://localhost',
@@ -58,4 +61,9 @@ exports.config = {
 		ui: 'bdd',
 		timeout: 60000
 	},
+}
+function getCapabilities () {
+	if(process.env.CI_JOB_NAME) {
+		return process.env.CI_JOB_NAME === 'e2e:chrome' ? 'chrome' : 'firefox' 
+	}
 }

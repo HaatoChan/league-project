@@ -14,12 +14,10 @@ unit-test:
   stage: test
   services:
    - name: selenium/standalone-chrome:latest 
-  variables:
-    SELENIUM_REMOTE_URL: http://selenium__standalone-chrome:4444/wd/hub
   before_script:
    - npm install
   script:
-   - npm run wdio
+   - npm run wdio --host=selenium__standalone-chrome
 
 
 
