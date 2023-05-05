@@ -38,6 +38,23 @@ const api = {
 	 */
 	writeRoutesFile: (data) => {
 		ipcRenderer.send('writeRoutesFile', data)
+	},
+}
+
+const LCUApi = {
+	/**
+	 * Listens to if the lcu was connected
+	 * @param {Function} callback - The callback function execute(?)
+	 */
+	lcuConnected: (callback) => {
+		ipcRenderer.on('lcu-connected', callback)
+	},
+	/**
+	 * Receives lobby information from the main thread.
+	 * @param {Function} callback - The callback function execute(?)
+	 */
+	lobbyInfo: (callback) => {
+		ipcRenderer.on('champ-select-info', callback)
 	}
 }
 
@@ -48,11 +65,13 @@ if (process.contextIsolated) {
 	try {
 		contextBridge.exposeInMainWorld('electron', electronAPI)
 		contextBridge.exposeInMainWorld('api', api)
+		contextBridge.exposeInMainWorld('LCUApi', LCUApi)
 	} catch (error) {
 		console.error(error)
 	}
 } else {
 	window.electron = electronAPI
+	window.LCUApi = LCUApi
 	window.api = api
 }
   

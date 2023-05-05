@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, ipcRenderer } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -10,6 +10,7 @@ if (isTest) {
 	import('wdio-electron-service/main')
 }
 
+let mainWindow
 // LCU variables
 let credentials
 let client
@@ -19,7 +20,7 @@ async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
 
 	// Create the browser window.
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
 		show: false,
@@ -113,16 +114,7 @@ app.whenReady().then(() => {
 		}
 	}
 
-	const leagueAPILogFilePath = path.join(app.getPath('userData'), 'logsFile.json')
 
-	const logFileBaseLine = {
-		data:  
-		[
-
-		],
-	}
-
-	createFileIfNotExists(leagueAPILogFilePath, logFileBaseLine)
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
 
@@ -191,18 +183,18 @@ const lcuConnect = async () => {
 			client.on('connect', (newCredentials) => {
 				console.log(newCredentials)
 			})
+			// Atempt to open websocket
 			ws = await createWebSocketConnection()
-			/*	ws.on('message', message => {
-				const buffer = Buffer.from(message)
-				try {
-					const payload = JSON.parse(buffer.toString())
-					console.log(payload)
-				} catch (error) {
-					console.log('error parsing data')
-				}
-			}) */
+			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
+			// Declare event subscriptions
 			ws.subscribe('/lol-matchmaking/v1/search', (data, event) => {
-				console.log(typeof data)
+			})
+			ws.subscribe('/lol-champ-select/v1/session', (data, event) => {
+				mainWindow.webContents.send('champ-select-info', data)
+			})
+			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data, event) => {
+				console.log('end of game: ' + JSON.stringify(data))
+				console.log(data.localPlayer)
 			})
 			clearInterval(interval)
 		} 
