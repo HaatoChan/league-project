@@ -4,14 +4,22 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
+import { authenticate, LeagueClient } from 'league-connect'
 
 if (isTest) {
 	import('wdio-electron-service/main')
 }
 
+
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
-	console.log(isTest)
+	/*const credentials = await authenticate()
+	const client = new LeagueClient(credentials)
+	console.log(client) */
+	
+
+	console.log(join(__dirname))
+
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		width: width,
@@ -21,15 +29,18 @@ async function createWindow() {
 		...(process.platform === 'linux' ? { icon } : {}),
 		webPreferences: {
 			preload: join(__dirname, '../preload/index.js'),
-			sandbox: false
+			sandbox: false,
+			nodeIntegrationInWorker: true
 		},
 		resizable: false,
 	// Make your own eventually?
 	//	frame: false
 	})
 
+	// Open the webtools
+	mainWindow.webContents.openDevTools()
+
 	mainWindow.on('ready-to-show', () => {
-		mainWindow.title = 'this is the title of the main window'
 		mainWindow.show()
 	})
 
@@ -41,7 +52,7 @@ async function createWindow() {
 	// HMR for renderer base on electron-vite cli.
 	// Load the remote URL for development or the local html file for production.
 	if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-		mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+		mainWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`)
 	} else {
 		mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 	}
@@ -75,7 +86,41 @@ async function createWindow() {
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
+}
 
+async function createWorkerWindow() {
+
+	// Create the browser window.
+	const workerWindow = new BrowserWindow({
+		show: false,
+		width: 200,
+		height: 500,
+		autoHideMenuBar: true,
+		...(process.platform === 'linux' ? { icon } : {}),
+		webPreferences: {
+			preload: join(__dirname, '../preload/index.js'),
+			sandbox: false,
+		},
+		resizable: false,
+	})
+
+	workerWindow.on('ready-to-show', () => {
+		workerWindow.show()
+	})
+
+	workerWindow.webContents.setWindowOpenHandler((details) => {
+		shell.openExternal(details.url)
+		return { action: 'deny' }
+	})
+
+	// HMR for renderer base on electron-vite cli.
+	// Load the remote URL for development or the local html file for production.
+	if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+		console.log(process.env['ELECTRON_RENDERER_URL'])
+		workerWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/view.html`)
+	} else {
+		workerWindow.loadFile(join(__dirname, '../renderer/view.html'))
+	}
 }
 
 // This method will be called when Electron has finished
@@ -112,6 +157,7 @@ app.whenReady().then(() => {
 	})
 
 	createWindow()
+	createWorkerWindow()
 
 	app.on('activate', function () {
 		// On macOS it's common to re-create a window in the app when the
