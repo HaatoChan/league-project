@@ -4,35 +4,19 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
-import { authenticate, LeagueClient } from 'league-connect'
+import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 
 if (isTest) {
 	import('wdio-electron-service/main')
 }
 
+// LCU variables
 let credentials
 let client
+let interval
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
-
-	// Connect to league client
-	const interval = setInterval(async () => {
-		try {
-			credentials = await authenticate()
-			console.log(credentials)
-			client = new LeagueClient(credentials)
-			if (client) {
-				client.start()			
-				client.on('connect', (newCredentials) => {
-					console.log(newCredentials)
-				})
-				clearInterval(interval)
-			}
-		} catch (error) {
-			credentials = null
-		}
-	}, 5000)
 
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
@@ -106,6 +90,10 @@ async function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+	// Connect to league client
+	//	interval = setInterval(lcuConnect, 10000)
+	interval = setInterval(lcuConnect, 5000)
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
 
@@ -125,6 +113,16 @@ app.whenReady().then(() => {
 		}
 	}
 
+	const leagueAPILogFilePath = path.join(app.getPath('userData'), 'logsFile.json')
+
+	const logFileBaseLine = {
+		data:  
+		[
+
+		],
+	}
+
+	createFileIfNotExists(leagueAPILogFilePath, logFileBaseLine)
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
 
@@ -155,6 +153,66 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+
+// LCU connection
+let ws
+/**
+ *
+ */
+const wcConnect = async () => {
+	try {
+		ws = await createWebSocketConnection()
+		console.log(ws)
+		if (ws) {
+			ws.on('message', message => {
+				console.log(message)
+			})
+			clearInterval(interval)
+		}
+	} catch(error) {
+		console.log('Catch block in WS')
+		ws = null
+	}
+}
+
+
+/**
+ * Function for connecting to the LCU
+ */
+const lcuConnect = async () => {
+	try {
+		credentials = await authenticate()
+		console.log(credentials)
+		client = new LeagueClient(credentials)
+		// If client connects then declare the event emitters
+		if (client) {
+			client.start()			
+			client.on('connect', (newCredentials) => {
+				console.log(newCredentials)
+			})
+			ws = await createWebSocketConnection()
+			/*	ws.on('message', message => {
+				const buffer = Buffer.from(message)
+				try {
+					const payload = JSON.parse(buffer.toString())
+					console.log(payload)
+				} catch (error) {
+					console.log('error parsing data')
+				}
+			}) */
+			ws.subscribe('/lol-matchmaking/v1/search', (data, event) => {
+				console.log(typeof data)
+			})
+			clearInterval(interval)
+		} 
+	} catch (error) {
+		console.log('Catch block')
+		credentials = null
+	}
+}
+
+/// Write to files
 
 function createFileIfNotExists(filepath, data) {
 	if(!checkIfFileExists(filepath)) {
