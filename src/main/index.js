@@ -10,15 +10,29 @@ if (isTest) {
 	import('wdio-electron-service/main')
 }
 
+let credentials
+let client
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
-	/*const credentials = await authenticate()
-	const client = new LeagueClient(credentials)
-	console.log(client) */
-	
 
-	console.log(join(__dirname))
+	// Connect to league client
+	const interval = setInterval(async () => {
+		try {
+			credentials = await authenticate()
+			console.log(credentials)
+			client = new LeagueClient(credentials)
+			if (client) {
+				client.start()			
+				client.on('connect', (newCredentials) => {
+					console.log(newCredentials)
+				})
+				clearInterval(interval)
+			}
+		} catch (error) {
+			credentials = null
+		}
+	}, 5000)
 
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
@@ -88,41 +102,6 @@ async function createWindow() {
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
 }
 
-async function createWorkerWindow() {
-
-	// Create the browser window.
-	const workerWindow = new BrowserWindow({
-		show: false,
-		width: 200,
-		height: 500,
-		autoHideMenuBar: true,
-		...(process.platform === 'linux' ? { icon } : {}),
-		webPreferences: {
-			preload: join(__dirname, '../preload/index.js'),
-			sandbox: false,
-		},
-		resizable: false,
-	})
-
-	workerWindow.on('ready-to-show', () => {
-		workerWindow.show()
-	})
-
-	workerWindow.webContents.setWindowOpenHandler((details) => {
-		shell.openExternal(details.url)
-		return { action: 'deny' }
-	})
-
-	// HMR for renderer base on electron-vite cli.
-	// Load the remote URL for development or the local html file for production.
-	if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-		console.log(process.env['ELECTRON_RENDERER_URL'])
-		workerWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/view.html`)
-	} else {
-		workerWindow.loadFile(join(__dirname, '../renderer/view.html'))
-	}
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -157,7 +136,6 @@ app.whenReady().then(() => {
 	})
 
 	createWindow()
-	createWorkerWindow()
 
 	app.on('activate', function () {
 		// On macOS it's common to re-create a window in the app when the
