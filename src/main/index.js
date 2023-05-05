@@ -190,6 +190,7 @@ const lcuConnect = async () => {
 			ws.subscribe('/lol-matchmaking/v1/search', (data, event) => {
 			})
 			ws.subscribe('/lol-champ-select/v1/session', (data, event) => {
+				console.log(data)
 				mainWindow.webContents.send('champ-select-info', data)
 			})
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data, event) => {
