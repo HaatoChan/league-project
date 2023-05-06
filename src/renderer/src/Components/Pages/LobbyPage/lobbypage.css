@@ -15,13 +15,14 @@
     grid-row: 2 / span 3;
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 1%;
 }
 
 .teamcomp > div {
     height: 50%;
     background-color: beige;
-    width: calc(20% - 2px); /* subtract 2px for the border */
-    border: 1px solid black;
+    width: calc(20% - 4px); /* subtract 2px for the border */
+    border: 2px solid black;
 }
 
 .statistics {
@@ -47,4 +48,10 @@
     grid-column: 4 / span 2;
     grid-row: 4 / span 2;
     background-color: aquamarine;
+}
+
+.champSplashArt {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
