@@ -9,6 +9,7 @@ import ValuesDisplay from './ValuesDisplay/ValuesDisplay'
 import Copied from './Copied/Copied'
 import SelectChamp from './SelectChamp/SelectChamp'
 import RouteSearch from './RouteSearch/RouteSearch'
+import ImportDisplay from './ImportDisplay/ImportDisplay'
 
 /**
  * Defines the jungle tool page.
@@ -34,6 +35,7 @@ const JungleToolPage = () => {
 					<div className="valuesdisplaycontainer">
 						<ValuesDisplay />
 					</div>
+					<ImportDisplay />
 					<Copied></Copied>
 					<SideBar />
 					<div className="routesearchcontainer">

@@ -39,7 +39,6 @@ const SelectChamp = () => {
 			setSelectedChampsToDisplay(updatedSelectedChampions)
 		}
 	}, [newChampions, selectedChampions])
-	
 
 	/**
 	 * Handles the event, displaying the matching champions.

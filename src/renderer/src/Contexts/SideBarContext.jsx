@@ -16,7 +16,7 @@ const SideBarContextProvider = ({children}) => {
 	const [copiedActive, setCopiedActive] = useState(false)
 	const [currentlySelected, setCurrentlySelected] = useState()
 	const [exportOptionsActive, setExportOptionsActive] = useState(false)
-
+	const [newImport, setNewImport] = useState()
 	/**
 	 * Shows the values element when mousing over.
 	 */
@@ -89,11 +89,24 @@ const SideBarContextProvider = ({children}) => {
 		setExportOptionsActive(false)
 	}
 
-	
+	/**
+	 * Handles the imported data.
+	 * @param {string} importValue - The import value.
+	 */
+	const createImport = (importValue) => {
+		try {
+			const importData = JSON.parse(importValue)
+			console.log(importData)
+		} catch (error) {
+			console.error(error)
+		}
+		setImportActive(false)
+	}
 
 	return <SideBarContext.Provider
 		value={{
 			importActive: importActive,
+			setImportActive: setImportActive,
 			valuesActive: valuesActive,
 			valuesOnEnter: valuesOnEnter,
 			valuesOnLeave: valuesOnLeave,
@@ -106,7 +119,9 @@ const SideBarContextProvider = ({children}) => {
 			exportOnHover: exportOnHover,
 			exportOptionsActive: exportOptionsActive,
 			exportOnLeave: exportOnLeave,
-			setCopiedActive: setCopiedActive
+			setCopiedActive: setCopiedActive,
+			createImport: createImport,
+			newImport: newImport
 		}}
 	>
 		{children}

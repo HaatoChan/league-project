@@ -12,7 +12,7 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  */
 const SideBar = () => {
 	const {exportUrl, exportObject} = useContext(CampSelectionContext)
-	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, saveOnClick, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
+	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
 
 	return ( 
 		<>
@@ -29,12 +29,14 @@ const SideBar = () => {
 										matchingRoute.route = exportObject.route
 										matchingRoute.champions = exportObject.champions
 										window.api.writeRoutesFile(data)
+									} else {
+										// Make something that appears
 									}
 								}} 
 								testid="saveButton"/>
 							<Button Text="Values" onClick={valuesOnClick} onMouseEnter={valuesOnEnter} onMouseLeave={valuesOnLeave} testid="valuesButton"/>
 							<Button Text="Import" onClick={importOnClick} testid="importButton"/>
-							<Button Text="Export" onClick={exportOnClick} onMouseLeave={exportOnLeave} onMouseEnter={exportOnHover} testid="exportButton">		
+							<Button Text="Export" onMouseLeave={exportOnLeave} onMouseEnter={exportOnHover} testid="exportButton">		
 							</Button>	
 							<ExportOptions onMouseEnter={exportOnHover} onMouseLeave={exportOnLeave} 
 								jsonClick={async () => {
