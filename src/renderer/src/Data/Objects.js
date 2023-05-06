@@ -652,3 +652,46 @@ export const championIds = {
 		image: (async () => (await import('../assets/championSplashArt/Zyra_0.jpg')).default)()	
 	}
 }
+
+export const summonerIds = {
+	4: {
+		name: 'Flash',
+		image: (async () => (await import('../assets/Summoners/SummonerFlash.png')).default)()
+	},
+	14: {
+		name: 'Ignite',
+		image: (async () => (await import('../assets/Summoners/SummonerDot.png')).default)()
+	},
+	1: {
+		name: 'Cleanse',
+		image: (async () => (await import('../assets/Summoners/SummonerBoost.png')).default)()
+	},
+	3: {
+		name: 'Exhaust',
+		image: (async () => (await import('../assets/Summoners/SummonerExhaust.png')).default)()
+	},
+	6: {
+		name: 'Ghost',
+		image: (async () => (await import('../assets/Summoners/SummonerHaste.png')).default)()
+	},
+	7: {
+		name: 'Heal',
+		image: (async () => (await import('../assets/Summoners/SummonerHeal.png')).default)()
+	},
+	11: {
+		name: 'Smite',
+		image: (async () => (await import('../assets/Summoners/SummonerSmite.png')).default)()
+	},
+	12: {
+		name: 'Teleport',
+		image: (async () => (await import('../assets/Summoners/SummonerTeleport.png')).default)()
+	},
+	21: {
+		name: 'Barrier',
+		image: (async () => (await import('../assets/Summoners/SummonerBarrier.png')).default)()
+	},
+	32: {
+		name: 'Snowball',
+		image: (async () => (await import('../assets/Summoners/SummonerSnowball.png')).default)()
+	}
+}

@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
-import { championIds } from '../Data/Objects'
-
+import { championIds, summonerIds } from '../Data/Objects'
 
 export const LobbyContext = createContext()
 
@@ -11,12 +10,18 @@ export const LobbyContext = createContext()
  */
 const LobbyContextProvider = ({children}) => {
     
+	const positionsOrder = ['top', 'jungle', 'middle', 'bottom', 'utility']
+
 	const [teamArray, setTeamArray] = useState([])
 	const [imgArray, setImgArray] = useState([])
 	window.LCUApi.lobbyInfo((_event, value) => {
-		const combinedTeamArray = [...value.myTeam, ...value.theirTeam]
-		console.log(value.myTeam[0].championId)
-		setTeamArray(combinedTeamArray)
+		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
+		const combinedTeamArray = [...value.theirTeam, ...value.myTeam]
+		console.log('Summoner Spell One: ' + combinedTeamArray[0].spell1Id)
+		console.log('Summoner spell Two: ' + combinedTeamArray[0].spell2Id)
+		if(combinedTeamArray.length > 0) {
+			setTeamArray(combinedTeamArray)
+		}
 	})
 
 	useEffect(() => {
@@ -25,10 +30,13 @@ const LobbyContextProvider = ({children}) => {
 		 */
 		const resolveImages = async () => {
 			const copiedArray = Array.from(teamArray)
-			console.log(copiedArray)
 			for (let i = 0; i < teamArray.length; i++) {
 				const imgUrl = await championIds[teamArray[i]?.championId]?.image
 				copiedArray[i].championImage = imgUrl
+				const summonerOneUrl = await summonerIds[teamArray[i]?.spell1Id]?.image
+				copiedArray[i].spell1Id = summonerOneUrl
+				const summonerTwoUrl = await summonerIds[teamArray[i]?.spell2Id]?.image
+				copiedArray[i].spell2Id = summonerTwoUrl
 				setImgArray(copiedArray)
 			}
 		}
