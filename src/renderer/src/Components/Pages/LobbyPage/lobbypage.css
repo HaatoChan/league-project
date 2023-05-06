@@ -17,13 +17,13 @@
     flex-wrap: wrap;
     margin-bottom: 1%;
 }
-
+/*
 .teamcomp > div {
     height: 50%;
     background-color: beige;
     width: calc(20% - 4px); /* subtract 2px for the border */
-    border: 2px solid black;
-}
+   /* border: 2px solid black; 
+ } */ 
 
 .statistics {
     background-color: rgb(59, 59, 23);
