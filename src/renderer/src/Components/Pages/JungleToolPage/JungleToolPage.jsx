@@ -17,10 +17,10 @@ import RouteSearch from './RouteSearch/RouteSearch'
 const JungleToolPage = () => {
 	return ( 
 		<div className="jungletoolpagecontainer">
-			<div className="titleholder">
-				<Title titleText='Jungle Gap' color='white'></Title>
-			</div>
 			<CampSelectionContextProvider>
+				<div className="titleholder">
+					<Title titleText='Jungle Gap' color='white'></Title>
+				</div>
 				<div className="mapcontainer">
 					<Map></Map>
 				</div>
@@ -30,17 +30,17 @@ const JungleToolPage = () => {
 				<div className="champselectcontainer">
 					<SelectChamp></SelectChamp>
 				</div>
+				<SideBarContextProvider>
+					<div className="valuesdisplaycontainer">
+						<ValuesDisplay />
+					</div>
+					<Copied></Copied>
+					<SideBar />
+					<div className="routesearchcontainer">
+						<RouteSearch />
+					</div>
+				</SideBarContextProvider>
 			</CampSelectionContextProvider>
-			<SideBarContextProvider>
-				<div className="valuesdisplaycontainer">
-					<ValuesDisplay />
-				</div>
-				<Copied></Copied>
-				<SideBar />
-				<div className="routesearchcontainer">
-					<RouteSearch />
-				</div>
-			</SideBarContextProvider>
 		</div>
 	)
 }

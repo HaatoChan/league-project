@@ -15,6 +15,8 @@ const SideBarContextProvider = ({children}) => {
 	const [valuesClicked, setValuesClicked] = useState(false)
 	const [copiedActive, setCopiedActive] = useState(false)
 	const [currentlySelected, setCurrentlySelected] = useState()
+	const [exportOptionsActive, setExportOptionsActive] = useState(false)
+
 	/**
 	 * Shows the values element when mousing over.
 	 */
@@ -69,9 +71,24 @@ const SideBarContextProvider = ({children}) => {
 			}, 2000)
 		} catch (err) {
 			console.log('fail')
-		}
+		} 
 	}
 	
+
+	/**
+	 * Shows the export options when function is triggered.
+	 */
+	const exportOnHover =  () => {
+		setExportOptionsActive(true)
+	}
+
+	/**
+	 * Hides the export options when function is triggered.
+	 */
+	const exportOnLeave =  () => {
+		setExportOptionsActive(false)
+	}
+
 	/**
 	 * Saves the current route to JSON file.
 	 */
@@ -106,7 +123,11 @@ const SideBarContextProvider = ({children}) => {
 			copiedActive: copiedActive,
 			saveOnClick: saveOnClick,
 			currentlySelected: currentlySelected,
-			setCurrentlySelected: setCurrentlySelected
+			setCurrentlySelected: setCurrentlySelected,
+			exportOnHover: exportOnHover,
+			exportOptionsActive: exportOptionsActive,
+			exportOnLeave: exportOnLeave,
+			setCopiedActive: setCopiedActive
 		}}
 	>
 		{children}

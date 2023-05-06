@@ -12,10 +12,11 @@ import './championsplash.css'
 const ChampionSplash = ({imgUrl,champName, summonerSpellOne, summonerSpellTwo}) => {
 	return ( 
 		<div className="playerchamp">
-			<img src={imgUrl} alt="" className="champSplashArt" />
+			{imgUrl && <img src={imgUrl} alt="" className="champSplashArt" /> }
 			{champName && <div className="banner">
 				<p className="champname">{champName}</p>
-				
+				{summonerSpellOne &&<img src={summonerSpellOne} alt="Summoner One" className="summonerOne" /> }
+				{summonerSpellTwo && <img src={summonerSpellTwo} alt="" className="summonerTwo" /> }
 			</div>}
 		</div>
 	)

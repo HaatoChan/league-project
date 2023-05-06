@@ -17,20 +17,14 @@
 
 .teamcomp {
     margin-top: 1%;
-    background-color: aqua;
     grid-column: 2 / span 2;
     grid-row: 2 / span 3;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 1%;
+    background-color: rgba(39, 39, 46);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.2);
 }
-/*
-.teamcomp > div {
-    height: 50%;
-    background-color: beige;
-    width: calc(20% - 4px); /* subtract 2px for the border */
-   /* border: 2px solid black; 
- } */ 
 
 .statistics {
     background-color: rgb(59, 59, 23);
