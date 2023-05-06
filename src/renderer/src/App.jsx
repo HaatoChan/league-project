@@ -7,6 +7,7 @@ import SettingsPage from './Components/Pages/SettingsPage/SettingsPage'
 import JungleToolPage from './Components/Pages/JungleToolPage/JungleToolPage'
 import { HashRouter, Routes, Route} from 'react-router-dom'
 import LobbyPage from './Components/Pages/LobbyPage/LobbyPage'
+import LobbyContextProvider from './Contexts/LobbyPageContext'
 
 function App() {
 	return (
@@ -15,7 +16,7 @@ function App() {
 				<ElectronSideBar />
 				<Routes>
 					<Route path="/" element={<HomePage />}/>
-					<Route path="lobby-screen" element={<LobbyPage />} />
+					<Route path="lobby-screen" element={<LobbyContextProvider><LobbyPage /> </LobbyContextProvider>} />
 					<Route path="settings" element={ <SettingsPage />}/>
 					<Route path='jungletool' element={<JungleToolPage />}/>
 				</Routes>

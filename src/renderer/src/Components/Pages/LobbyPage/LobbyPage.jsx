@@ -1,35 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import './lobbypage.css'
-import { championIds } from '../../../Data/Objects'
+import { LobbyContext } from '../../../Contexts/LobbyPageContext'
 /**
  * Defines the lobby page
  * @returns {HTMLElement} - Returns the lobby page.
  */
 const LobbyPage = () => {
 
-	const [teamArray, setTeamArray] = useState([])
-	const [imgArray, setImgArray] = useState([])
-	window.LCUApi.lobbyInfo((_event, value) => {
-		const combinedTeamArray = [...value.myTeam, ...value.theirTeam]
-		console.log(value.myTeam[0].championId)
-		setTeamArray(combinedTeamArray)
-	})
-
-	useEffect(() => {
-		/**
-		 * Resolves all the images
-		 */
-		const resolveImages = async () => {
-			const copiedArray = Array.from(teamArray)
-			console.log(copiedArray)
-			for (let i = 0; i < teamArray.length; i++) {
-				const imgUrl = await championIds[teamArray[i]?.championId]?.image
-				copiedArray[i].championImage = imgUrl
-				setImgArray(copiedArray)
-			}
-		}
-		resolveImages()
-	},[teamArray])
+	const {championIds, teamArray, imgArray} = useContext(LobbyContext)
 
 	return ( 
 		<div className="lobbypagecontainer">
