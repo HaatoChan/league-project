@@ -12,7 +12,7 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  */
 const SideBar = () => {
 	const {exportUrl, exportObject} = useContext(CampSelectionContext)
-	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, saveOnClick, exportOnHover, exportOnLeave, setCopiedActive} = useContext(SideBarContext)
+	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, saveOnClick, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
 
 	return ( 
 		<>
@@ -20,7 +20,18 @@ const SideBar = () => {
 				<SideBarContext.Consumer>
 					{() => {
 						return <>
-							<Button Text='Save' onClick={saveOnClick} testid="saveButton"/>
+							<Button Text='Save' 
+								onClick={async () => {
+									if (currentlySelected) {
+										const data = await window.api.readRoutesFile()
+										const matchingRoute = data.routes.find(route => route.name === currentlySelected.name)
+										matchingRoute.side = exportObject.side
+										matchingRoute.route = exportObject.route
+										matchingRoute.champions = exportObject.champions
+										window.api.writeRoutesFile(data)
+									}
+								}} 
+								testid="saveButton"/>
 							<Button Text="Values" onClick={valuesOnClick} onMouseEnter={valuesOnEnter} onMouseLeave={valuesOnLeave} testid="valuesButton"/>
 							<Button Text="Import" onClick={importOnClick} testid="importButton"/>
 							<Button Text="Export" onClick={exportOnClick} onMouseLeave={exportOnLeave} onMouseEnter={exportOnHover} testid="exportButton">		

@@ -89,27 +89,7 @@ const SideBarContextProvider = ({children}) => {
 		setExportOptionsActive(false)
 	}
 
-	/**
-	 * Saves the current route to JSON file.
-	 */
-	const saveOnClick = async () => {
-		// Might need some verification here?
-		const str = window.location.href	
-		const parts = str.split('/')
-		const sides = parts[3]
-		const path = parts[4] || null
-		const champs = parts.slice(5).join('/') || null
-		if (currentlySelected) {
-			const data = await window.api.readRoutesFile()
-			const matchingRoute = data.routes.find(route => route.name === currentlySelected.name)
-			matchingRoute.side = sides
-			matchingRoute.route = path
-			matchingRoute.champions = champs
-			window.api.writeRoutesFile(data)
-		} else {
-			// Display error message?
-		}
-	}
+	
 
 	return <SideBarContext.Provider
 		value={{
@@ -121,7 +101,6 @@ const SideBarContextProvider = ({children}) => {
 			importOnClick: importOnClick,
 			exportOnClick: exportOnClick,
 			copiedActive: copiedActive,
-			saveOnClick: saveOnClick,
 			currentlySelected: currentlySelected,
 			setCurrentlySelected: setCurrentlySelected,
 			exportOnHover: exportOnHover,
