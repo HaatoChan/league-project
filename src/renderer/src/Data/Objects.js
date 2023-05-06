@@ -1,47 +1,47 @@
 export const championIds = {
 	266: {
 		name: 'Aatrox',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Aatrox_0.jpg')).default)()
 	},
 	103: {
 		name: 'Ahri',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Ahri_0.jpg')).default)()
 	},
 	84: {
 		name: 'Akali',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Akali_0.jpg')).default)()
 	},
 	166: {
 		name: 'Akshan',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Akshan_0.jpg')).default)()
 	},
 	12: {
 		name: 'Alistar',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Alistar_0.jpg')).default)()
 	},
 	32: {
 		name: 'Amumu',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Amumu_0.jpg')).default)()
 	},
 	34: {
 		name: 'Anivia',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Anivia_0.jpg')).default)()
 	},
 	1: {
 		name: 'Annie',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Annie_0.jpg')).default)()
 	},
 	523: {
 		name: 'Aphelios',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Aphelios_0.jpg')).default)()
 	},
 	22: {
 		name: 'Ashe',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/Ashe_0.jpg')).default)()
 	},
 	136: {
 		name: 'Aurelion Sol',
-		image: ''
+		image: (async () => (await import('../assets/championSplashArt/AurelionSol_0.jpg')).default)()
 	},
 	268: {
 		name: 'Azir',
