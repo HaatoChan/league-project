@@ -14,12 +14,14 @@ function App() {
 		<HashRouter>
 			<div className="container">
 				<ElectronSideBar />
-				<Routes>
-					<Route path="/" element={<HomePage />}/>
-					<Route path="lobby-screen" element={<LobbyContextProvider><LobbyPage /> </LobbyContextProvider>} />
-					<Route path="settings" element={ <SettingsPage />}/>
-					<Route path='jungletool' element={<JungleToolPage />}/>
-				</Routes>
+				<LobbyContextProvider>
+					<Routes>
+						<Route path="/" element={<HomePage />}/>
+						<Route path="lobby-screen" element={<LobbyPage />} />
+						<Route path="settings" element={ <SettingsPage />}/>
+						<Route path='jungletool' element={<JungleToolPage />}/>
+					</Routes>
+				</LobbyContextProvider>
 			</div>
 		</HashRouter>
 	)
