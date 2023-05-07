@@ -87,10 +87,9 @@ const SideSelect = () => {
 					type="checkbox"
 					className="sidebox"
 					id="bluebox"
-					defaultChecked
 					data-side="Blue"
 					data-testid='BlueSide'
-					onClick={(e) => onClickHandle(e.target)}
+					onChange={(e) => onClickHandle(e.target)}
 					checked={bluebox}
 				/>
 			</label>
@@ -99,9 +98,8 @@ const SideSelect = () => {
 					type="checkbox"
 					className="sidebox"
 					id="redbox"
-					defaultChecked
 					data-side="Red"
-					onClick={(e) => onClickHandle(e.target)}
+					onChange={(e) => onClickHandle(e.target)}
 					data-testid='RedSide'
 					checked={redbox}
 				/>

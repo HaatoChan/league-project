@@ -73,9 +73,7 @@ const ExpDisplay = () => {
 					<div className="expbar-inner" style={{width: `${totalExp/totalRequired[level-1]*100}%`}}></div>
 					<p className="totalExp" data-testid="totalExp"><span className="requiredExp">{totalExp}/{totalRequired[level -1]}</span> <br /><span className="currentlevel"> Level {level}</span></p>
 				</div>
-				<SideBarContextProvider>
-					<div className="sideselect"><SideSelect /></div>
-				</SideBarContextProvider>
+				<div className="sideselect"><SideSelect /></div>
 			</div>
 		</div>
 
