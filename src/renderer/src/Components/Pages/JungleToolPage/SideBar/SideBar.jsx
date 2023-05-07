@@ -12,7 +12,7 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  */
 const SideBar = () => {
 	const {exportUrl, exportObject} = useContext(CampSelectionContext)
-	const {valuesOnClick, importOnClick, exportOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
+	const {valuesOnClick, importOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
 
 	return ( 
 		<>

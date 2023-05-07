@@ -21,17 +21,22 @@ const Map = () => {
 			console.log(string)
 			let newArray = []
 			newArray = string.split(':')
-			testFunc(newArray)
+			clickCamps(newArray)
 		}
 	},[newImport])
 
 	/**
-	 *
-	 * @param array
+	 * Clicks the camps in the array.
+	 * @param {NodeList} array - A list of html elements.
 	 */
-	const testFunc = async (array) => {
-		const reset = document.getElementById('resetAllCamps')
-		await reset.click()
+	const clickCamps = async (array) => {
+		const allCamps = document.getElementsByClassName('buttonCamp')
+		console.log(allCamps)
+		for(const elements of allCamps) {
+			if(elements.dataset.iscampselected === 'true') {
+				await elements.click()
+			}
+		}
 		for(const element of array) {
 			const button = document.getElementById(element)
 			await button.click()
