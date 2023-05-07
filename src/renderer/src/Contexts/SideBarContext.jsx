@@ -96,7 +96,7 @@ const SideBarContextProvider = ({children}) => {
 	const createImport = (importValue) => {
 		try {
 			const importData = JSON.parse(importValue)
-			console.log(importData)
+			setNewImport(importData)
 		} catch (error) {
 			console.error(error)
 		}

@@ -4,6 +4,7 @@ import {CampSelectionContext} from '../../../../Contexts/CampSelectionContext'
 import coinImage from '../../../../assets/currency_rp_490px.png'
 import { expThresholds } from '../../../../Data/Arrays'
 import SideSelect from '../SideSelect/SideSelect'
+import SideBarContextProvider from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines the EXP display.
@@ -72,7 +73,9 @@ const ExpDisplay = () => {
 					<div className="expbar-inner" style={{width: `${totalExp/totalRequired[level-1]*100}%`}}></div>
 					<p className="totalExp" data-testid="totalExp"><span className="requiredExp">{totalExp}/{totalRequired[level -1]}</span> <br /><span className="currentlevel"> Level {level}</span></p>
 				</div>
-				<div className="sideselect"><SideSelect /></div>
+				<SideBarContextProvider>
+					<div className="sideselect"><SideSelect /></div>
+				</SideBarContextProvider>
 			</div>
 		</div>
 

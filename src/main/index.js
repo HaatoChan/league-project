@@ -149,25 +149,6 @@ app.on('window-all-closed', () => {
 
 // LCU connection
 let ws
-/**
- *
- */
-const wcConnect = async () => {
-	try {
-		ws = await createWebSocketConnection()
-		console.log(ws)
-		if (ws) {
-			ws.on('message', message => {
-				console.log(message)
-			})
-			clearInterval(interval)
-		}
-	} catch(error) {
-		console.log('Catch block in WS')
-		ws = null
-	}
-}
-
 
 /**
  * Function for connecting to the LCU
@@ -187,20 +168,17 @@ const lcuConnect = async () => {
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
-			ws.subscribe('/lol-matchmaking/v1/search', (data, event) => {
-			})
-			ws.subscribe('/lol-champ-select/v1/session', (data, event) => {
+			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				console.log(data)
 				mainWindow.webContents.send('champ-select-info', data)
 			})
-			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data, event) => {
+			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
 				console.log('end of game: ' + JSON.stringify(data))
 				console.log(data.localPlayer)
 			})
 			clearInterval(interval)
 		} 
 	} catch (error) {
-		console.log('Catch block')
 		credentials = null
 	}
 }

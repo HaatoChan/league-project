@@ -19,19 +19,19 @@ const JungleToolPage = () => {
 	return ( 
 		<div className="jungletoolpagecontainer">
 			<CampSelectionContextProvider>
-				<div className="titleholder">
-					<Title titleText='Jungle Gap' color='white'></Title>
-				</div>
-				<div className="mapcontainer">
-					<Map></Map>
-				</div>
-				<div className="expdisplaycontainer">
-					<ExpDisplay></ExpDisplay>
-				</div>
-				<div className="champselectcontainer">
-					<SelectChamp></SelectChamp>
-				</div>
 				<SideBarContextProvider>
+					<div className="titleholder">
+						<Title titleText='Jungle Gap' color='white'></Title>
+					</div>
+					<div className="mapcontainer">
+						<Map></Map>
+					</div>
+					<div className="expdisplaycontainer">
+						<ExpDisplay></ExpDisplay>
+					</div>
+					<div className="champselectcontainer">
+						<SelectChamp></SelectChamp>
+					</div>
 					<div className="valuesdisplaycontainer">
 						<ValuesDisplay />
 					</div>

@@ -126,7 +126,7 @@ const CampSelectionContextProvider = ({children}) => {
 			selectedChampions: selectedChampions,
 			setSelectedChampions: setSelectedChampions,
 			exportUrl: exportUrl,
-			exportObject: exportObject
+			exportObject: exportObject,
 		}}
 	>
 		{children}
