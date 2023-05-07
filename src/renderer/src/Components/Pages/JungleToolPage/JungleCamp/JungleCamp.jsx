@@ -13,7 +13,6 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext.
  * @returns {HTMLElement} - Returns a jungle camp element.
  */
 const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
-	
 	const {campNumber, addToCampNumber, removeFromCampNumber, selectedCamps} = useContext(CampSelectionContext)
 	const [campSelected, setCampSelected] = useState(false)
 	const [orderInRoute, setOrderInRoute] = useState(null)
@@ -48,19 +47,25 @@ const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 		}
 	},[selectedCamps])
 
+	/**
+	 * Onclick handler for selecting a camp.
+	 * @param {Event} e - The event that triggered the function.
+	 */
+	const onClickHandle = (e) => {	
+		if(campSelected === false) {
+			setCampSelected(true)
+			setPositionInArray(selectedCamps.length)
+			addToCampNumber(e.target)
+		} else {
+			setCampSelected(false)
+			setPositionInArray(null)
+			removeFromCampNumber(e.target)
+		}	
+	}
+
 	return ( 
 		<>
-			<button className="buttonCamp" data-testid={theCamp} id={theCamp} data-expvalue={expValue} data-goldvalue={goldValue} data-iscampselected={campSelected} onClick={(e) => {
-				if(campSelected === false) {
-					setCampSelected(true)
-					setPositionInArray(selectedCamps.length)
-					addToCampNumber(e.target)
-				} else {
-					setCampSelected(false)
-					setPositionInArray(null)
-					removeFromCampNumber(e.target)
-				}
-			}}>
+			<button className="buttonCamp" data-testid={theCamp} id={theCamp} data-expvalue={expValue} data-goldvalue={goldValue} data-iscampselected={campSelected} onClick={(e) => onClickHandle(e)}>
 				{campSelected && <p className="campOrder" data-testid={theCamp}>{orderInRoute}</p>}
 				<img src={imageUrl} alt={campName} className="campImage" id={campName + 'img'}></img> 
 			</button>
