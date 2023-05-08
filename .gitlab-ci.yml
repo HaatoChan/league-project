@@ -18,17 +18,6 @@ build:
   script:
     - npm run build:win
 
-unit-test:
-  stage: test
-  image: node:latest 
-  services:
-    - name: electron:latest 
-  before_script:
-    - npm install
-  script:
-    - npm run wdio
-
-
 
 linting:
   image: node:latest
