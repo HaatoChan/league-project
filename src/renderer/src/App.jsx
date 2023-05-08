@@ -10,6 +10,7 @@ import LobbyPage from './Components/Pages/LobbyPage/LobbyPage'
 import LobbyContextProvider from './Contexts/LobbyPageContext'
 
 function App() {
+	console.log('yep from app.jsx')
 	return (
 		<HashRouter>
 			<div className="container">

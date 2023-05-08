@@ -20,14 +20,8 @@ build:
 
 unit-test:
   stage: test
-  image: norf/node-electron-test
-  before_script:
-    - npm install
   script:
-    - npm run wdio
-
-
-
+    - docker build -t my-electron-app .
 
 linting:
   image: node:latest

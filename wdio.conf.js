@@ -15,8 +15,14 @@ exports.config = {
 		// 'path/to/excluded/files'
 	],
 	maxInstances: 1,
-	capabilities: [{}],
-	logLevel: 'info',
+	capabilities: [{
+		browserName: 'electron',
+		'goog:chromeOptions': {
+			binary: './dist/win-unpacked/electron-league-app.exe'
+		}
+	}],
+	
+	logLevel: 'debug',
 	bail: 0,
 	baseUrl: 'http://localhost',
 	waitforTimeout: 10000,
@@ -50,7 +56,7 @@ exports.config = {
 	reporters: ['spec'],
 
 	onPrepare() {
-		console.log('This is the onprepare hook')
+		console.log('This is the onprepare hook!!!!!!!!!!')
 	},
     
 	//
