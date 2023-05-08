@@ -21,6 +21,8 @@ build:
 unit-test:
   stage: test
   image: norf/node-electron-test:20.1.0
+  before_script:
+    - npm install
   script:
     - npm run build:linux
     - export DISPLAY:99.0
