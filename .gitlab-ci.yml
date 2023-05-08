@@ -12,8 +12,7 @@ stages:
 
 build:
   stage: build
-  #image: electronuserland/builder:wine
-  image: norf/node-electron-test:20.1.0
+  image: electronuserland/builder:wine
   before_script:
     - npm install
   script:
@@ -21,12 +20,10 @@ build:
 
 unit-test:
   stage: test
-  image: docker:latest
-  services:
-    - docker:dind
+  image: norf/node-electron-test:20.1.0
   script:
-    - docker build -t my-electron-app .
-    - docker run -it --rm my-electron-app electron .
+    - npm install
+    - npm run wdio
 
 
 linting:
