@@ -61,8 +61,9 @@ exports.config = {
 		timeout: 60000
 	},
 }
+/*
 function getCapabilities () {
 	if(process.env.CI_JOB_NAME) {
 		return process.env.CI_JOB_NAME === 'unit-test' ? 'chrome' : 'firefox' 
 	}
-}
+} */

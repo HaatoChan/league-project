@@ -20,7 +20,7 @@ build:
 
 unit-test:
   stage: test
-  image: norf/node-electron-test:latest
+  image: norf/node-electron-test
   before_script:
     - npm install
   script:
