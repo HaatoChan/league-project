@@ -12,7 +12,8 @@ stages:
 
 build:
   stage: build
-  image: electronuserland/builder:wine
+  #image: electronuserland/builder:wine
+  image: norf/node-electron-test
   before_script:
     - npm install
   script:
