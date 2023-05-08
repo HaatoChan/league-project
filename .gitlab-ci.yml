@@ -29,7 +29,6 @@ unit-test:
     - npm run wdio --host=selenium__standalone-chrome
 
 
-
 linting:
   image: node:latest
   stage: lint

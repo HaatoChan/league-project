@@ -49,7 +49,9 @@ exports.config = {
 	// see also: https://webdriver.io/docs/dot-reporter
 	reporters: ['spec'],
 
-
+	onPrepare() {
+		console.log('This is the onprepare hook')
+	},
     
 	//
 	// Options to be passed to Mocha.
