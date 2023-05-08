@@ -20,8 +20,13 @@ build:
 
 unit-test:
   stage: test
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - docker build -t my-electron-app .
+    - docker run -it --rm my-electron-app electron .
+
 
 linting:
   image: node:latest
