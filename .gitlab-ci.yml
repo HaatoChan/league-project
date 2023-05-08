@@ -21,8 +21,10 @@ build:
 unit-test:
   stage: test
   image: norf/node-electron-test:20.1.0
-  script:
+  before_script:
     - npm install
+    - npm run build:linux
+  script:
     - npm run wdio
 
 
