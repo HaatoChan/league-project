@@ -15,6 +15,8 @@ const SideBarContextProvider = ({children}) => {
 	const [valuesClicked, setValuesClicked] = useState(false)
 	const [copiedActive, setCopiedActive] = useState(false)
 	const [currentlySelected, setCurrentlySelected] = useState()
+	const [exportOptionsActive, setExportOptionsActive] = useState(false)
+	const [newImport, setNewImport] = useState()
 	/**
 	 * Shows the values element when mousing over.
 	 */
@@ -69,34 +71,43 @@ const SideBarContextProvider = ({children}) => {
 			}, 2000)
 		} catch (err) {
 			console.log('fail')
-		}
+		} 
 	}
 	
+
 	/**
-	 * Saves the current route to JSON file.
+	 * Shows the export options when function is triggered.
 	 */
-	const saveOnClick = async () => {
-		// Might need some verification here?
-		const str = window.location.href	
-		const parts = str.split('/')
-		const sides = parts[3]
-		const path = parts[4] || null
-		const champs = parts.slice(5).join('/') || null
-		if (currentlySelected) {
-			const data = await window.api.readRoutesFile()
-			const matchingRoute = data.routes.find(route => route.name === currentlySelected.name)
-			matchingRoute.side = sides
-			matchingRoute.route = path
-			matchingRoute.champions = champs
-			window.api.writeRoutesFile(data)
-		} else {
-			// Display error message?
+	const exportOnHover =  () => {
+		setExportOptionsActive(true)
+		console.log('hovering')
+	}
+
+	/**
+	 * Hides the export options when function is triggered.
+	 */
+	const exportOnLeave =  () => {
+		setExportOptionsActive(false)
+	}
+
+	/**
+	 * Handles the imported data.
+	 * @param {string} importValue - The import value.
+	 */
+	const createImport = (importValue) => {
+		try {
+			const importData = JSON.parse(importValue)
+			setNewImport(importData)
+		} catch (error) {
+			console.error(error)
 		}
+		setImportActive(false)
 	}
 
 	return <SideBarContext.Provider
 		value={{
 			importActive: importActive,
+			setImportActive: setImportActive,
 			valuesActive: valuesActive,
 			valuesOnEnter: valuesOnEnter,
 			valuesOnLeave: valuesOnLeave,
@@ -104,9 +115,14 @@ const SideBarContextProvider = ({children}) => {
 			importOnClick: importOnClick,
 			exportOnClick: exportOnClick,
 			copiedActive: copiedActive,
-			saveOnClick: saveOnClick,
 			currentlySelected: currentlySelected,
-			setCurrentlySelected: setCurrentlySelected
+			setCurrentlySelected: setCurrentlySelected,
+			exportOnHover: exportOnHover,
+			exportOptionsActive: exportOptionsActive,
+			exportOnLeave: exportOnLeave,
+			setCopiedActive: setCopiedActive,
+			createImport: createImport,
+			newImport: newImport
 		}}
 	>
 		{children}

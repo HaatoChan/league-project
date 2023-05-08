@@ -9,6 +9,7 @@ import ValuesDisplay from './ValuesDisplay/ValuesDisplay'
 import Copied from './Copied/Copied'
 import SelectChamp from './SelectChamp/SelectChamp'
 import RouteSearch from './RouteSearch/RouteSearch'
+import ImportDisplay from './ImportDisplay/ImportDisplay'
 
 /**
  * Defines the jungle tool page.
@@ -17,30 +18,31 @@ import RouteSearch from './RouteSearch/RouteSearch'
 const JungleToolPage = () => {
 	return ( 
 		<div className="jungletoolpagecontainer">
-			<div className="titleholder">
-				<Title titleText='Jungle Gap' color='white'></Title>
-			</div>
 			<CampSelectionContextProvider>
-				<div className="mapcontainer">
-					<Map></Map>
-				</div>
-				<div className="expdisplaycontainer">
-					<ExpDisplay></ExpDisplay>
-				</div>
-				<div className="champselectcontainer">
-					<SelectChamp></SelectChamp>
-				</div>
+				<SideBarContextProvider>
+					<div className="titleholder">
+						<Title titleText='Jungle Gap' color='white'></Title>
+					</div>
+					<div className="mapcontainer">
+						<Map></Map>
+					</div>
+					<div className="expdisplaycontainer">
+						<ExpDisplay></ExpDisplay>
+					</div>
+					<div className="champselectcontainer">
+						<SelectChamp></SelectChamp>
+					</div>
+					<div className="valuesdisplaycontainer">
+						<ValuesDisplay />
+					</div>
+					<ImportDisplay />
+					<Copied></Copied>
+					<SideBar />
+					<div className="routesearchcontainer">
+						<RouteSearch />
+					</div>
+				</SideBarContextProvider>
 			</CampSelectionContextProvider>
-			<SideBarContextProvider>
-				<div className="valuesdisplaycontainer">
-					<ValuesDisplay />
-				</div>
-				<Copied></Copied>
-				<SideBar />
-				<div className="routesearchcontainer">
-					<RouteSearch />
-				</div>
-			</SideBarContextProvider>
 		</div>
 	)
 }

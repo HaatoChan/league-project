@@ -9,7 +9,7 @@ export const CampSelectionContext = createContext()
  * @returns {JSX.Element} - The JSX element to be rendered.
  */
 const CampSelectionContextProvider = ({children}) => {
-	const champNames = window.location.pathname.split('/')[3]?.split(':')
+	const champNames = ''
 	const [selectedChampions, setSelectedChampions] = useState(() => {
 		if (champNames && champNames[0]) { // add an additional check here
 			const nameArray = champNames.map(champ => champ.replace(/%20/g, ' '))
@@ -19,14 +19,15 @@ const CampSelectionContextProvider = ({children}) => {
 		}
 	})
 	
-	const [sideSelected, setSideSelected] = useState(window.location.pathname.split('/')[1] ? window.location.pathname.split('/')[1] : 'All')
+	const [sideSelected, setSideSelected] = useState('All')
 	const [campNumber, setCampNumber] = useState(0)
 	const [selectedCamps, setSelectedCamps] = useState([])
 	const [totalExp, setTotalExp] = useState(0)
 	const [totalGold, setTotalGold] = useState(0)
 	const [level, setLevel] = useState(1)
 	const totalRequired = [ 280, 380, 480, 580, 680, 780, 880, 980, 1080, 1180, 1280, 1380, 1480, 1580, 1680, 1780, 1880]
-
+	const [exportUrl, setExportUrl] = useState('https://fluffy-bombolone-8bfa7b.netlify.app/All//')
+	const [exportObject, setExportObject] = useState({})
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -51,11 +52,13 @@ const CampSelectionContextProvider = ({children}) => {
 		const selectedCampIds = selectedCamps.map((camp) => camp.id).join(':')
 		const selectedChamps = selectedChampions.map((champ) => champ).join(':')
 		const encodedIds = window.btoa(selectedCampIds)
-		let newUrl = `${window.location.origin}/${sideSelected}/${encodedIds}/`
+		let newUrl = `https://fluffy-bombolone-8bfa7b.netlify.app/${sideSelected}/${encodedIds}/`
 		if(selectedChamps) {
 			newUrl += `${selectedChamps}`
 		}
-		window.history.pushState(null, null, newUrl)
+		setExportUrl(newUrl)
+		const routeObject = {side: sideSelected, route: encodedIds, champions: selectedChamps}
+		setExportObject(routeObject)
 	}, [sideSelected, selectedCamps, selectedChampions])	
 
 	/**
@@ -77,7 +80,6 @@ const CampSelectionContextProvider = ({children}) => {
 			}
 		}
 	}
-
 	return <CampSelectionContext.Provider
 		value={{
 			// Add attributes here
@@ -122,7 +124,9 @@ const CampSelectionContextProvider = ({children}) => {
 			setSideSelected: setSideSelected,
 			sideSelected: sideSelected,
 			selectedChampions: selectedChampions,
-			setSelectedChampions: setSelectedChampions
+			setSelectedChampions: setSelectedChampions,
+			exportUrl: exportUrl,
+			exportObject: exportObject,
 		}}
 	>
 		{children}

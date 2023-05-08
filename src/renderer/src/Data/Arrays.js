@@ -261,7 +261,7 @@ export const championNames = [
 	},
 	{
 		name: 'LeBlanc',
-		image: (async () => (await import('../assets/championimages/Leblanc.png')).default)()
+		image: (async () => (await import('../assets/championimages/LeBlanc.png')).default)()
 	},
 	{
 		name: 'Lee Sin',

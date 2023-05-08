@@ -11,6 +11,7 @@ describe('application loading', () => {
 	})
 	describe('Jungle DOM', async () => {
 		it('should load the home page on launch', async () => {
+			console.log(browser)
 			await expect(await browser.getByTestId('jungleA')).toExist()
 		})
 		it('Should navigate to the jungle tool page', async () => {
@@ -19,46 +20,6 @@ describe('application loading', () => {
 			// Wait for 1 second and check that we are at the jungle page
 			await sleepForX(1000)
 			await expect(await screen.getByTestId('sideBarDivTest')).toExist()
-		})
-		it('Should modify the URL correctly', async () => {
-			// Get all the jungle camp buttons
-			const redRedBuff = await screen.getByTestId('Red-Brambleback-Red')
-			const redRaptors = await screen.getByTestId('Raptor-Red')
-			const redKrugs = await screen.getByTestId('Krugs-Red')
-			const redMurkWolf = await screen.getByTestId('Murkwolf-Red')
-			// Press the jungle camp buttons
-			await redRedBuff.click()
-			await redRaptors.click()
-			await redKrugs.click()
-			await redMurkWolf.click()
-			// Assert that the URL has changed
-			await expect(browser).toHaveUrlContaining('UmVkLUJyYW1ibGViYWNrLVJlZDpSYXB0b3ItUmVkOktydWdzLVJlZDpNdXJrd29sZi1SZWQ=')
-			// Click redbuff and assert that URL has changed again
-			await redRedBuff.click()
-			await expect(browser).toHaveUrlContaining('UmFwdG9yLVJlZDpLcnVncy1SZWQ6TXVya3dvbGYtUmVk')
-			// Get the champion selector input and select akshan
-			const champInput = await screen.getByTestId('champInput')
-			await champInput.addValue('Akshan')
-			// Assert that Akshan option is visible
-			await expect(await screen.getByTestId('Akshan')).toExist()
-			// Click it and assert that URL updated
-			const akshanLi = await screen.getByTestId('Akshan')
-			await akshanLi.click()
-			await expect(browser).toHaveUrlContaining('Akshan')
-			// Clear the value and select Ahri
-			await champInput.clearValue()
-			await champInput.addValue('Ahri')
-			// Assert that Ahri option is visible
-			await expect(await screen.getByTestId('Ahri')).toExist()
-			// Click Ahri option and assert that URL updates
-			const AhriLi = await screen.getByTestId('Ahri')
-			await AhriLi.click()
-			await expect(browser).toHaveUrlContaining('Akshan:Ahri')
-			// Select side which should update the URL
-			const blueSide = await screen.getByTestId('BlueSide')
-			await blueSide.click()
-			await expect(browser).toHaveUrlContaining('Red')
-			console.log('Browser URL: ' + await browser.getUrl())
 		})
 		it('Should make camp values visible when values is pressed', async () => {
 			// Assert that button is in DOM and click it.

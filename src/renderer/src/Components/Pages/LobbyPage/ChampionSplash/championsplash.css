@@ -1,0 +1,45 @@
+.playerchamp {
+    height: 50%;
+    background-color: rgba(37, 37, 30, 0.356);
+    width: calc(20% - 4px);
+    /* subtract 2px for the border */
+    border: 2px solid rgba(24, 21, 21, 0.856);
+    position: relative;
+}
+
+.champSplashArt {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.349);
+    width: 100%;
+    bottom: 0;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.champname {
+    margin-top: 7%;
+    text-align: center;
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.summonerOne, .summonerTwo {
+    position: absolute;
+    width: 20%;
+    height: 45%;
+    bottom: 0;
+}
+
+  .summonerOne {
+    right: 20%;
+  }
+  .summonerTwo {
+    right: 0;
+  }

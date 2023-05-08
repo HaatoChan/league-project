@@ -4,32 +4,42 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
+import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 
 if (isTest) {
 	import('wdio-electron-service/main')
 }
 
+let mainWindow
+// LCU variables
+let credentials
+let client
+let interval
+
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
-	console.log(isTest)
+
 	// Create the browser window.
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
 		show: false,
 		autoHideMenuBar: true,
-		...(process.platform === 'linux' ? { icon } : {}),
+		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
 			preload: join(__dirname, '../preload/index.js'),
-			sandbox: false
+			sandbox: false,
+			nodeIntegrationInWorker: true
 		},
 		resizable: false,
 	// Make your own eventually?
 	//	frame: false
 	})
 
+	// Open the webtools
+	//	mainWindow.webContents.openDevTools()
+
 	mainWindow.on('ready-to-show', () => {
-		mainWindow.title = 'this is the title of the main window'
 		mainWindow.show()
 	})
 
@@ -41,7 +51,7 @@ async function createWindow() {
 	// HMR for renderer base on electron-vite cli.
 	// Load the remote URL for development or the local html file for production.
 	if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-		mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+		mainWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`)
 	} else {
 		mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 	}
@@ -75,13 +85,16 @@ async function createWindow() {
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
-
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+	// Connect to league client
+	//	interval = setInterval(lcuConnect, 10000)
+	interval = setInterval(lcuConnect, 5000)
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
 
@@ -100,6 +113,7 @@ app.whenReady().then(() => {
 			height: 900
 		}
 	}
+
 
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
@@ -131,6 +145,45 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+
+// LCU connection
+let ws
+
+/**
+ * Function for connecting to the LCU
+ */
+const lcuConnect = async () => {
+	try {
+		credentials = await authenticate()
+		console.log(credentials)
+		client = new LeagueClient(credentials)
+		// If client connects then declare the event emitters
+		if (client) {
+			client.start()			
+			client.on('connect', (newCredentials) => {
+				console.log(newCredentials)
+			})
+			// Atempt to open websocket
+			ws = await createWebSocketConnection()
+			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
+			// Declare event subscriptions
+			ws.subscribe('/lol-champ-select/v1/session', (data) => {
+				console.log(data)
+				mainWindow.webContents.send('champ-select-info', data)
+			})
+			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
+				console.log('end of game: ' + JSON.stringify(data))
+				console.log(data.localPlayer)
+			})
+			clearInterval(interval)
+		} 
+	} catch (error) {
+		credentials = null
+	}
+}
+
+/// Write to files
 
 function createFileIfNotExists(filepath, data) {
 	if(!checkIfFileExists(filepath)) {

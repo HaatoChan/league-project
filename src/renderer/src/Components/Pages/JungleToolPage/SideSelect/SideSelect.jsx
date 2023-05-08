@@ -1,6 +1,7 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './sideselect.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a sideselector component.
@@ -8,35 +9,75 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  */
 const SideSelect = () => {
   
-	const {setSideSelected} = useContext(CampSelectionContext)
-
+	const {setSideSelected, sideSelected} = useContext(CampSelectionContext)
+	const { newImport } = useContext(SideBarContext)
+	const [bluebox, setBlueBox] = useState(true)
+	const [redbox, setRedBox] = useState(true)
+      
 	/**
-	 * Verifies that the other checkbox is not unchecked before unchecking the checkbox.
+	 * Verifies that the other checkbox is not unchecked before unchecking the checkbox and updates their state.
 	 * @param {HTMLElement} target - The target element
 	 */
-	const sidesOnChange = (target) => {
+	const onClickHandle = (target) => {
 		const isChecked = target.checked
-		const id = target.id
-		const otherId = id === 'bluebox' ? 'redbox' : 'bluebox'
-		const otherCheckbox = document.getElementById(otherId)
-      
-		if (!isChecked) {
-			// if target checkbox is checked, verify if the other checkbox is also checked
-			if (!otherCheckbox.checked) {
-				// if the other checkbox is unchecked, prevent unchecking the target checkbox
-				target.checked = true
-				return
+		if (target.id === 'bluebox') {
+			const redBox = document.getElementById('redbox')
+			if(!isChecked) {
+				if (!redBox.checked) {
+					setBlueBox(true)
+				}
+				else {
+					if (!isChecked) {
+						setBlueBox(false)
+						setSideSelected('Red')
+					} else {
+						setBlueBox(true)
+						setSideSelected('All')
+					}
+				}
 			} else {
-				setSideSelected(otherCheckbox.dataset.side)	
+				setBlueBox(true)
+				setSideSelected('All')
 			}
-		} 	else if (isChecked && otherCheckbox.checked) {
-			setSideSelected('All')
+		}
+		if (target.id === 'redbox') {
+			const blueBox = document.getElementById('bluebox')
+			if(!isChecked) {
+				if (!blueBox.checked) {
+					setRedBox(true)
+				}
+				else {
+					if (!isChecked) {
+						setRedBox(false)
+						setSideSelected('Blue')
+					} else {
+						setRedBox(true)
+						setSideSelected('All')
+					}
+				}
+			} else {
+				setRedBox(true)
+				setSideSelected('All')
+			}
 		}
 	}
+
+	useEffect(() => {
+		setSideSelected(newImport?.side || 'All')
+	},[newImport])
       
-      
-      
-      
+	useEffect(() => {
+		if(sideSelected === 'All') {
+			setBlueBox(true)
+			setRedBox(true)
+		} else if (sideSelected === 'Red') {
+			setBlueBox(false)
+			setRedBox(true)
+		} else if (sideSelected === 'Blue') {
+			setRedBox(false)
+			setBlueBox(true)
+		}
+	},[sideSelected])
   
 	return (
 		<>
@@ -46,10 +87,10 @@ const SideSelect = () => {
 					type="checkbox"
 					className="sidebox"
 					id="bluebox"
-					defaultChecked
-					onChange={(e) => sidesOnChange(e.target)}
 					data-side="Blue"
 					data-testid='BlueSide'
+					onChange={(e) => onClickHandle(e.target)}
+					checked={bluebox}
 				/>
 			</label>
 			<label className="sidebox-label" htmlFor="redbox" id="redlabel">
@@ -57,10 +98,10 @@ const SideSelect = () => {
 					type="checkbox"
 					className="sidebox"
 					id="redbox"
-					defaultChecked
-					onChange={(e) => sidesOnChange(e.target)}
 					data-side="Red"
+					onChange={(e) => onClickHandle(e.target)}
 					data-testid='RedSide'
+					checked={redbox}
 				/>
 			</label>
 		</>

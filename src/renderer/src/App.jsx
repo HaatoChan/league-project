@@ -7,18 +7,22 @@ import SettingsPage from './Components/Pages/SettingsPage/SettingsPage'
 import JungleToolPage from './Components/Pages/JungleToolPage/JungleToolPage'
 import { HashRouter, Routes, Route} from 'react-router-dom'
 import LobbyPage from './Components/Pages/LobbyPage/LobbyPage'
+import LobbyContextProvider from './Contexts/LobbyPageContext'
 
 function App() {
+	console.log('yep from app.jsx')
 	return (
 		<HashRouter>
 			<div className="container">
 				<ElectronSideBar />
-				<Routes>
-					<Route path="/" element={<HomePage />}/>
-					<Route path="lobby-screen" element={<LobbyPage />} />
-					<Route path="settings" element={ <SettingsPage />}/>
-					<Route path='jungletool' element={<JungleToolPage />}/>
-				</Routes>
+				<LobbyContextProvider>
+					<Routes>
+						<Route path="/" element={<HomePage />}/>
+						<Route path="lobby-screen" element={<LobbyPage />} />
+						<Route path="settings" element={ <SettingsPage />}/>
+						<Route path='jungletool' element={<JungleToolPage />}/>
+					</Routes>
+				</LobbyContextProvider>
 			</div>
 		</HashRouter>
 	)

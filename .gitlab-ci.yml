@@ -6,19 +6,28 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
+- build
 - test
 - lint
 
-unit-test:
-  image: node:latest 
-  stage: test
-  services:
-   - name: selenium/standalone-chrome:latest 
+build:
+  stage: build
+  image: electronuserland/builder:wine
   before_script:
-   - npm install
+    - npm install
   script:
-   - npm run wdio --host=selenium__standalone-chrome
+    - npm run build:win
 
+unit-test:
+  stage: test
+  image: norf/node-electron-test:20.1.0
+  services:
+    - selenium/node-chrome
+  before_script:
+    - npm install
+    - npm run build:linux
+  script:
+    - npm run wdio --host=selenium/node-chrome
 
 
 linting:

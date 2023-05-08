@@ -52,3 +52,10 @@
     width: 23%;
     height: 7%;
 }
+
+.placeholderurl {
+    color: white;
+    position: absolute;
+    top: 78%;
+    left: 30%;
+}

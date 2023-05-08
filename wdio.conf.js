@@ -8,18 +8,16 @@ exports.config = {
 	outputDir: 'all-logs',
 	runner: 'local',
 	specs: [
-		//'./test/specs/**/*.mjs'
-		'./test/specs/settings-tests.mjs'
+		'./test/specs/**/*.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
 		// 'path/to/excluded/files'
 	],
 	maxInstances: 1,
-	capabilities: [{
-		browserName: getCapabilities() 
-	}],
-	logLevel: 'info',
+	capabilities: [{}],
+	
+	logLevel: 'debug',
 	bail: 0,
 	baseUrl: 'http://localhost',
 	waitforTimeout: 10000,
@@ -52,7 +50,9 @@ exports.config = {
 	// see also: https://webdriver.io/docs/dot-reporter
 	reporters: ['spec'],
 
-
+	onPrepare() {
+		console.log('This is the onprepare hook!!!!!!!!!!')
+	},
     
 	//
 	// Options to be passed to Mocha.
@@ -62,8 +62,9 @@ exports.config = {
 		timeout: 60000
 	},
 }
+/*
 function getCapabilities () {
 	if(process.env.CI_JOB_NAME) {
 		return process.env.CI_JOB_NAME === 'unit-test' ? 'chrome' : 'firefox' 
 	}
-}
+} */

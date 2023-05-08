@@ -1,22 +1,28 @@
+import { useContext } from 'react'
 import './lobbypage.css'
+import { LobbyContext } from '../../../Contexts/LobbyPageContext'
+import ChampionSplash from './ChampionSplash/ChampionSplash'
+
 /**
  * Defines the lobby page
  * @returns {HTMLElement} - Returns the lobby page.
  */
 const LobbyPage = () => {
+
+	const {championIds, teamArray, imgArray} = useContext(LobbyContext)
+
 	return ( 
 		<div className="lobbypagecontainer">
 			<div className="teamcomp">
-				<div className="redtop"></div>
-				<div className="redjgl"></div>
-				<div className="redmid"></div>
-				<div className="redbot"></div>
-				<div className="redsupp"></div>
-				<div className="bluetop"></div>
-				<div className="bluejgl"></div>
-				<div className="bluemid"></div>
-				<div className="bluebot"></div>
-				<div className="bluesupp"></div>
+				{teamArray.map((player, index) => (
+					<ChampionSplash 
+						key={player.cellId}
+						champName={championIds[player?.championId]?.name}
+						imgUrl={imgArray[index]?.championImage}
+						summonerSpellOne={imgArray[index]?.spell1Id}
+						summonerSpellTwo={imgArray[index]?.spell2Id}
+					/>
+				))}
 			</div>
 			<div className="statistics">
                 

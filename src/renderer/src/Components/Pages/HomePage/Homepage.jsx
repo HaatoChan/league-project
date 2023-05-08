@@ -1,11 +1,20 @@
 import './homepage.css'
 import Title from '../../Title/Title'
+import { useState } from 'react'
 
 /**
  * Defines a home page element.
  * @returns {HTMLElement} - Returns the homepage element.
  */
 const HomePage = () => {
+
+	const [textState, setTextState] = useState()
+
+	window.LCUApi.lcuConnected((_event, value) => {
+		console.log(value)
+		setTextState(value)
+	})
+
 	return ( 
 		<div className="homepagecontainer">
 			<div className="titleholder">			
@@ -23,7 +32,9 @@ const HomePage = () => {
 				<img src="" alt="" className="jgltool" /> 
 				<img src="" alt="" className="simtool" />
 			</div>
-			<div className="empty"></div>
+			<div className="empty">
+				{textState}
+			</div>
 		</div>
 	)
 }
