@@ -21,13 +21,13 @@ build:
 #unit-test:
 #  stage: test
 #  image: norf/node-electron-test:20.1.0
-#  services:
-#    - selenium/node-chrome
 #  before_script:
 #    - npm install
-#    - npm run build:linux
 #  script:
-#    - npm run wdio --host=selenium/node-chrome
+#    - npm run build:linux
+#    - export DISPLAY:99.0
+#    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+#    - npm run wdio
 
 
 linting:
