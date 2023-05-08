@@ -9,6 +9,25 @@ stages:
 - test
 - lint
 
+build:
+  stage: build
+  image: node:latest
+  before_script:
+    - npm install
+  script:
+    - npm run build:win
+
+unit-test:
+  stage: test
+  image: node:latest 
+  services:
+    - name: selenium/standalone-chrome:latest 
+  before_script:
+    - npm install
+  script:
+    - npm run wdio --host=selenium__standalone-chrome
+
+
 
 linting:
   image: node:latest

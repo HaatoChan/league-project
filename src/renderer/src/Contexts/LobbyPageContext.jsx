@@ -1,12 +1,13 @@
 import { createContext, useState, useEffect } from 'react'
 import { championIds, summonerIds } from '../Data/Objects'
+import React from 'react'
 
 export const LobbyContext = createContext()
 
 /**
- *
- * @param root0
- * @param root0.children
+ * The context for the lobby page.
+ * @param {React.PropsWithChildren} props - The component props.
+ * @returns {JSX.Element} - The JSX element to be rendered.
  */
 const LobbyContextProvider = ({children}) => {
     

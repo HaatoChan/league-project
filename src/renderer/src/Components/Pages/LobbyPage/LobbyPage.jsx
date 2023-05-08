@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext } from 'react'
 import './lobbypage.css'
 import { LobbyContext } from '../../../Contexts/LobbyPageContext'
 import ChampionSplash from './ChampionSplash/ChampionSplash'
