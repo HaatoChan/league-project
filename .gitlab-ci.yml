@@ -22,11 +22,12 @@ unit-test:
   stage: test
   image: node:latest 
   services:
-    - name: selenium/standalone-chrome:latest 
+    - name: electron:latest 
   before_script:
     - npm install
   script:
-    - npm run wdio --host=selenium__standalone-chrome
+    - npm run wdio
+
 
 
 linting:
