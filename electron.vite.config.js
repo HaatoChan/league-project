@@ -17,12 +17,4 @@ export default defineConfig({
 		},
 		plugins: [react()]
 	},
-	build: {
-		rollupOptions: {
-			input: {
-				index: resolve(__dirname, 'index.html'),
-				view: resolve(__dirname, 'view.html')
-			}
-		}
-	}
 })

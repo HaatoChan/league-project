@@ -4,7 +4,6 @@ import {CampSelectionContext} from '../../../../Contexts/CampSelectionContext'
 import coinImage from '../../../../assets/currency_rp_490px.png'
 import { expThresholds } from '../../../../Data/Arrays'
 import SideSelect from '../SideSelect/SideSelect'
-import SideBarContextProvider from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines the EXP display.

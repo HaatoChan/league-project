@@ -8,17 +8,14 @@ exports.config = {
 	outputDir: 'all-logs',
 	runner: 'local',
 	specs: [
-		//'./test/specs/**/*.mjs'
-		'./test/specs/settings-tests.mjs'
+		'./test/specs/**/*.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
 		// 'path/to/excluded/files'
 	],
 	maxInstances: 1,
-	capabilities: [{
-		browserName: getCapabilities() 
-	}],
+	capabilities: [{}],
 	logLevel: 'info',
 	bail: 0,
 	baseUrl: 'http://localhost',

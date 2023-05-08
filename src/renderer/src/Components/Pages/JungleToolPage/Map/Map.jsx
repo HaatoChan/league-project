@@ -31,7 +31,6 @@ const Map = () => {
 	 */
 	const clickCamps = async (array) => {
 		const allCamps = document.getElementsByClassName('buttonCamp')
-		console.log(allCamps)
 		for(const elements of allCamps) {
 			if(elements.dataset.iscampselected === 'true') {
 				await elements.click()
