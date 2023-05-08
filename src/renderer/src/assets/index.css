@@ -10,6 +10,5 @@ body {
 .container {
   width: 100vw;
   height: 100vh;
-  background-color: rgba(23, 16, 54, 0.856);
   display: flex;
 }

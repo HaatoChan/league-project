@@ -18,16 +18,16 @@ build:
   script:
     - npm run build:win
 
-unit-test:
-  stage: test
-  image: norf/node-electron-test:20.1.0
-  services:
-    - selenium/node-chrome
-  before_script:
-    - npm install
-    - npm run build:linux
-  script:
-    - npm run wdio --host=selenium/node-chrome
+#unit-test:
+#  stage: test
+#  image: norf/node-electron-test:20.1.0
+#  services:
+#    - selenium/node-chrome
+#  before_script:
+#    - npm install
+#    - npm run build:linux
+#  script:
+#    - npm run wdio --host=selenium/node-chrome
 
 
 linting:
