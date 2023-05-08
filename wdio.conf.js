@@ -15,12 +15,7 @@ exports.config = {
 		// 'path/to/excluded/files'
 	],
 	maxInstances: 1,
-	capabilities: [{
-		browserName: 'electron',
-		'goog:chromeOptions': {
-			binary: './dist/win-unpacked/electron-league-app.exe'
-		}
-	}],
+	capabilities: [{}],
 	
 	logLevel: 'debug',
 	bail: 0,

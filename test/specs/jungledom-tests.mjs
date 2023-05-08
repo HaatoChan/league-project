@@ -11,6 +11,7 @@ describe('application loading', () => {
 	})
 	describe('Jungle DOM', async () => {
 		it('should load the home page on launch', async () => {
+			console.log(browser)
 			await expect(await browser.getByTestId('jungleA')).toExist()
 		})
 		it('Should navigate to the jungle tool page', async () => {
