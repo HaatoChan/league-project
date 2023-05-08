@@ -18,6 +18,16 @@ build:
   script:
     - npm run build:win
 
+unit-test:
+  stage: test
+  image: norf/node-electron-test:latest
+  before_script:
+    - npm install
+  script:
+    - npm run wdio
+
+
+
 
 linting:
   image: node:latest
