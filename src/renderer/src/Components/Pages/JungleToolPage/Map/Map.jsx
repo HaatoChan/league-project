@@ -15,7 +15,6 @@ const Map = () => {
 	const { newImport } = useContext(SideBarContext)
 
 	useEffect(() => {
-		console.log(newImport?.route)
 		if (newImport?.route) {
 			const string = atob(newImport.route)
 			console.log(string)
