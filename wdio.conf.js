@@ -9,7 +9,9 @@ exports.config = {
 	runner: 'local',
 	specs: [
 	//	'./test/specs/**/*.mjs'
-		'./test/specs/settings-tests.mjs'
+	//	'./test/specs/settings-tests.mjs'
+	//	'./test/specs/jungledom-tests.mjs'
+		'./test/specs/importexport-tests.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
@@ -52,7 +54,6 @@ exports.config = {
 	reporters: ['spec'],
 
 	onPrepare() {
-		console.log('This is the onprepare hook!!!!!!!!!!')
 	},
     
 	//

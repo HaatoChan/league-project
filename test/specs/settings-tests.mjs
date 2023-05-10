@@ -1,10 +1,9 @@
 import { browser } from 'wdio-electron-service'
 import { setupBrowser } from '@testing-library/webdriverio'
-import { sleepForX } from '../commonfunction.mjs'
 
 /* eslint-disable no-undef */
 
-describe('application loading', () => {
+describe('Settings tests', () => {
 	let screen
 	before(async () => {
 		screen = setupBrowser(browser)
@@ -28,7 +27,6 @@ describe('application loading', () => {
 		// Grab the elements
 		const currentlyselected = await screen.getByTestId('1600x900')
 		await currentlyselected.click()
-		await sleepForX(2000)
 		const bigResRadio = await screen.getByTestId('1920x1080')
 		await bigResRadio.click()
 		const okButton = await screen.getByTestId('okButton')
@@ -41,7 +39,6 @@ describe('application loading', () => {
 	it('Selecting 1600x900 and pressing OK should change resolution', async () => {
 		const currentlyselected = await screen.getByTestId('1920x1080')
 		await currentlyselected.click()
-		await sleepForX(2000)
 		// Grab the elements
 		const bigResRadio = await screen.getByTestId('1600x900')
 		await bigResRadio.click()

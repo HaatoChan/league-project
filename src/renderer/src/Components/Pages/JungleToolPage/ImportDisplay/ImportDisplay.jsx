@@ -13,7 +13,7 @@ const ImportDisplay = () => {
 				<div className="setimport" onClick={(e) => e.stopPropagation()}>
 					<h1 className="importh1">Import</h1>
 					<p className="importP">We currently only support JSON imports in the app!</p>
-					<textarea placeholder='Paste your import here' id="textareaImport" cols="30" rows="10" className='importTextArea'></textarea>
+					<textarea placeholder='Paste your import here' id="textareaImport" cols="30" rows="10" className='importTextArea' data-testid='textareaImport'></textarea>
 					<button className="cancelimport" onClick={() => setImportActive(false)}>X</button>
 					<button className='importbutton' data-testid="importPopup" onClick={() => {
 						const textarea = document.getElementById('textareaImport')
