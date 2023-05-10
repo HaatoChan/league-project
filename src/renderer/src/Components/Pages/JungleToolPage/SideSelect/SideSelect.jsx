@@ -63,17 +63,7 @@ const SideSelect = () => {
 	}
 
 	useEffect(() => {
-		console.log(sideSelected)
-		if(sideSelected === 'All') {
-			setBlueBox(true)
-			setRedBox(true)
-		} else if (sideSelected === 'Red') {
-			setBlueBox(false)
-			setRedBox(true)
-		} else if (sideSelected === 'Blue') {
-			setRedBox(false)
-			setBlueBox(true)
-		}
+		importLogic()
 	},[])
 
 	useEffect(() => {
@@ -83,6 +73,13 @@ const SideSelect = () => {
 	},[newImport])
       
 	useEffect(() => {
+		importLogic()
+	},[sideSelected])
+
+	/**
+	 * Handles logic for importing routes
+	 */
+	const importLogic = () => {
 		if(sideSelected === 'All') {
 			setBlueBox(true)
 			setRedBox(true)
@@ -93,7 +90,7 @@ const SideSelect = () => {
 			setRedBox(false)
 			setBlueBox(true)
 		}
-	},[sideSelected])
+	}
   
 	return (
 		<>
