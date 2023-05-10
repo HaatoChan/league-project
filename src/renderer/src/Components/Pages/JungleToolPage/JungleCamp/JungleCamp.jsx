@@ -20,7 +20,6 @@ const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 	const [imageUrl, setImageUrl] = useState(null)
 
 	useEffect(() => {
-		console.log(selectedCamps)
 		for (let i = 0; i < selectedCamps.length; i++) {
 			if (selectedCamps[i].id === theCamp) {
 				setCampSelected(true)
