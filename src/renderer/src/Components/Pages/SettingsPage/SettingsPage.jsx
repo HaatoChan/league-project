@@ -9,7 +9,8 @@ import { useEffect, useState } from 'react'
 const SettingsPage = () => {
 
 	const [resolution, setResolution] = useState()
-	const [resolutionOptions, setResolutionOptions] = useState(['1920x1080', '1600x900'])
+	const resolutionOptions = ['1920x1080', '1600x900']
+	const [showResOptions, setShowResOptions] = useState(false)
 
 	useEffect(() => {
 		/**
@@ -24,6 +25,38 @@ const SettingsPage = () => {
 		getSizesFromRenderer()
 	}, [])
 
+	/**
+	 * Handles clicks on the window, and sets the showResOptions state to false if the click target
+	 * is not a descendant of the .resses element.
+	 * @param {MouseEvent} event - The click event object.
+	 */
+	const handleClick = (event) => {
+		if (!event.target.closest('.resses')) {
+			setShowResOptions(false)
+		}
+	}
+  
+	/**
+	 * Adds an event listener to the window to handle clicks, and returns a cleanup function that removes
+	 * the event listener when the component unmounts.
+	 * @returns {void}
+	 */
+	useEffect(() => {
+		window.addEventListener('click', handleClick)
+		return () => {
+			window.removeEventListener('click', handleClick)
+		}
+	}, [])
+  
+	
+	/**
+	 * Sets the selected resolution to the matched event emitter.
+	 * @param {string} resolutionClicked - The resolution to set.
+	 */
+	const resOptOnClick = (resolutionClicked) => {
+		setResolution(resolutionClicked)
+	}
+
 	return ( 
 		<div className="settingspagecontainer">
 			<div className="titleholder">			
@@ -34,11 +67,12 @@ const SettingsPage = () => {
 					<p>Select your resolution</p>
 					<div className="radioinputres">
 						<ul className="resses">
-							<li className="resopt" id="selectedresolution">{resolution}</li>
-							{resolutionOptions.map((option) => {
+							<li className="resopt" id="selectedresolution" onClick={() => setShowResOptions(true)
+							}>{resolution}</li>
+							{showResOptions && resolutionOptions.map((option) => {
 								if (option !== resolution) { // exclude the element that matches the state
 									return (
-										<li className="resopt" key={option}>
+										<li className="resopt" key={option} onClick={() => resOptOnClick(option)}>
 											{option}
 										</li>
 									)

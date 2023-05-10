@@ -88,4 +88,5 @@
 
   .resopt {
     user-select: none;
+    cursor: pointer;
   }
