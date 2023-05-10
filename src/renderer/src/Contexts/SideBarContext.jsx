@@ -80,7 +80,6 @@ const SideBarContextProvider = ({children}) => {
 	 */
 	const exportOnHover =  () => {
 		setExportOptionsActive(true)
-		console.log('hovering')
 	}
 
 	/**

@@ -66,7 +66,7 @@ const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 	return ( 
 		<>
 			<button className="buttonCamp" data-testid={theCamp} id={theCamp} data-expvalue={expValue} data-goldvalue={goldValue} data-iscampselected={campSelected} onClick={(e) => onClickHandle(e)}>
-				{campSelected && <p className="campOrder" data-testid={theCamp}>{orderInRoute}</p>}
+				{campSelected && <p className="campOrder" data-testid={theCamp + 'p'}>{orderInRoute}</p>}
 				<img src={imageUrl} alt={campName} className="campImage" id={campName + 'img'}></img> 
 			</button>
 		</>

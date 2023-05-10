@@ -52,6 +52,7 @@ const SelectChamp = () => {
 			setSelectedChampions(newArray)
 		} else {
 			setSelectedChampions([])
+			setSelectedChampsToDisplay([])
 		}
 	},[newImport])
 
