@@ -11,8 +11,6 @@
 .titleholder > h1{
     grid-row: 1;
     grid-column: 2 / span 2;
-    text-align: right !important;
-    margin-right: 30%;
 }
 
 

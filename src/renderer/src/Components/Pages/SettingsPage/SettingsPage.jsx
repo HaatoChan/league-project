@@ -1,6 +1,6 @@
 import './settingspage.css'
 import Title from '../../Title/Title'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * Defines a settings page.
@@ -8,12 +8,15 @@ import { useEffect } from 'react'
  */
 const SettingsPage = () => {
 
+	const [resolution, setResolution] = useState()
+
 	useEffect(() => {
 		/**
 		 * Gets the sizes from the renderer
 		 */
 		const getSizesFromRenderer = async () => {
 			const sizes = await window.api.getSizes()
+			console.log(sizes)
 			if (sizes[0] === 1920) {
 				const radio = document.getElementById('1920x1080')
 				radio.defaultChecked = true
@@ -34,14 +37,10 @@ const SettingsPage = () => {
 				<div className="windowsize">
 					<p>Select your resolution</p>
 					<div className="radioinputres">
-						<label>
-							<input type="radio" name="resolution" id="1920x1080" data-testid="1920x1080"/> 
-                          1920x1080
-						</label>
-						<label>
-							<input type="radio" name="resolution" id="1600x900" data-testid="1600x900"/> 
-                           1600x900
-						</label>
+						<ul className="resses">
+							<li className="resolutionopt" id="1920x1080">1920x1080</li>
+							<li className="resolutionopt" id="1600x900">1600x900</li>
+						</ul>
 					</div>
 				</div>
 				<div className="othersetting">
