@@ -72,4 +72,18 @@ describe('Export & Import', () => {
 		await expect(grompBlue).not.toHaveAttribute('data-iscampselected', 'true')
 		await expect(ahriImage).not.toExist()
 	})
+	it('Should save an URL to clipboard when URL export is pressed', async () => {
+		// Open and grab the URL data
+		const exportOpener = await screen.getByTestId('exportButton')
+		await exportOpener.click()
+		const urlExp = await screen.getByTestId('urlExport')
+		await urlExp.click()
+		// Grab a textarea 
+		const routeInput = await screen.getByTestId('routesearchinput')
+		await routeInput.click()
+		// paste value
+		await browser.keys([Key.Ctrl, 'v'])
+		await expect(routeInput).toHaveValueContaining('https://')
+		await routeInput.clearValue()
+	})
 })
