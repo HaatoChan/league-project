@@ -20,6 +20,13 @@ const SettingsPage = () => {
 			const sizes = await window.api.getSizes()
 			sizes[2] = sizes[1]
 			sizes[1] = 'x'
+			if (sizes[0] < 1700 || sizes[2] < 900) {
+				sizes[0] = 1600
+				sizes[2] = 900
+			} else if ((sizes[0] < 1920 && sizes[0] > 1700) || (sizes[2] < 1080 && sizes[2] > 950)) {
+				sizes[0] = 1920
+				sizes[2] = 1080
+			}
 			setResolution(sizes.join(''))
 		}
 		getSizesFromRenderer()
@@ -48,6 +55,16 @@ const SettingsPage = () => {
 		}
 	}, [])
   
+
+	/**
+	 * Gets the resolutions from the state and formats them.
+	 * @returns {Array[Number]} - Returns the numbers as an array.
+	 */
+	const getResolutions = () => {
+		const [width, height] = resolution.split('x')
+		return [Number(width), Number(height)]
+	}
+
 	
 	/**
 	 * Sets the selected resolution to the matched event emitter.
@@ -65,10 +82,13 @@ const SettingsPage = () => {
 			<div className="settings">
 				<div className="windowsize">
 					<p>Select your resolution</p>
-					<div className="radioinputres">
+					<div className="resinput">
 						<ul className="resses">
 							<li className="resopt" id="selectedresolution" onClick={() => setShowResOptions(true)
-							}>{resolution}</li>
+							}>  
+								<span style={{textAlign: 'center'}}>{resolution}</span>
+								<span style={{float: 'right'}}>&#x2713;</span>
+							</li>
 							{showResOptions && resolutionOptions.map((option) => {
 								if (option !== resolution) { // exclude the element that matches the state
 									return (
@@ -85,17 +105,8 @@ const SettingsPage = () => {
 				<div className="othersetting">
 					<p>Description for other setting</p>
 				</div>
-				<input type="button" value="OK" id="oksetting" data-testid="okButton" onClick={() => {
-					const resolutions = document.getElementsByName('resolution')
-					let width
-					let height
-					for (let i = 0; i < resolutions.length; i++) {
-						if(resolutions[i].checked) {
-							const dimensions = resolutions[i].id.split('x')
-							width = Number(dimensions[0])
-							height = Number(dimensions[1])
-						}
-					}
+				<input type="button" value="OK" id="oksetting" data-testid="okButton" onClick={() => {	
+					const [width, height] = getResolutions()
 					window.api.resizeWindow(width, height)
 				}}/>
 			</div>

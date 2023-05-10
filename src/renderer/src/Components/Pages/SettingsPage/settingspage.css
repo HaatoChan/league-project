@@ -54,14 +54,28 @@
     /* add a margin to the bottom to separate from other settings */
 }
 
-.radioinputres {
+.resinput {
     margin-top: 20px;
     display: flex;
-    background-color: blue;
     width: 50%;
     margin: 5% auto;
     gap: 5%;
     justify-content: center;
+}
+
+.resses {
+    width: 100%;
+}
+.resopt {
+    box-shadow: 8px 6px 8px #1a1a1f;
+    background-color: #1a1a1f;
+    width: 100%;
+    border: 1px solid white;
+    padding: 1.5%;
+}
+
+.resopt:hover {
+    background-color: #26262c7a;
 }
 
 #oksetting {
