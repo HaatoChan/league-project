@@ -85,5 +85,30 @@ describe('Export & Import', () => {
 		await browser.keys([Key.Ctrl, 'v'])
 		await expect(routeInput).toHaveValueContaining('https://')
 		await routeInput.clearValue()
+		await sleepForX(4000)
+	})
+	it('URL should contain correct data', async () => {
+		const champInput = await screen.getByTestId('champInput')
+		// U2N1dHRsZWNyYWItQm90dG9t Scuttle
+		// Click side
+		const redBox = await screen.getByTestId('RedSide')
+		await redBox.click()
+		// Select champion
+		await champInput.click()
+		const ahrLi = await screen.getByTestId('Ahri')
+		await ahrLi.click()
+		// Open and grab the URL data
+		const exportOpener = await screen.getByTestId('exportButton')
+		await exportOpener.click()
+		const urlExp = await screen.getByTestId('urlExport')
+		await urlExp.click()
+		// Grab a textarea 
+		const routeInput = await screen.getByTestId('routesearchinput')
+		await routeInput.click()
+		// paste value
+		await browser.keys([Key.Ctrl, 'v'])
+		await expect(routeInput).toHaveValueContaining('Ahri')
+		await expect(routeInput).toHaveValueContaining('U2N1dHRsZWNyYWItQm90dG9t')
+		await expect(routeInput).toHaveValueContaining('Blue')
 	})
 })
