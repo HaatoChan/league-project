@@ -63,7 +63,23 @@ const SideSelect = () => {
 	}
 
 	useEffect(() => {
-		setSideSelected(newImport?.side || 'All')
+		console.log(sideSelected)
+		if(sideSelected === 'All') {
+			setBlueBox(true)
+			setRedBox(true)
+		} else if (sideSelected === 'Red') {
+			setBlueBox(false)
+			setRedBox(true)
+		} else if (sideSelected === 'Blue') {
+			setRedBox(false)
+			setBlueBox(true)
+		}
+	},[])
+
+	useEffect(() => {
+		if (newImport) {
+			setSideSelected(newImport?.side || 'All')
+		}
 	},[newImport])
       
 	useEffect(() => {
