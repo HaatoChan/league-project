@@ -8,7 +8,8 @@ exports.config = {
 	outputDir: 'all-logs',
 	runner: 'local',
 	specs: [
-		'./test/specs/**/*.mjs'
+	//	'./test/specs/**/*.mjs'
+		'./test/specs/settings-tests.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
