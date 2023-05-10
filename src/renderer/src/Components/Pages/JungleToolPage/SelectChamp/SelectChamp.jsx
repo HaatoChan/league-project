@@ -45,7 +45,7 @@ const SelectChamp = () => {
 	}, [newChampions, selectedChampions])
 
 	useEffect(() => {
-		if(newImport?.champions.includes(':')) {
+		if(newImport?.champions?.includes(':')) {
 			const newArray = newImport.champions.split(':')
 			setSelectedChampions(newArray)
 		} else if (newImport?.champions)  {

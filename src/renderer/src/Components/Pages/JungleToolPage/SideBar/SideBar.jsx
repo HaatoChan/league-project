@@ -12,7 +12,7 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  */
 const SideBar = () => {
 	const {exportUrl, exportObject} = useContext(CampSelectionContext)
-	const {valuesOnClick, importOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, currentlySelected} = useContext(SideBarContext)
+	const {valuesOnClick, importOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, newImport} = useContext(SideBarContext)
 
 	return ( 
 		<>
@@ -22,9 +22,10 @@ const SideBar = () => {
 						return <>
 							<Button Text='Save' 
 								onClick={async () => {
-									if (currentlySelected) {
+									if (newImport?.name) {
+										console.log(exportObject)
 										const data = await window.api.readRoutesFile()
-										const matchingRoute = data.routes.find(route => route.name === currentlySelected.name)
+										const matchingRoute = data.routes.find(route => route.name === newImport.name)
 										matchingRoute.side = exportObject.side
 										matchingRoute.route = exportObject.route
 										matchingRoute.champions = exportObject.champions

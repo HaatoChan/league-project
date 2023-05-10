@@ -14,7 +14,6 @@ const SideBarContextProvider = ({children}) => {
 	const [valuesActive, setValuesActive] = useState(false)
 	const [valuesClicked, setValuesClicked] = useState(false)
 	const [copiedActive, setCopiedActive] = useState(false)
-	const [currentlySelected, setCurrentlySelected] = useState()
 	const [exportOptionsActive, setExportOptionsActive] = useState(false)
 	const [newImport, setNewImport] = useState()
 	/**
@@ -114,14 +113,13 @@ const SideBarContextProvider = ({children}) => {
 			importOnClick: importOnClick,
 			exportOnClick: exportOnClick,
 			copiedActive: copiedActive,
-			currentlySelected: currentlySelected,
-			setCurrentlySelected: setCurrentlySelected,
 			exportOnHover: exportOnHover,
 			exportOptionsActive: exportOptionsActive,
 			exportOnLeave: exportOnLeave,
 			setCopiedActive: setCopiedActive,
 			createImport: createImport,
-			newImport: newImport
+			newImport: newImport,
+			setNewImport: setNewImport
 		}}
 	>
 		{children}
