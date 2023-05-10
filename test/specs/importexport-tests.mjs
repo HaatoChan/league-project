@@ -3,6 +3,7 @@ import { browser } from 'wdio-electron-service'
 import { setupBrowser } from '@testing-library/webdriverio'
 // eslint-disable-next-line no-unused-vars
 import { Key } from 'webdriverio'
+// eslint-disable-next-line no-unused-vars
 import { sleepForX } from '../commonfunction.mjs'
 
 describe('Export & Import', () => {
@@ -56,9 +57,6 @@ describe('Export & Import', () => {
 		// Grab the image
 		const ahriImage = await screen.getByTestId('Ahriimage')
 		await expect(ahriImage).toExist()
-		// Clicka  side
-		const redBox = await screen.getByTestId('RedSide')
-		await redBox.click()
 		// Grab import button and press it
 		const importButton = await screen.getByTestId('importButton')
 		await importButton.click()
