@@ -11,8 +11,6 @@
 .titleholder > h1{
     grid-row: 1;
     grid-column: 2 / span 2;
-    text-align: right !important;
-    margin-right: 30%;
 }
 
 
@@ -29,7 +27,11 @@
 .champselectcontainer {
     grid-row: 3;
     grid-column: 4;
-    height: 30%;
+    position: absolute;
+    bottom: 11.5%;
+    right: 0%;
+    width: 27%;
+    height: 10%;
 }
 
 .valuesdisplaycontainer {
@@ -47,7 +49,7 @@
 .routesearchcontainer {
     background-color: rgba(39, 39, 46, 0.76);
     position: absolute;
-    bottom: 6.5%;
+    bottom: 6%;
     right: 27%;
     width: 23%;
     height: 7%;

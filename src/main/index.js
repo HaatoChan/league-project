@@ -37,7 +37,7 @@ async function createWindow() {
 	})
 
 	// Open the webtools
-	//	mainWindow.webContents.openDevTools()
+	//mainWindow.webContents.openDevTools()
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow.show()
