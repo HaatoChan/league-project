@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 const SettingsPage = () => {
 
 	const [resolution, setResolution] = useState()
+	const [resolutionOptions, setResolutionOptions] = useState(['1920x1080', '1600x900'])
 
 	useEffect(() => {
 		/**
@@ -16,14 +17,9 @@ const SettingsPage = () => {
 		 */
 		const getSizesFromRenderer = async () => {
 			const sizes = await window.api.getSizes()
-			console.log(sizes)
-			if (sizes[0] === 1920) {
-				const radio = document.getElementById('1920x1080')
-				radio.defaultChecked = true
-			} else if (sizes[0] === 1600) {
-				const radio = document.getElementById('1600x900')
-				radio.defaultChecked = true
-			}
+			sizes[2] = sizes[1]
+			sizes[1] = 'x'
+			setResolution(sizes.join(''))
 		}
 		getSizesFromRenderer()
 	}, [])
@@ -38,8 +34,17 @@ const SettingsPage = () => {
 					<p>Select your resolution</p>
 					<div className="radioinputres">
 						<ul className="resses">
-							<li className="resolutionopt" id="1920x1080">1920x1080</li>
-							<li className="resolutionopt" id="1600x900">1600x900</li>
+							<li className="resopt" id="selectedresolution">{resolution}</li>
+							{resolutionOptions.map((option) => {
+								if (option !== resolution) { // exclude the element that matches the state
+									return (
+										<li className="resopt" key={option}>
+											{option}
+										</li>
+									)
+								}
+								return null // return null for the excluded element
+							})}
 						</ul>
 					</div>
 				</div>

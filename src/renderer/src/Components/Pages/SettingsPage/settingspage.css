@@ -85,3 +85,7 @@
   .resses {
     list-style: none;
   }
+
+  .resopt {
+    user-select: none;
+  }
