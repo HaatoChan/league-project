@@ -90,7 +90,6 @@ const SettingsPage = () => {
 								<span style={{float: 'right'}}>&#x2713;</span>
 							</li>
 							{showResOptions && resolutionOptions.map((option) => {
-								{console.log(option)}
 								if (option !== resolution) { // exclude the element that matches the state
 									return (
 										<li className="resopt" key={option} onClick={() => resOptOnClick(option)} data-testid={option}>

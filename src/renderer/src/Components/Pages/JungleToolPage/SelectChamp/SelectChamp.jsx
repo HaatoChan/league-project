@@ -32,6 +32,8 @@ const SelectChamp = () => {
 		})
 	}, [])
 
+
+
 	useEffect(() => {
 		if (selectedChampions.length > 0) {
 			const updatedSelectedChampions = selectedChampions.map((championName) => {
@@ -50,7 +52,7 @@ const SelectChamp = () => {
 			const newArray = []
 			newArray[0] = newImport.champions
 			setSelectedChampions(newArray)
-		} else {
+		} else if (newImport && !newImport.champions) {
 			setSelectedChampions([])
 			setSelectedChampsToDisplay([])
 		}
