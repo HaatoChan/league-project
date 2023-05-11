@@ -50,6 +50,8 @@ describe('application loading', () => {
 			const routeLi = await screen.getByTestId('Test')
 			await routeLi.click()
 			await expect(await screen.getByTestId('currentlySelectedTest')).toExist()
+			await sleepForX(4000)
+
 		})
 		it('Pressing jungle camp reset should unselect all camps', async () => {
 			const campArray = []
@@ -129,6 +131,27 @@ describe('application loading', () => {
 			await champInput.clearValue()
 			// Assert that sorakas image is no longer in the DOM but that Ahris image is.
 			await expect(sorakaImage).not.toExist()
+			await expect(await screen.getByTestId('Ahriimage')).toExist()
+			await sleepForX(2000)
+		})
+		it('Should keep old settings when navigating screens', async () => {
+			const grompBlue = await screen.getByTestId('Gromp-Blue')
+			await grompBlue.click()
+			// Assert that these two are selected
+			await expect(grompBlue).toHaveAttribute('data-iscampselected', 'true')
+			await expect(await screen.getByTestId('Ahriimage')).toExist()
+			// Navigate to different page
+			const settingsA = await screen.getByTestId('settingsA')
+			await settingsA.click()
+			// Assert that we have swapped pages
+			await expect(await screen.getByTestId('okButton')).toExist()
+			// Swap back
+			const jungleA = await screen.getByTestId('jungleA')
+			await jungleA.click()
+			// Assert that we swapped back
+			await expect(await screen.getByTestId('saveButton')).toExist()
+			// Assert that the settings are the same
+			await expect(grompBlue).toHaveAttribute('data-iscampselected', 'true')
 			await expect(await screen.getByTestId('Ahriimage')).toExist()
 		})
 	})

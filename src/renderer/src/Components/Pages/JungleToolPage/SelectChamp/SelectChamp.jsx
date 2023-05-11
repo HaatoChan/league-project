@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { championNames } from '../../../../Data/Arrays'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 import { useEffect } from 'react'
-import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a champion selector element.
@@ -13,7 +12,6 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
 const SelectChamp = () => {
 
 	const {selectedChampions, setSelectedChampions} = useContext(CampSelectionContext)
-	const { newImport } = useContext(SideBarContext)
 	const [input, setInput] = useState('')
 	const [matches, setMatches] = useState([])
 	const [newChampions, setNewChampions] = useState([])
@@ -41,22 +39,10 @@ const SelectChamp = () => {
 				return champion ? champion : championName
 			})
 			setSelectedChampsToDisplay(updatedSelectedChampions)
-		}
-	}, [newChampions, selectedChampions])
-
-	useEffect(() => {
-		if(newImport?.champions.includes(':')) {
-			const newArray = newImport.champions.split(':')
-			setSelectedChampions(newArray)
-		} else if (newImport?.champions)  {
-			const newArray = []
-			newArray[0] = newImport.champions
-			setSelectedChampions(newArray)
-		} else if (newImport && !newImport.champions) {
-			setSelectedChampions([])
+		} else {
 			setSelectedChampsToDisplay([])
 		}
-	},[newImport])
+	}, [newChampions, selectedChampions])
 
 	/**
 	 * Handles the event, displaying the matching champions.

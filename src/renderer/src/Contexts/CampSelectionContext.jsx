@@ -28,6 +28,7 @@ const CampSelectionContextProvider = ({children}) => {
 	const totalRequired = [ 280, 380, 480, 580, 680, 780, 880, 980, 1080, 1180, 1280, 1380, 1480, 1580, 1680, 1780, 1880]
 	const [exportUrl, setExportUrl] = useState('https://fluffy-bombolone-8bfa7b.netlify.app/All//')
 	const [exportObject, setExportObject] = useState({})
+	const [routeName, setRouteName] = useState('')
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -80,6 +81,60 @@ const CampSelectionContextProvider = ({children}) => {
 			}
 		}
 	}
+
+	/**
+	 * Handles the imported data.
+	 * @param {string} importValue - The import value.
+	 */
+	const createImport = async (importValue) => {
+		try {
+			const importData = JSON.parse(importValue)
+			setSideSelected(importData?.side)
+			// Split the data and set selected champions
+			const championArray = importData?.champions?.split(':')
+			if(championArray) {
+				championArray[0]?.length > 0 ? setSelectedChampions(championArray) : setSelectedChampions([])
+			}
+			// Set the camps
+			await resetAll()
+			if (importData.route) {
+				const string = atob(importData?.route)
+				let newArray = []
+				newArray = string.split(':')
+				const allCamps = document.getElementsByClassName('buttonCamp')
+				for(const elements of allCamps) {
+					if(elements.dataset.iscampselected === 'true') {
+						await elements.click()
+					}
+				}
+				console.log(newArray)
+				for(const element of newArray) {
+					const button = document.getElementById(element)
+					await button.click()
+				}
+			}
+			if (importData.name) {
+				setRouteName(importData.name)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	/**
+	 * Resets all of the camp options and exp
+	 */
+	const resetAll = async () => {
+		setSelectedCamps([])
+		setCampNumber(0)
+		setTotalGold(0)
+		setLevel(1)
+		setTotalExp(0)
+
+		// Wait for state updates to complete
+		await new Promise((resolve) => setTimeout(resolve, 100))
+	}
+
 	return <CampSelectionContext.Provider
 		value={{
 			// Add attributes here
@@ -91,13 +146,7 @@ const CampSelectionContextProvider = ({children}) => {
 			/**
 			 * Resets all states.
 			 */
-			resetAll: () => {
-				setSelectedCamps([])
-				setCampNumber(0)
-				setTotalGold(0)
-				setLevel(1)
-				setTotalExp(0)
-			},
+			resetAll: resetAll,
 			/**
 			 * Saves the element target and retrieves values saved as attributes.
 			 * @param {HTMLElement} e - The event target.
@@ -126,7 +175,9 @@ const CampSelectionContextProvider = ({children}) => {
 			selectedChampions: selectedChampions,
 			setSelectedChampions: setSelectedChampions,
 			exportUrl: exportUrl,
-			exportObject: exportObject,
+			createImport: createImport,
+			routeName: routeName,
+			exportObject: exportObject
 		}}
 	>
 		{children}

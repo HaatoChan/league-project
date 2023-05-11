@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import './sideselect.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
-import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a sideselector component.
@@ -10,7 +9,6 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
 const SideSelect = () => {
   
 	const {setSideSelected, sideSelected} = useContext(CampSelectionContext)
-	const { newImport } = useContext(SideBarContext)
 	const [bluebox, setBlueBox] = useState(true)
 	const [redbox, setRedBox] = useState(true)
       
@@ -65,12 +63,6 @@ const SideSelect = () => {
 	useEffect(() => {
 		importLogic()
 	},[])
-
-	useEffect(() => {
-		if (newImport) {
-			setSideSelected(newImport?.side || 'All')
-		}
-	},[newImport])
       
 	useEffect(() => {
 		importLogic()

@@ -10,8 +10,8 @@ exports.config = {
 	specs: [
 	//	'./test/specs/**/*.mjs'
 	//	'./test/specs/settings-tests.mjs'
-	//	'./test/specs/jungledom-tests.mjs'
-		'./test/specs/importexport-tests.mjs'
+		'./test/specs/jungledom-tests.mjs'
+	//	'./test/specs/importexport-tests.mjs'
 	],
 	// Patterns to exclude.
 	exclude: [
@@ -20,7 +20,7 @@ exports.config = {
 	maxInstances: 1,
 	capabilities: [{}],
 	
-	logLevel: 'debug',
+	logLevel: 'info',
 	bail: 0,
 	baseUrl: 'http://localhost',
 	waitforTimeout: 10000,
