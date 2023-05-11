@@ -11,14 +11,14 @@ const RouteSearch = () => {
 	const [namingRoute, setNamingRoute] = useState(false)
 	const [allRoutes, setAllRoutes] = useState([])
 	const [matches, setMatches] = useState([])
-	const {routeName, createImport} = useContext(CampSelectionContext)
+	const {routeName, createImport, deleteOnClick} = useContext(CampSelectionContext)
 	const [displayConfirmation, setDisplayConfirmation] = useState(false)
 	const confirmRef = useRef(null)
 
 	useEffect(() => {
 		/**
-		 *
-		 * @param event
+		 * Handles a click outside of the confirmation dialog box.
+		 * @param {MouseEvent} event - The click event.
 		 */
 		const handleClickOutside = (event) => {
 			if (confirmRef.current && !confirmRef.current.contains(event.target)) {
@@ -116,8 +116,11 @@ const RouteSearch = () => {
 					<div className="confirmDeletion">
 						<p className="confirmP">Are you sure you want to delete this route?</p>
 						<div className="buttoncontainer">					
-							<button className="confirmbutton" id='yesdelete'>Yes</button>
-							<button className="confirmbutton" id='nodelete'>No</button></div>
+							<button className="confirmbutton" id='yesdelete' onClick={() => {
+								// setDisplayConfirmation(false)
+								deleteOnClick()
+							}}>Yes</button>
+							<button className="confirmbutton" id='nodelete' onClick={() => setDisplayConfirmation(false)}>No</button></div>
 					</div>
 				}
 			</div>

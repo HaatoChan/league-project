@@ -107,7 +107,6 @@ const CampSelectionContextProvider = ({children}) => {
 						await elements.click()
 					}
 				}
-				console.log(newArray)
 				for(const element of newArray) {
 					const button = document.getElementById(element)
 					await button.click()
@@ -133,6 +132,24 @@ const CampSelectionContextProvider = ({children}) => {
 
 		// Wait for state updates to complete
 		await new Promise((resolve) => setTimeout(resolve, 100))
+	}
+
+
+	/**
+	 * Handles the deletion of the currently selected route.
+	 */
+	const deleteOnClick = async () => {
+		const allRoutes = await window.api.readRoutesFile()
+		const matchingRouteIndex = allRoutes.routes.findIndex(route => route.name === routeName)
+  
+		if (matchingRouteIndex !== -1) {
+			allRoutes.routes.splice(matchingRouteIndex, 1)
+			console.log(allRoutes)
+			await window.api.writeRoutesFile(allRoutes)
+			await resetAll()
+			setSideSelected('All')
+			setSelectedChampions([])
+		}
 	}
 
 	return <CampSelectionContext.Provider
@@ -177,7 +194,8 @@ const CampSelectionContextProvider = ({children}) => {
 			exportUrl: exportUrl,
 			createImport: createImport,
 			routeName: routeName,
-			exportObject: exportObject
+			exportObject: exportObject,
+			deleteOnClick: deleteOnClick
 		}}
 	>
 		{children}
