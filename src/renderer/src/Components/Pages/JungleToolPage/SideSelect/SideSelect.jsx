@@ -63,12 +63,6 @@ const SideSelect = () => {
 	useEffect(() => {
 		importLogic()
 	},[])
-
-	//	useEffect(() => {
-	//		if (newImport) {
-	//			setSideSelected(newImport?.side || 'All')
-	//		}
-	//	},[newImport])
       
 	useEffect(() => {
 		importLogic()
