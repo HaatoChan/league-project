@@ -11,7 +11,7 @@ const RouteSearch = () => {
 	const [namingRoute, setNamingRoute] = useState(false)
 	const [allRoutes, setAllRoutes] = useState([])
 	const [matches, setMatches] = useState([])
-	const {currentlySelected, setCurrentlySelected} = useContext(CampSelectionContext)
+	const {routeName, createImport} = useContext(CampSelectionContext)
 	/**
 	 * Spawns a div for the user to enter the new route name on click.
 	 */
@@ -49,7 +49,7 @@ const RouteSearch = () => {
 			data.routes.push(routeObject)
 			window.api.writeRoutesFile(data)
 			setAllRoutes(data.routes)
-			setCurrentlySelected(routeObject)
+			createImport(JSON.stringify(routeObject))
 			setNamingRoute(false)
 		} else {
 			error.style.display = 'Inline'
@@ -83,12 +83,12 @@ const RouteSearch = () => {
 	 * @param {object} routeObject - The matching route object.
 	 */
 	const liClick = (routeObject) => {
-		setCurrentlySelected(routeObject)
+		createImport(JSON.stringify(routeObject))
 	}
 
 	return ( 
 		<div className="routesearch">
-			<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + currentlySelected?.name} style={{ color: 'white'}}>{currentlySelected?.name}</p>
+			<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}</p>
 			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid="routesearchinput"/>
 			<button className='addRoute' onClick={addOnClick} data-testid="addRouteButton">+</button>
 			{ matches.length > 0 &&

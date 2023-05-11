@@ -28,7 +28,7 @@ const CampSelectionContextProvider = ({children}) => {
 	const totalRequired = [ 280, 380, 480, 580, 680, 780, 880, 980, 1080, 1180, 1280, 1380, 1480, 1580, 1680, 1780, 1880]
 	const [exportUrl, setExportUrl] = useState('https://fluffy-bombolone-8bfa7b.netlify.app/All//')
 	const [exportObject, setExportObject] = useState({})
-	const [currentlySelected, setCurrentlySelected] = useState({})
+	const [routeName, setRouteName] = useState('')
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -100,7 +100,6 @@ const CampSelectionContextProvider = ({children}) => {
 			let newArray = []
 			newArray = string.split(':')
 			const allCamps = document.getElementsByClassName('buttonCamp')
-			console.log(totalGold)
 			for(const elements of allCamps) {
 				if(elements.dataset.iscampselected === 'true') {
 					await elements.click()
@@ -108,8 +107,10 @@ const CampSelectionContextProvider = ({children}) => {
 			}
 			for(const element of newArray) {
 				const button = document.getElementById(element)
-				console.log(button.dataset.expvalue)
 				await button.click()
+			}
+			if (importData.name) {
+				setRouteName(importData.name)
 			}
 		} catch (error) {
 			console.error(error)
@@ -170,10 +171,8 @@ const CampSelectionContextProvider = ({children}) => {
 			selectedChampions: selectedChampions,
 			setSelectedChampions: setSelectedChampions,
 			exportUrl: exportUrl,
-			exportObject: exportObject,
-			currentlySelected: currentlySelected,
-			setCurrentlySelected: setCurrentlySelected,
-			createImport: createImport
+			createImport: createImport,
+			routeName: routeName
 		}}
 	>
 		{children}
