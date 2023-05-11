@@ -82,6 +82,50 @@ const CampSelectionContextProvider = ({children}) => {
 		}
 	}
 
+	/**
+	 * Handles the imported data.
+	 * @param {string} importValue - The import value.
+	 */
+	const createImport = async (importValue) => {
+		try {
+			const importData = JSON.parse(importValue)
+			setSideSelected(importData?.side)
+			// Split the data and set selected champions
+			const championArray = importData?.champions.split(':')
+			championArray[0].length > 0 ? setSelectedChampions(championArray) : setSelectedChampions([])
+			// Set the camps
+			await resetAll()
+			
+			const string = atob(importData?.route)
+			let newArray = []
+			newArray = string.split(':')
+			const allCamps = document.getElementsByClassName('buttonCamp')
+			for(const elements of allCamps) {
+				if(elements.dataset.iscampselected === 'true') {
+					await elements.click()
+				}
+			}
+			for(const element of newArray) {
+				const button = document.getElementById(element)
+				console.log('triggered in map?')
+				await button.click()
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	/**
+	 * Resets all of the camp options and exp
+	 */
+	const resetAll = async () => {
+		setSelectedCamps([])
+		setCampNumber(0)
+		setTotalGold(0)
+		setLevel(1)
+		setTotalExp(0)
+	}
+
 	return <CampSelectionContext.Provider
 		value={{
 			// Add attributes here
@@ -93,13 +137,7 @@ const CampSelectionContextProvider = ({children}) => {
 			/**
 			 * Resets all states.
 			 */
-			resetAll: () => {
-				setSelectedCamps([])
-				setCampNumber(0)
-				setTotalGold(0)
-				setLevel(1)
-				setTotalExp(0)
-			},
+			resetAll: resetAll,
 			/**
 			 * Saves the element target and retrieves values saved as attributes.
 			 * @param {HTMLElement} e - The event target.
@@ -130,7 +168,8 @@ const CampSelectionContextProvider = ({children}) => {
 			exportUrl: exportUrl,
 			exportObject: exportObject,
 			currentlySelected: currentlySelected,
-			setCurrentlySelected: setCurrentlySelected
+			setCurrentlySelected: setCurrentlySelected,
+			createImport: createImport
 		}}
 	>
 		{children}

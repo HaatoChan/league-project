@@ -13,7 +13,6 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
 const SelectChamp = () => {
 
 	const {selectedChampions, setSelectedChampions} = useContext(CampSelectionContext)
-	const { newImport } = useContext(SideBarContext)
 	const [input, setInput] = useState('')
 	const [matches, setMatches] = useState([])
 	const [newChampions, setNewChampions] = useState([])
@@ -35,30 +34,16 @@ const SelectChamp = () => {
 
 
 	useEffect(() => {
-		console.log('is this triggeirng?')
 		if (selectedChampions.length > 0) {
 			const updatedSelectedChampions = selectedChampions.map((championName) => {
 				const champion = newChampions.find((c) => c.name === championName)
 				return champion ? champion : championName
 			})
 			setSelectedChampsToDisplay(updatedSelectedChampions)
+		} else {
+			setSelectedChampsToDisplay([])
 		}
 	}, [newChampions, selectedChampions])
-
-	useEffect(() => {
-		if(newImport?.champions?.includes(':')) {
-			const newArray = newImport.champions.split(':')
-			setSelectedChampions(newArray)
-		} else if (newImport?.champions)  {
-			const newArray = []
-			newArray[0] = newImport.champions
-			setSelectedChampions(newArray)
-		} else if (newImport && !newImport.champions) {
-			console.log('not triggering?')
-			setSelectedChampsToDisplay([])
-			setSelectedChampions([])
-		}
-	},[newImport])
 
 	/**
 	 * Handles the event, displaying the matching champions.

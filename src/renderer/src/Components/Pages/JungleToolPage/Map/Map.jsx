@@ -12,15 +12,21 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
  * @returns {HTMLElement} Returns a map element.
  */
 const Map = () => {
-	const { newImport } = useContext(SideBarContext)
-	const {currentlySelected, setSelectedCamps } = useContext(CampSelectionContext)
 
 	useEffect(() => {
-		if (newImport?.route) {
-			setSelectedCamps([])
-			campUpdate()
-		}
-	},[newImport])
+	//	resetAll()
+	},[])
+
+	//	const { newImport } = useContext(SideBarContext)
+	const {currentlySelected, setSelectedCamps, resetAll } = useContext(CampSelectionContext)
+
+	//	useEffect(() => {
+	//		console.log(newImport)
+	//		if (newImport?.route) {
+	//			setSelectedCamps([])
+	//			campUpdate()
+	//		}
+	//	},[newImport])
 
 	/**
 	 * Clicks the camps in the array.
@@ -43,12 +49,12 @@ const Map = () => {
 	/**
 	 *
 	 */
-	const campUpdate = async () => {
-		const string = atob(newImport.route)
-		let newArray = []
-		newArray = string.split(':')
-		clickCamps(newArray)
-	}
+	//	const campUpdate = async () => {
+	//		const string = atob(newImport.route)
+	//		let newArray = []
+	//		newArray = string.split(':')
+	//		clickCamps(newArray)
+	//	}
 
 	return (
 		<CampSelectionContext.Consumer>

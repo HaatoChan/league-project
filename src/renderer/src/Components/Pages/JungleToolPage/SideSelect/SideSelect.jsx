@@ -10,7 +10,6 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
 const SideSelect = () => {
   
 	const {setSideSelected, sideSelected} = useContext(CampSelectionContext)
-	const { newImport } = useContext(SideBarContext)
 	const [bluebox, setBlueBox] = useState(true)
 	const [redbox, setRedBox] = useState(true)
       
@@ -66,11 +65,11 @@ const SideSelect = () => {
 		importLogic()
 	},[])
 
-	useEffect(() => {
-		if (newImport) {
-			setSideSelected(newImport?.side || 'All')
-		}
-	},[newImport])
+	//	useEffect(() => {
+	//		if (newImport) {
+	//			setSideSelected(newImport?.side || 'All')
+	//		}
+	//	},[newImport])
       
 	useEffect(() => {
 		importLogic()

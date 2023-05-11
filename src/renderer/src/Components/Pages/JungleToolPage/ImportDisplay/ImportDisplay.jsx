@@ -1,12 +1,14 @@
 import { useContext } from 'react'
 import './importdisplay.css'
 import { SideBarContext } from '../../../../Contexts/SideBarContext'
+import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 /**
  * Defines the display for when user presses import button.
  * @returns {HTMLElement} - Returns the display.
  */
 const ImportDisplay = () => {
-	const {importActive, setImportActive, createImport } = useContext(SideBarContext)
+	const {importActive, setImportActive } = useContext(SideBarContext)
+	const {createImport} = useContext(CampSelectionContext)
 	return ( 
 		<div className="importdisplaycontainer">
 			{importActive && <div className="importpopup" onClick={() => setImportActive(false)}>
@@ -17,7 +19,9 @@ const ImportDisplay = () => {
 					<button className="cancelimport" onClick={() => setImportActive(false)}>X</button>
 					<button className='importbutton' data-testid="importPopup" onClick={() => {
 						const textarea = document.getElementById('textareaImport')
-						createImport(textarea.value)
+						const value = textarea.value
+						setImportActive(false)
+						createImport(value)
 					}}>IMPORT</button>
 				</div>
 			</div>
