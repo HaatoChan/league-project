@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { championNames } from '../../../../Data/Arrays'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 import { useEffect } from 'react'
-import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a champion selector element.

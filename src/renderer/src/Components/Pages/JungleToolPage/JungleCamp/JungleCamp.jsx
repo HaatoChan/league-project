@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import './junglecamp.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext.jsx'
-import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 
 /**

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import './sideselect.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
-import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 /**
  * Defines a sideselector component.
