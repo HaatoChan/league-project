@@ -11,8 +11,8 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
  * @returns {HTMLElement} Returns a sidebar element.
  */
 const SideBar = () => {
-	const {exportUrl, exportObject} = useContext(CampSelectionContext)
-	const {valuesOnClick, importOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive, newImport} = useContext(SideBarContext)
+	const {exportUrl, exportObject, routeName} = useContext(CampSelectionContext)
+	const {valuesOnClick, importOnClick, valuesOnEnter, valuesOnLeave, exportOnHover, exportOnLeave, setCopiedActive} = useContext(SideBarContext)
 
 	return ( 
 		<>
@@ -22,10 +22,11 @@ const SideBar = () => {
 						return <>
 							<Button Text='Save' 
 								onClick={async () => {
-									if (newImport?.name) {
+									console.log(exportObject)
+									if (routeName) {
 										console.log(exportObject)
 										const data = await window.api.readRoutesFile()
-										const matchingRoute = data.routes.find(route => route.name === newImport.name)
+										const matchingRoute = data.routes.find(route => route.name === routeName)
 										matchingRoute.side = exportObject.side
 										matchingRoute.route = exportObject.route
 										matchingRoute.champions = exportObject.champions
