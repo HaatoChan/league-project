@@ -46,13 +46,13 @@ describe('application loading', () => {
 			await routeInput.addValue('Test')
 			await expect(await screen.getByTestId('Test')).toExist()
 		})
-		it('')
 		it('Should display route name when option is clicked', async () => {
 			const routeLi = await screen.getByTestId('Test')
 			await routeLi.click()
 			await expect(await screen.getByTestId('currentlySelectedTest')).toExist()
+			await sleepForX(3000)
+
 		})
-		it('Should ')
 		it('Pressing jungle camp reset should unselect all camps', async () => {
 			const campArray = []
 			// Grab the entire blue side jungle

@@ -20,7 +20,7 @@ exports.config = {
 	maxInstances: 1,
 	capabilities: [{}],
 	
-	logLevel: 'debug',
+	logLevel: 'info',
 	bail: 0,
 	baseUrl: 'http://localhost',
 	waitforTimeout: 10000,
