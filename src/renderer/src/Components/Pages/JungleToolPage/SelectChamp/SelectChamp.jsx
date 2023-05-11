@@ -35,6 +35,7 @@ const SelectChamp = () => {
 
 
 	useEffect(() => {
+		console.log('is this triggeirng?')
 		if (selectedChampions.length > 0) {
 			const updatedSelectedChampions = selectedChampions.map((championName) => {
 				const champion = newChampions.find((c) => c.name === championName)
@@ -53,8 +54,9 @@ const SelectChamp = () => {
 			newArray[0] = newImport.champions
 			setSelectedChampions(newArray)
 		} else if (newImport && !newImport.champions) {
-			setSelectedChampions([])
+			console.log('not triggering?')
 			setSelectedChampsToDisplay([])
+			setSelectedChampions([])
 		}
 	},[newImport])
 

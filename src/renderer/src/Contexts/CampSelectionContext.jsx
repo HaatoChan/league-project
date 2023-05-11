@@ -28,6 +28,7 @@ const CampSelectionContextProvider = ({children}) => {
 	const totalRequired = [ 280, 380, 480, 580, 680, 780, 880, 980, 1080, 1180, 1280, 1380, 1480, 1580, 1680, 1780, 1880]
 	const [exportUrl, setExportUrl] = useState('https://fluffy-bombolone-8bfa7b.netlify.app/All//')
 	const [exportObject, setExportObject] = useState({})
+	const [currentlySelected, setCurrentlySelected] = useState({})
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -80,6 +81,7 @@ const CampSelectionContextProvider = ({children}) => {
 			}
 		}
 	}
+
 	return <CampSelectionContext.Provider
 		value={{
 			// Add attributes here
@@ -127,6 +129,8 @@ const CampSelectionContextProvider = ({children}) => {
 			setSelectedChampions: setSelectedChampions,
 			exportUrl: exportUrl,
 			exportObject: exportObject,
+			currentlySelected: currentlySelected,
+			setCurrentlySelected: setCurrentlySelected
 		}}
 	>
 		{children}

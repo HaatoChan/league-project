@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import './junglecamp.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext.jsx'
+import { SideBarContext } from '../../../../Contexts/SideBarContext'
 
 
 /**
@@ -20,13 +21,13 @@ const JungleCamp = ({ theCamp, goldValue, expValue, image }) => {
 	const [imageUrl, setImageUrl] = useState(null)
 
 	useEffect(() => {
-		for (let i = 0; i < selectedCamps.length; i++) {
-			if (selectedCamps[i].id === theCamp) {
-				setCampSelected(true)
-				setOrderInRoute(i + 1)
-				setPositionInArray(i)
-			}
-		}
+	//	for (let i = 0; i < selectedCamps.length; i++) {
+	//		if (selectedCamps[i].id === theCamp) {
+	//			setCampSelected(true)
+	//			setOrderInRoute(i + 1)
+	//			setPositionInArray(i)
+	//		}
+	//	}
 	},[])
 
 	useEffect(() => {

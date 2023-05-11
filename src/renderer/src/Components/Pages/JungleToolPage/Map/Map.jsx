@@ -13,14 +13,12 @@ import { SideBarContext } from '../../../../Contexts/SideBarContext'
  */
 const Map = () => {
 	const { newImport } = useContext(SideBarContext)
+	const {currentlySelected, setSelectedCamps } = useContext(CampSelectionContext)
 
 	useEffect(() => {
 		if (newImport?.route) {
-			const string = atob(newImport.route)
-			console.log(string)
-			let newArray = []
-			newArray = string.split(':')
-			clickCamps(newArray)
+			setSelectedCamps([])
+			campUpdate()
 		}
 	},[newImport])
 
@@ -37,8 +35,19 @@ const Map = () => {
 		}
 		for(const element of array) {
 			const button = document.getElementById(element)
+			console.log('triggered in map?')
 			await button.click()
 		}
+	}
+
+	/**
+	 *
+	 */
+	const campUpdate = async () => {
+		const string = atob(newImport.route)
+		let newArray = []
+		newArray = string.split(':')
+		clickCamps(newArray)
 	}
 
 	return (
