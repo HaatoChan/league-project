@@ -91,23 +91,27 @@ const CampSelectionContextProvider = ({children}) => {
 			const importData = JSON.parse(importValue)
 			setSideSelected(importData?.side)
 			// Split the data and set selected champions
-			const championArray = importData?.champions.split(':')
-			championArray[0].length > 0 ? setSelectedChampions(championArray) : setSelectedChampions([])
+			const championArray = importData?.champions?.split(':')
+			if(championArray) {
+				championArray[0]?.length > 0 ? setSelectedChampions(championArray) : setSelectedChampions([])
+			}
 			// Set the camps
 			await resetAll()
-			
-			const string = atob(importData?.route)
-			let newArray = []
-			newArray = string.split(':')
-			const allCamps = document.getElementsByClassName('buttonCamp')
-			for(const elements of allCamps) {
-				if(elements.dataset.iscampselected === 'true') {
-					await elements.click()
+			if (importData.route) {
+				const string = atob(importData?.route)
+				let newArray = []
+				newArray = string.split(':')
+				const allCamps = document.getElementsByClassName('buttonCamp')
+				for(const elements of allCamps) {
+					if(elements.dataset.iscampselected === 'true') {
+						await elements.click()
+					}
 				}
-			}
-			for(const element of newArray) {
-				const button = document.getElementById(element)
-				await button.click()
+				console.log(newArray)
+				for(const element of newArray) {
+					const button = document.getElementById(element)
+					await button.click()
+				}
 			}
 			if (importData.name) {
 				setRouteName(importData.name)
