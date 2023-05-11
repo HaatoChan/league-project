@@ -88,7 +88,11 @@ const RouteSearch = () => {
 
 	return ( 
 		<div className="routesearch">
-			<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}</p>
+			<div className="routenameanddelete">		
+				<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}
+				</p>
+				<button className='deleteRoute' onClick={() => console.log('todo')}>DELETE</button>
+			</div>
 			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid="routesearchinput"/>
 			<button className='addRoute' onClick={addOnClick} data-testid="addRouteButton">+</button>
 			{ matches.length > 0 &&
