@@ -100,6 +100,7 @@ const CampSelectionContextProvider = ({children}) => {
 			let newArray = []
 			newArray = string.split(':')
 			const allCamps = document.getElementsByClassName('buttonCamp')
+			console.log(totalGold)
 			for(const elements of allCamps) {
 				if(elements.dataset.iscampselected === 'true') {
 					await elements.click()
@@ -107,7 +108,7 @@ const CampSelectionContextProvider = ({children}) => {
 			}
 			for(const element of newArray) {
 				const button = document.getElementById(element)
-				console.log('triggered in map?')
+				console.log(button.dataset.expvalue)
 				await button.click()
 			}
 		} catch (error) {
@@ -124,6 +125,9 @@ const CampSelectionContextProvider = ({children}) => {
 		setTotalGold(0)
 		setLevel(1)
 		setTotalExp(0)
+
+		// Wait for state updates to complete
+		await new Promise((resolve) => setTimeout(resolve, 100))
 	}
 
 	return <CampSelectionContext.Provider
