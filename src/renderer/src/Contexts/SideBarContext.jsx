@@ -54,6 +54,7 @@ const SideBarContextProvider = ({children}) => {
 	 * Shows the import field when clicked.
 	 */
 	const importOnClick = () => {
+		console.log('opening import')
 		setImportActive(true)
 	}
 

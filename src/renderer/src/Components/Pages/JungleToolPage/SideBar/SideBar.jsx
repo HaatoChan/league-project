@@ -22,9 +22,7 @@ const SideBar = () => {
 						return <>
 							<Button Text='Save' 
 								onClick={async () => {
-									console.log(exportObject)
 									if (routeName) {
-										console.log(exportObject)
 										const data = await window.api.readRoutesFile()
 										const matchingRoute = data.routes.find(route => route.name === routeName)
 										matchingRoute.side = exportObject.side

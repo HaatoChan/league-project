@@ -7,13 +7,14 @@ import { camps } from '../../../../Data/Arrays'
 
 /**
  * Defines a map element containing the jungle camps.
+ * @param {string} padding - The amount of padding on mapwrap.
  * @returns {HTMLElement} Returns a map element.
  */
-const Map = () => {
+const Map = ({padding}) => {
 	return (
 		<CampSelectionContext.Consumer>
 			{() => (
-				<div className="mapwrap">
+				<div className="mapwrap" style={{ padding: padding ? padding : '0.5rem'}}>
 					<ResetButton />
 					<img src={map} alt="gamemap" className="mapholder" />
 					{camps.map((camp) => (

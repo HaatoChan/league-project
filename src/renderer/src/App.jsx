@@ -17,16 +17,20 @@ function App() {
 			<div className="container">
 				<ElectronSideBar />
 				<LobbyContextProvider>
-					<CampSelectionContextProvider>
-						<SideBarContextProvider>
+					<SideBarContextProvider>
+						<CampSelectionContextProvider>
 							<Routes>
 								<Route path="/" element={<HomePage />}/>
-								<Route path="lobby-screen" element={<LobbyPage />} />
 								<Route path="settings" element={ <SettingsPage />}/>
 								<Route path='jungletool' element={<JungleToolPage />}/>
 							</Routes>
-						</SideBarContextProvider>
-					</CampSelectionContextProvider>	
+							<CampSelectionContextProvider>
+								<Routes>
+									<Route path="lobby-screen" element={<LobbyPage />} />
+								</Routes>	
+							</CampSelectionContextProvider>
+						</CampSelectionContextProvider>
+					</SideBarContextProvider>
 				</LobbyContextProvider>
 			</div>
 		</HashRouter>
