@@ -63,14 +63,27 @@
 
 .saveButton {
     position: fixed;
-    top: 94.7%;
+    top: 94.8%;
     left: 55%;
-    height: 4.2%;
+    height: 4.1%;
     width: 3%;
     font-weight: bold;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: rgb(15, 105, 27);
     border: none;
     cursor: pointer;
+    color: white;
+}
+
+.importOpen {
+    width: 15%;
+    height: 15.4%;
+    position: absolute;
+    bottom: 0;
+    right: 2%;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: rgb(15, 105, 27);
     color: white;
 }

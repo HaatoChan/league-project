@@ -7,6 +7,8 @@ import RouteSearch from '../JungleToolPage/RouteSearch/RouteSearch'
 import { CampSelectionContext } from '../../../Contexts/CampSelectionContext'
 import ExpDisplay from '../JungleToolPage/ExpDisplay/ExpDisplay'
 import SelectChamp from '../JungleToolPage/SelectChamp/SelectChamp'
+import { SideBarContext } from '../../../Contexts/SideBarContext'
+import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 
 /**
  * Defines the lobby page
@@ -16,6 +18,7 @@ const LobbyPage = () => {
 
 	const {exportObject, routeName} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray} = useContext(LobbyContext)
+	const {importOnClick} = useContext(SideBarContext)
 
 	return ( 
 		<div className="lobbypagecontainer">
@@ -87,6 +90,8 @@ const LobbyPage = () => {
 					SAVE
 				</button>
 				}
+				<button className="importOpen" onClick={importOnClick}>Import</button>
+				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
 				<ExpDisplay 
@@ -111,7 +116,7 @@ const LobbyPage = () => {
 					optionsStyle={{
 						maxHeight: '340%'
 					}}
-				/> 
+				/>
 			</div>
 		</div>
 	)
