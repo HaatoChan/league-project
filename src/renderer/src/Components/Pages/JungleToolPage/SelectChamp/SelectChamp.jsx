@@ -7,9 +7,13 @@ import { useEffect } from 'react'
 
 /**
  * Defines a champion selector element.
+ * @param {object} root0 - The react props object.
+ * @param {StyleSheet} root0.searchBarContainerStyle - The stylesheet for the searchbarcontainer
+ * @param {StyleSheet} root0.champImagesStyle - The stylesheet for the champimages div.
+ * @param {StyleSheet} root0.optionsStyle - The stylesheet for the displayed options
  * @returns {HTMLElement} Returns an element handling champion selection.
  */
-const SelectChamp = () => {
+const SelectChamp = ({searchBarContainerStyle, champImagesStyle, optionsStyle}) => {
 
 	const {selectedChampions, setSelectedChampions} = useContext(CampSelectionContext)
 	const [input, setInput] = useState('')
@@ -54,8 +58,7 @@ const SelectChamp = () => {
 		// Find matching names that are not already selected
 		const matches = newChampions.filter(index => {
 			return index.name.toLowerCase().includes(inputToLower) && !selectedChampions.includes(index.name)
-		}
-		)
+		})
 		setInput(input)
 		setMatches(matches)
 	}
@@ -67,7 +70,10 @@ const SelectChamp = () => {
 	 */
 	const imgClick = (event) => {
 		setSelectedChampsToDisplay(selectedChampsToDisplay.filter(index => index.name !== event.target.dataset.champion))
-		setSelectedChampions(selectedChampsToDisplay.filter(index => index.name !== event.target.dataset.champion))
+		setSelectedChampions(selectedChampsToDisplay
+			.filter(champion => champion.name !== event.target.dataset.champion)
+			.map(champion => champion.name)
+		)
 	}
 
 	/**
@@ -94,19 +100,24 @@ const SelectChamp = () => {
 
 	return ( 
 		<div className="champcontainer">
-			<div className="champimages">
+			<div className="champimages"
+				style={champImagesStyle ? champImagesStyle : {}}
+			>
 				{selectedChampsToDisplay.length > 0 && selectedChampsToDisplay.map((champ) => (
 					<img src={champ.image} alt="" className="selectedChampImage" key={champ.name} data-testid={champ.name + 'image'} onClick={imgClick} data-champion={champ.name}/>
 				))} 
 			</div>
-			<div className="searchbarcontainer">
+			<div className="searchbarcontainer" 
+				style={searchBarContainerStyle ? searchBarContainerStyle : {}}>
 				<input type="text" value={input} onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid='champInput' className='champInput' placeholder='Search for your champion'/>
 				<button className="resetchamps" data-testid="champUnselectAll" onClick={() => { 
 					setSelectedChampions([]) 
 					setSelectedChampsToDisplay([])
 				}}>X</button>
 				{matches.length > 0 && (
-					<div className="options">
+					<div className="options"
+						style={optionsStyle ? optionsStyle : {}}
+					>
 						<ul className="optul">
 							{matches.map(match => (
 								<li key={match.name} data-value={match.name} data-testid={match.name} className='optli' onClick={(e) => { liClick(e.target) }}>

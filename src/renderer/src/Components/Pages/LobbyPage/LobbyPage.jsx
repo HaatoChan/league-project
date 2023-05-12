@@ -95,11 +95,23 @@ const LobbyPage = () => {
 						left: '0%',
 						top: '0%',
 						width: '100%',
-						height: '19%'
+						height: '19%',
+						zIndex: '10000',
+						backgroundColor: 'rgba(39, 39, 46)'
 					}}
 				/>
 
-				<SelectChamp></SelectChamp>
+				<SelectChamp 
+					searchBarContainerStyle={{
+						height: '18%'
+					}}
+					champImagesStyle={{
+						overflowY: 'hidden'
+					}}
+					optionsStyle={{
+						maxHeight: '340%'
+					}}
+				/> 
 			</div>
 		</div>
 	)
