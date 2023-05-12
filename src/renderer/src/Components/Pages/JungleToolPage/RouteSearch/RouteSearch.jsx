@@ -118,7 +118,7 @@ const RouteSearch = () => {
 						<div className="buttoncontainer">					
 							<button className="confirmbutton" id='yesdelete' onClick={() => {
 								// setDisplayConfirmation(false)
-								deleteOnClick()
+								deleteOnClick(setAllRoutes)
 							}}>Yes</button>
 							<button className="confirmbutton" id='nodelete' onClick={() => setDisplayConfirmation(false)}>No</button></div>
 					</div>

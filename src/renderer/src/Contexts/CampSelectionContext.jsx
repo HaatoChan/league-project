@@ -137,18 +137,21 @@ const CampSelectionContextProvider = ({children}) => {
 
 	/**
 	 * Handles the deletion of the currently selected route.
+	 * @param {Function} setAllRoutes - The routes used in RouteSearch component.
 	 */
-	const deleteOnClick = async () => {
+	const deleteOnClick = async (setAllRoutes) => {
 		const allRoutes = await window.api.readRoutesFile()
 		const matchingRouteIndex = allRoutes.routes.findIndex(route => route.name === routeName)
   
 		if (matchingRouteIndex !== -1) {
 			allRoutes.routes.splice(matchingRouteIndex, 1)
-			console.log(allRoutes)
 			await window.api.writeRoutesFile(allRoutes)
 			await resetAll()
 			setSideSelected('All')
 			setSelectedChampions([])
+			console.log(allRoutes)
+			setRouteName('')
+			setAllRoutes(allRoutes.routes)
 		}
 	}
 
