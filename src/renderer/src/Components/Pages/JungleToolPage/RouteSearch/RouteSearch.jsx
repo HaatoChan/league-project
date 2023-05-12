@@ -4,9 +4,10 @@ import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 
 /**
  * Defines a route search component.
+ * @param {StyleSheet} inputStyle - The style for the input field
  * @returns {HTMLElement} - Returns a route search component.
  */
-const RouteSearch = () => {
+const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonStyle, confirmDeletionStyle, createButtonStyle}) => {
 
 	const [namingRoute, setNamingRoute] = useState(false)
 	const [allRoutes, setAllRoutes] = useState([])
@@ -108,26 +109,42 @@ const RouteSearch = () => {
 
 	return ( 
 		<div className="routesearch">
-			<div className="routenameanddelete"	ref={confirmRef}>		
+			<div className="routenameanddelete"	
+				ref={confirmRef} 
+				style={deleteAreaStyle ? deleteAreaStyle : {}}
+			>		
 				<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}
 				</p>
-				<button className='deleteRoute' onClick={() => setDisplayConfirmation(true)}>DELETE</button>
+				{routeName && <button className='deleteRoute' onClick={() => setDisplayConfirmation(true)} 
+					style={deleteButtonStyle ? deleteButtonStyle : {}}>DELETE</button>
+				}
 				{displayConfirmation &&	
-					<div className="confirmDeletion">
+					<div className="confirmDeletion"
+						style={confirmDeletionStyle ? confirmDeletionStyle : {}}
+					>
 						<p className="confirmP">Are you sure you want to delete this route?</p>
 						<div className="buttoncontainer">					
 							<button className="confirmbutton" id='yesdelete' onClick={() => {
-								// setDisplayConfirmation(false)
+								setDisplayConfirmation(false)
 								deleteOnClick(setAllRoutes)
 							}}>Yes</button>
 							<button className="confirmbutton" id='nodelete' onClick={() => setDisplayConfirmation(false)}>No</button></div>
 					</div>
 				}
 			</div>
-			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid="routesearchinput"/>
-			<button className='addRoute' onClick={addOnClick} data-testid="addRouteButton">+</button>
-			{ matches.length > 0 &&
-				<div className="routeoptions">
+			<input type="text" placeholder='Search for your route' className='routesearchinput' 
+				onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} 
+				data-testid="routesearchinput"   
+				style={inputStyle ? inputStyle : {}}/>
+			<button className='addRoute' 
+				onClick={addOnClick} 
+				data-testid="addRouteButton"
+				style={createButtonStyle ? createButtonStyle : {}}
+			>+</button>
+			{ //matches.length > 0 &&
+				<div className="routeoptions"
+					style={optionsStyle ? optionsStyle : {}}
+				>
 					<ul className="routeul">
 						{
 							matches.map((route, index) => (
