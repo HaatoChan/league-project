@@ -107,7 +107,6 @@ const CampSelectionContextProvider = ({children}) => {
 						await elements.click()
 					}
 				}
-				console.log(newArray)
 				for(const element of newArray) {
 					const button = document.getElementById(element)
 					await button.click()
@@ -133,6 +132,27 @@ const CampSelectionContextProvider = ({children}) => {
 
 		// Wait for state updates to complete
 		await new Promise((resolve) => setTimeout(resolve, 100))
+	}
+
+
+	/**
+	 * Handles the deletion of the currently selected route.
+	 * @param {Function} setAllRoutes - The routes used in RouteSearch component.
+	 */
+	const deleteOnClick = async (setAllRoutes) => {
+		const allRoutes = await window.api.readRoutesFile()
+		const matchingRouteIndex = allRoutes.routes.findIndex(route => route.name === routeName)
+  
+		if (matchingRouteIndex !== -1) {
+			allRoutes.routes.splice(matchingRouteIndex, 1)
+			await window.api.writeRoutesFile(allRoutes)
+			await resetAll()
+			setSideSelected('All')
+			setSelectedChampions([])
+			console.log(allRoutes)
+			setRouteName('')
+			setAllRoutes(allRoutes.routes)
+		}
 	}
 
 	return <CampSelectionContext.Provider
@@ -177,7 +197,8 @@ const CampSelectionContextProvider = ({children}) => {
 			exportUrl: exportUrl,
 			createImport: createImport,
 			routeName: routeName,
-			exportObject: exportObject
+			exportObject: exportObject,
+			deleteOnClick: deleteOnClick
 		}}
 	>
 		{children}

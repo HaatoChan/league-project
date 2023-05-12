@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import './routesearch.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 
@@ -11,7 +11,27 @@ const RouteSearch = () => {
 	const [namingRoute, setNamingRoute] = useState(false)
 	const [allRoutes, setAllRoutes] = useState([])
 	const [matches, setMatches] = useState([])
-	const {routeName, createImport} = useContext(CampSelectionContext)
+	const {routeName, createImport, deleteOnClick} = useContext(CampSelectionContext)
+	const [displayConfirmation, setDisplayConfirmation] = useState(false)
+	const confirmRef = useRef(null)
+
+	useEffect(() => {
+		/**
+		 * Handles a click outside of the confirmation dialog box.
+		 * @param {MouseEvent} event - The click event.
+		 */
+		const handleClickOutside = (event) => {
+			if (confirmRef.current && !confirmRef.current.contains(event.target)) {
+				setDisplayConfirmation(false)
+			}
+		}
+	
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [confirmRef])
+
 	/**
 	 * Spawns a div for the user to enter the new route name on click.
 	 */
@@ -88,7 +108,22 @@ const RouteSearch = () => {
 
 	return ( 
 		<div className="routesearch">
-			<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}</p>
+			<div className="routenameanddelete"	ref={confirmRef}>		
+				<p className="nameOfCurrentlySelected" data-testid={'currentlySelected' + routeName} style={{ color: 'white'}}>{routeName}
+				</p>
+				<button className='deleteRoute' onClick={() => setDisplayConfirmation(true)}>DELETE</button>
+				{displayConfirmation &&	
+					<div className="confirmDeletion">
+						<p className="confirmP">Are you sure you want to delete this route?</p>
+						<div className="buttoncontainer">					
+							<button className="confirmbutton" id='yesdelete' onClick={() => {
+								// setDisplayConfirmation(false)
+								deleteOnClick(setAllRoutes)
+							}}>Yes</button>
+							<button className="confirmbutton" id='nodelete' onClick={() => setDisplayConfirmation(false)}>No</button></div>
+					</div>
+				}
+			</div>
 			<input type="text" placeholder='Search for your route' className='routesearchinput' onChange={handleInput} onFocus={handleInput} onBlur={handleBlur} data-testid="routesearchinput"/>
 			<button className='addRoute' onClick={addOnClick} data-testid="addRouteButton">+</button>
 			{ matches.length > 0 &&
