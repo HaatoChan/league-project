@@ -7,9 +7,12 @@ import SideSelect from '../SideSelect/SideSelect'
 
 /**
  * Defines the EXP display.
+ * @param {object} root0 - The React props object.
+ * @param {boolean} root0.displayTable - Determines whether the table should be shown or not.
+ * @param {StyleSheet} root0.undermapContainerStyle - CSS for the side, exp and gold display.
  * @returns {HTMLElement} - Returns an exp display.
  */
-const ExpDisplay = () => {
+const ExpDisplay = ({displayTable = true, undermapContainerStyle}) => {
 	const { selectedCamps, totalExp, level, totalRequired, totalGold } = useContext(CampSelectionContext)
 	const [copiedStateArray, setCopiedStateArray] = useState([])
 	
@@ -43,27 +46,31 @@ const ExpDisplay = () => {
 
 	return (  
 		<div className="expDisplay">
-			<table>
-				<thead>
-					<tr>
-						<th className='exp-count-th'>Camp</th>
-						<th className='exp-count-th'>Level</th>
-						<th className='exp-count-th'>Cumulative Gold</th>
-					</tr>
-				</thead>
-				<tbody>
-					{copiedStateArray.map((camp) => (
-						<tr key={camp.id}>
-							<td className="campName-td">{camp.dataset.name}</td>
-							<td>{camp.dataset.level}</td>
-							<td style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{camp.dataset.cumulativegold}
-								<img src={coinImage} alt="image of a coin" className="coinTd" />
-							</td>
+			{ displayTable &&
+				<table>
+					<thead>
+						<tr>
+							<th className='exp-count-th'>Camp</th>
+							<th className='exp-count-th'>Level</th>
+							<th className='exp-count-th'>Cumulative Gold</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
-			<div className="undermapcontainer">
+					</thead>
+					<tbody>
+						{copiedStateArray.map((camp) => (
+							<tr key={camp.id}>
+								<td className="campName-td">{camp.dataset.name}</td>
+								<td>{camp.dataset.level}</td>
+								<td style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{camp.dataset.cumulativegold}
+									<img src={coinImage} alt="image of a coin" className="coinTd" />
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			}
+			<div className="undermapcontainer"
+				style={undermapContainerStyle ? undermapContainerStyle : {}}
+			>
 				<div className="golddiv">
 					<p className="totalGold" data-testid="totalGold">{totalGold} </p>
 					<img src={coinImage} alt="image of a coin" className="coin" />

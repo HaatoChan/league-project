@@ -5,6 +5,8 @@ import ChampionSplash from './ChampionSplash/ChampionSplash'
 import Map from '../JungleToolPage/Map/Map'
 import RouteSearch from '../JungleToolPage/RouteSearch/RouteSearch'
 import { CampSelectionContext } from '../../../Contexts/CampSelectionContext'
+import ExpDisplay from '../JungleToolPage/ExpDisplay/ExpDisplay'
+import SelectChamp from '../JungleToolPage/SelectChamp/SelectChamp'
 
 /**
  * Defines the lobby page
@@ -87,7 +89,17 @@ const LobbyPage = () => {
 				}
 			</div>
 			<div className="camporder">
-                
+				<ExpDisplay 
+					displayTable={false}
+					undermapContainerStyle={{
+						left: '0%',
+						top: '0%',
+						width: '100%',
+						height: '19%'
+					}}
+				/>
+
+				<SelectChamp></SelectChamp>
 			</div>
 		</div>
 	)
