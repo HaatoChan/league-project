@@ -42,10 +42,27 @@ const CampSelectionContextProvider = ({children}) => {
 			console.log(selectedRoute)
 		}
 	})
-
+	// Receives information from the main process that the game ended
 	window.LCUApi.gameEnded((_event, value) => {
 		console.log(value)
+		// Update the winrate
+		updateWinrate(value.localPlayer)
 	})
+
+	/**
+	 * Updates the winrate after the game has ended
+	 * @param {object} localPlayerData - The local players winrate on game end.
+	 */
+	const updateWinrate = async (localPlayerData) => {
+		gameSelectedRoute.totalGames++
+		console.log(gameSelectedRoute)
+		if(localPlayerData.stats.LOSE) {
+			gameSelectedRoute.totalLosses++
+		} else if (localPlayerData.stats.WIN) {
+			gameSelectedRoute.totalLosses++
+		}
+		console.log(gameSelectedRoute)
+	}
 
 	/**
 	 * Adds experience to the totalExp state.
