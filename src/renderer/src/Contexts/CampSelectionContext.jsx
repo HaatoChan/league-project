@@ -29,6 +29,24 @@ const CampSelectionContextProvider = ({children}) => {
 	const [exportUrl, setExportUrl] = useState('https://fluffy-bombolone-8bfa7b.netlify.app/All//')
 	const [exportObject, setExportObject] = useState({})
 	const [routeName, setRouteName] = useState('')
+	const [totalWr, setTotalWr] = useState(null)
+	const [gameSelectedRoute, setGameSelectedRoute] = useState(null)
+
+
+	// Receives information from the main process that the game is starting
+	window.LCUApi.gameStarting(async () => {
+		if (routeName) {
+			const data = await window.api.readRoutesFile()
+			const selectedRoute = data.routes.find(route => route.name === routeName)
+			setGameSelectedRoute(selectedRoute)
+			console.log(selectedRoute)
+		}
+	})
+
+	window.LCUApi.gameEnded((_event, value) => {
+		console.log(value)
+	})
+
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -115,6 +133,9 @@ const CampSelectionContextProvider = ({children}) => {
 			if (importData.name) {
 				setRouteName(importData.name)
 			}
+			if(importData.totalWr) {
+				setTotalWr(importData.totalWr)
+			}
 		} catch (error) {
 			console.error(error)
 		}
@@ -151,6 +172,7 @@ const CampSelectionContextProvider = ({children}) => {
 			setSelectedChampions([])
 			console.log(allRoutes)
 			setRouteName('')
+			setTotalWr(null)
 			setAllRoutes(allRoutes.routes)
 		}
 	}
@@ -198,7 +220,8 @@ const CampSelectionContextProvider = ({children}) => {
 			createImport: createImport,
 			routeName: routeName,
 			exportObject: exportObject,
-			deleteOnClick: deleteOnClick
+			deleteOnClick: deleteOnClick,
+			totalWr: totalWr
 		}}
 	>
 		{children}

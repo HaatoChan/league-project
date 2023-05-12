@@ -44,24 +44,31 @@ const api = {
 const LCUApi = {
 	/**
 	 * Listens to if the lcu was connected
-	 * @param {Function} callback - The callback function execute(?)
+	 * @param {Function} callback - The callback function execute
 	 */
 	lcuConnected: (callback) => {
 		ipcRenderer.on('lcu-connected', callback)
 	},
 	/**
 	 * Receives lobby information from the main thread.
-	 * @param {Function} callback - The callback function execute(?)
+	 * @param {Function} callback - The callback function execute
 	 */
 	lobbyInfo: (callback) => {
 		ipcRenderer.on('champ-select-info', callback)
 	},
 	/**
 	 * Receives information about the game starting
-	 * @param {Function} callback - The callback function execute(?)
+	 * @param {Function} callback - The callback function execute
 	 */
 	gameStarting: (callback) => {
 		ipcRenderer.on('game-starting', callback)
+	},
+	/**
+	 * Receives information about the game having ended
+	 * @param {Function} callback - The callback function to execute
+	 */
+	gameEnded: (callback) => {
+		ipcRenderer.on('game-ended', callback)
 	}
 }
 

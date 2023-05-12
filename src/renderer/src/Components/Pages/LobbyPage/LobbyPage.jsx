@@ -16,7 +16,7 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName} = useContext(CampSelectionContext)
+	const {exportObject, routeName, totalWr} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, gameStarting} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 
@@ -34,7 +34,8 @@ const LobbyPage = () => {
 				))}
 			</div>
 			<div className="statistics">
-				{gameStarting && <h1 className="gamestarting">In game!</h1> }
+				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
+				<p className="totalwr" style={{color: 'white'}}>{totalWr && `Overall winrate: ${totalWr}`}</p>
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />

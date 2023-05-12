@@ -61,7 +61,8 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 			name: nameOfRoute,
 			side: 'All',
 			route: null,
-			champions: null
+			champions: null,
+			totalWr: '-%'
 		}
 		const error = document.getElementById('routenameerror')
 		const data = await window.api.readRoutesFile()

@@ -27,6 +27,11 @@ const LobbyContextProvider = ({children}) => {
 		}
 	})
 
+	// Receives information from main process that the game has ended
+	window.LCUApi.gameEnded(() => {
+		setGameStarting(false)
+	})
+
 	// Receives information from main process that the game has started
 	window.LCUApi.gameStarting(() => {
 		setGameStarting(true)
