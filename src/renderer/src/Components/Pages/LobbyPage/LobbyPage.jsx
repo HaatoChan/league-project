@@ -17,7 +17,7 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 const LobbyPage = () => {
 
 	const {exportObject, routeName} = useContext(CampSelectionContext)
-	const {championIds, teamArray, imgArray} = useContext(LobbyContext)
+	const {championIds, teamArray, imgArray, gameStarting} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 
 	return ( 
@@ -34,7 +34,7 @@ const LobbyPage = () => {
 				))}
 			</div>
 			<div className="statistics">
-                
+				{gameStarting && <h1 className="gamestarting">In game!</h1> }
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />
@@ -65,14 +65,13 @@ const LobbyPage = () => {
 				createButtonStyle={{
 					height: '15%',
 					left: '57%',
-					top: '92%'
+					top: '92.1%'
 				}}
 				deleteButtonStyle={{
 					position: 'fixed',
 					top: '78%',
 					left: '59.5%',
 					padding: '0.5rem'
-
 				}}
 				/>
 				{routeName && <button className="saveButton" onClick={async () => {

@@ -43,7 +43,7 @@
     position: relative;
     grid-column: 3;
     grid-row: 5;
-    background-color: rgba(39, 39, 46, 0.76);
+    background-color: rgba(39, 39, 46);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.2);
 }
 
@@ -64,7 +64,7 @@
 .saveButton {
     position: fixed;
     top: 94.8%;
-    left: 55%;
+    left: 54.9%;
     height: 4.1%;
     width: 3%;
     font-weight: bold;
@@ -77,10 +77,10 @@
 
 .importOpen {
     width: 15%;
-    height: 15.4%;
+    height: 15%;
     position: absolute;
-    bottom: 0;
-    right: 2%;
+    bottom: 0.5%;
+    right: 2.3%;
     border: none;
     cursor: pointer;
     font-weight: bold;

@@ -55,6 +55,13 @@ const LCUApi = {
 	 */
 	lobbyInfo: (callback) => {
 		ipcRenderer.on('champ-select-info', callback)
+	},
+	/**
+	 * Receives information about the game starting
+	 * @param {Function} callback - The callback function execute(?)
+	 */
+	gameStarting: (callback) => {
+		ipcRenderer.on('game-starting', callback)
 	}
 }
 
