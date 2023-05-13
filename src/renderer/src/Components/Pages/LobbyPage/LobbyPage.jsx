@@ -36,7 +36,7 @@ const LobbyPage = () => {
 			<div className="statistics">
 				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
 				<p className="totalwr" style={{color: 'white'}}>{routeGameData && `Overall winrate: ${routeGameData.totalWr}`}</p>
-				<p className="testingmatches" style={{color: 'white'}}>{`Total Wins: ${routeGameData.totalWins}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
+				<p className="testingmatches" style={{color: 'white'}}>{`Total Games: ${routeGameData.totalGames}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />

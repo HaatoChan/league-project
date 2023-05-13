@@ -56,25 +56,32 @@ const CampSelectionContextProvider = ({children}) => {
 	 * @param {object} localPlayerData - The local players winrate on game end.
 	 */
 	const updateWinrate = async (localPlayerData) => {
-		gameSelectedRoute.totalGames++
-		console.log('Before game updated: ')
-		console.log(gameSelectedRoute)
-		if(localPlayerData.stats.LOSE) {
-			gameSelectedRoute.totalLosses++
-		} else if (localPlayerData.stats.WIN) {
-			gameSelectedRoute.totalWins++
-		}
-		console.log('After updates gameselected route: ')
-		console.log(gameSelectedRoute)
-		const data = await window.api.readRoutesFile()
+		console.log('total games: ' + gameSelectedRoute.gameData.totalGames)
+		if (gameSelectedRoute.gameData) {
+			gameSelectedRoute.gameData.totalGames++
+			console.log('Before game updated: ')
+			console.log(gameSelectedRoute)
+			if(localPlayerData.stats.LOSE) {
+				gameSelectedRoute.gameData.totalLosses++
+			} else if (localPlayerData.stats.WIN) {
+				gameSelectedRoute.gameData.totalWins++
+			}
+			console.log('After updates gameselected route: ')
+			console.log(gameSelectedRoute)
+			const data = await window.api.readRoutesFile()
 
-		// Find the index and replace
-		const selectedRouteIndex = data.routes.findIndex(route => route.name === gameSelectedRoute.name)
-		if (selectedRouteIndex !== -1) {
-			const selectedRoute = data.routes[selectedRouteIndex]
-			Object.assign(selectedRoute, gameSelectedRoute)
-			data.routes[selectedRouteIndex] = selectedRoute
-			await window.api.writeRoutesFile(data)
+			// Find the index and replace
+			const selectedRouteIndex = data.routes.findIndex(route => route.name === gameSelectedRoute.name)
+			if (selectedRouteIndex !== -1) {
+				const selectedRoute = data.routes[selectedRouteIndex]
+				Object.assign(selectedRoute, gameSelectedRoute)
+				data.routes[selectedRouteIndex] = selectedRoute
+				await window.api.writeRoutesFile(data)
+			}
+
+			if (gameSelectedRoute.name === routeName) {
+				setRouteGameData(gameSelectedRoute.gameData)
+			}
 		}
 	}
 
