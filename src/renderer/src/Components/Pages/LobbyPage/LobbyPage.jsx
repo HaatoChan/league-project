@@ -50,7 +50,7 @@ const LobbyPage = () => {
 				}}
 				optionsStyle={{
 					top: '83.5%',
-					width: '56.5%'
+					width: '100%'
 				}}
 				deleteAreaStyle={{
 					top: '73%',
