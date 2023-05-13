@@ -59,15 +59,14 @@ const CampSelectionContextProvider = ({children}) => {
 		console.log('total games: ' + gameSelectedRoute.gameData.totalGames)
 		if (gameSelectedRoute.gameData) {
 			gameSelectedRoute.gameData.totalGames++
-			console.log('Before game updated: ')
-			console.log(gameSelectedRoute)
 			if(localPlayerData.stats.LOSE) {
 				gameSelectedRoute.gameData.totalLosses++
 			} else if (localPlayerData.stats.WIN) {
 				gameSelectedRoute.gameData.totalWins++
 			}
-			console.log('After updates gameselected route: ')
-			console.log(gameSelectedRoute)
+			// Assign / calculate the winrate
+			gameSelectedRoute.gameData.totalWr = `${(gameSelectedRoute.gameData.totalWins / gameSelectedRoute.gameData.totalGames) * 100}%`
+			console.log(gameSelectedRoute.gameData.totalWr)
 			const data = await window.api.readRoutesFile()
 
 			// Find the index and replace
