@@ -20,8 +20,6 @@ const LobbyContextProvider = ({children}) => {
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
 		const combinedTeamArray = [...value.theirTeam, ...value.myTeam]
-		console.log('Summoner Spell One: ' + combinedTeamArray[0].spell1Id)
-		console.log('Summoner spell Two: ' + combinedTeamArray[0].spell2Id)
 		if(combinedTeamArray.length > 0) {
 			setTeamArray(combinedTeamArray)
 		}

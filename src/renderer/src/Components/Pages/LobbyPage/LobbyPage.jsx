@@ -16,7 +16,7 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName, totalWr} = useContext(CampSelectionContext)
+	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, gameStarting} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 
@@ -35,7 +35,8 @@ const LobbyPage = () => {
 			</div>
 			<div className="statistics">
 				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
-				<p className="totalwr" style={{color: 'white'}}>{totalWr && `Overall winrate: ${totalWr}`}</p>
+				<p className="totalwr" style={{color: 'white'}}>{routeGameData && `Overall winrate: ${routeGameData.totalWr}`}</p>
+				<p className="testingmatches" style={{color: 'white'}}>{`Total Wins: ${routeGameData.totalWins}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />
@@ -70,7 +71,7 @@ const LobbyPage = () => {
 				}}
 				deleteButtonStyle={{
 					position: 'fixed',
-					top: '78%',
+					top: '79%',
 					left: '59.5%',
 					padding: '0.5rem'
 				}}

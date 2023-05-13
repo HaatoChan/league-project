@@ -31,7 +31,7 @@ const CampSelectionContextProvider = ({children}) => {
 	const [routeName, setRouteName] = useState('')
 	const [totalWr, setTotalWr] = useState(null)
 	const [gameSelectedRoute, setGameSelectedRoute] = useState(null)
-
+	const [routeGameData, setRouteGameData] = useState({})
 
 	// Receives information from the main process that the game is starting
 	window.LCUApi.gameStarting(async () => {
@@ -39,11 +39,13 @@ const CampSelectionContextProvider = ({children}) => {
 			const data = await window.api.readRoutesFile()
 			const selectedRoute = data.routes.find(route => route.name === routeName)
 			setGameSelectedRoute(selectedRoute)
+			console.log('Game starting selected: ')
 			console.log(selectedRoute)
 		}
 	})
 	// Receives information from the main process that the game ended
 	window.LCUApi.gameEnded((_event, value) => {
+		console.log('Game ending all data from renderer: ')
 		console.log(value)
 		// Update the winrate
 		updateWinrate(value.localPlayer)
@@ -55,13 +57,25 @@ const CampSelectionContextProvider = ({children}) => {
 	 */
 	const updateWinrate = async (localPlayerData) => {
 		gameSelectedRoute.totalGames++
+		console.log('Before game updated: ')
 		console.log(gameSelectedRoute)
 		if(localPlayerData.stats.LOSE) {
 			gameSelectedRoute.totalLosses++
 		} else if (localPlayerData.stats.WIN) {
-			gameSelectedRoute.totalLosses++
+			gameSelectedRoute.totalWins++
 		}
+		console.log('After updates gameselected route: ')
 		console.log(gameSelectedRoute)
+		const data = await window.api.readRoutesFile()
+
+		// Find the index and replace
+		const selectedRouteIndex = data.routes.findIndex(route => route.name === gameSelectedRoute.name)
+		if (selectedRouteIndex !== -1) {
+			const selectedRoute = data.routes[selectedRouteIndex]
+			Object.assign(selectedRoute, gameSelectedRoute)
+			data.routes[selectedRouteIndex] = selectedRoute
+			await window.api.writeRoutesFile(data)
+		}
 	}
 
 	/**
@@ -150,8 +164,8 @@ const CampSelectionContextProvider = ({children}) => {
 			if (importData.name) {
 				setRouteName(importData.name)
 			}
-			if(importData.totalWr) {
-				setTotalWr(importData.totalWr)
+			if(importData.gameData) {
+				setRouteGameData(importData.gameData)
 			}
 		} catch (error) {
 			console.error(error)
@@ -238,7 +252,8 @@ const CampSelectionContextProvider = ({children}) => {
 			routeName: routeName,
 			exportObject: exportObject,
 			deleteOnClick: deleteOnClick,
-			totalWr: totalWr
+			totalWr: totalWr,
+			routeGameData: routeGameData
 		}}
 	>
 		{children}
