@@ -17,8 +17,29 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 const LobbyPage = () => {
 
 	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
-	const {championIds, teamArray, imgArray, gameStarting, enemyTeam} = useContext(LobbyContext)
+	const {championIds, teamArray, imgArray, gameStarting, 
+	//	enemyTeam
+	} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
+
+	// mock data for design
+	const enemyTeam = [
+		{
+			championId: 1
+		},
+		{
+			championId: 103
+		},
+		{
+			championId: 13
+		},
+		{
+			championId: 134
+		},
+		{
+			championId: 44
+		}
+	]
 
 	return ( 
 		<div className="lobbypagecontainer">
@@ -34,31 +55,38 @@ const LobbyPage = () => {
 				))}
 			</div>
 			<div className="statistics">
-				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
-				<p className="totalwr" style={{color: 'white'}}>{routeGameData && `Overall winrate: ${routeGameData.totalWr}`}</p>
-				<p className="testingmatches" style={{color: 'white'}}>{`Total Games: ${routeGameData.totalGames}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
-				{routeGameData.vsChampion && enemyTeam && <p className="testingvschampions">{routeGameData?.vsChampion.filter((vsChampObj) => {
-					for (let i = 0; i < enemyTeam.length; i++) {
-						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
-							return vsChampObj
+				<h1 className="gamestarting">{!gameStarting && 'Ingame!'}</h1>
+				<div className="split">
+					{routeGameData.vsChampion && enemyTeam && <div className="championSpec">
+						{routeGameData?.vsChampion.filter((vsChampObj) => {
+							for (let i = 0; i < enemyTeam.length; i++) {
+								if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+									return vsChampObj
+								}
+							}
+						}).map(vsChampObj => {
+							const champKey = Object.keys(vsChampObj)[0]
+							return (
+								<div key={champKey}>
+									<p>Champion name: {vsChampObj[champKey].name}</p>
+									<p>Winrate: {vsChampObj[champKey].totalWr}</p>
+								</div>
+							)})
 						}
+					</div>
 					}
-				}).map(vsChampObj => {
-					const champKey = Object.keys(vsChampObj)[0]
-					return (
-						<div key={champKey}>
-							<p>Champion name: {vsChampObj[champKey].name}</p>
-							<p>Winrate: {vsChampObj[champKey].totalWr}</p>
-						</div>
-					)})
-				}
-				</p>
-				}
+				</div>
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />
 			</div>
 			<div className="routeselector">
+				<div className="overalldiv">
+					<p className="totalwr">Winrate: {routeGameData.totalWr}</p>
+					<p className="totalGames">Games: {routeGameData.totalGames}</p>
+					<p className="totalWins">Wins {routeGameData.totalWins}</p>
+					<p className="totalLosses">Losses {routeGameData.totalLosses}</p>
+				</div>
 				<RouteSearch inputStyle={{
 					width: '55%',
 					height: '15%',

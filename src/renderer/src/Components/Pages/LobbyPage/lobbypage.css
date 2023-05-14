@@ -31,6 +31,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.2);
     grid-column: 2;
     grid-row: 5;
+    color: white;
 }
 
 .mapdiv {
@@ -101,5 +102,24 @@
     margin-top: 3%;
     height: 1rem;
     font-size: 1rem;
-    padding-left: 10%;
+}
+.overall {
+    margin-left: 4%;
+}
+
+.split {
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+}
+.overalldiv {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.championSpec {
+    white-space: normal;
 }
