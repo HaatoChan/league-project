@@ -17,7 +17,7 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 const LobbyPage = () => {
 
 	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
-	const {championIds, teamArray, imgArray, gameStarting} = useContext(LobbyContext)
+	const {championIds, teamArray, imgArray, gameStarting, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 
 	return ( 
@@ -37,6 +37,23 @@ const LobbyPage = () => {
 				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
 				<p className="totalwr" style={{color: 'white'}}>{routeGameData && `Overall winrate: ${routeGameData.totalWr}`}</p>
 				<p className="testingmatches" style={{color: 'white'}}>{`Total Games: ${routeGameData.totalGames}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
+				{routeGameData.vsChampion && enemyTeam && <p className="testingvschampions">{routeGameData?.vsChampion.filter((vsChampObj) => {
+					for (let i = 0; i < enemyTeam.length; i++) {
+						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+							return vsChampObj
+						}
+					}
+				}).map(vsChampObj => {
+					const champKey = Object.keys(vsChampObj)[0]
+					return (
+						<div key={champKey}>
+							<p>Champion name: {vsChampObj[champKey].name}</p>
+							<p>Winrate: {vsChampObj[champKey].totalWr}</p>
+						</div>
+					)})
+				}
+				</p>
+				}
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />
@@ -95,6 +112,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={() => console.log(enemyTeam)}></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{

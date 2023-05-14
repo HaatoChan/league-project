@@ -16,9 +16,12 @@ const LobbyContextProvider = ({children}) => {
 	const [teamArray, setTeamArray] = useState([])
 	const [imgArray, setImgArray] = useState([])
 	const [gameStarting, setGameStarting] = useState(false)
+	const [enemyTeam, setEnemyTeam] = useState(null)
 	// Receives information from the main process about state of champion select
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
+		console.log(value)
+		setEnemyTeam(value.theirTeam)
 		const combinedTeamArray = [...value.theirTeam, ...value.myTeam]
 		if(combinedTeamArray.length > 0) {
 			setTeamArray(combinedTeamArray)
@@ -59,7 +62,8 @@ const LobbyContextProvider = ({children}) => {
 			championIds: championIds,
 			teamArray: teamArray,
 			imgArray: imgArray,
-			gameStarting: gameStarting
+			gameStarting: gameStarting,
+			enemyTeam: enemyTeam
 		}}
 	>
 		{children}
