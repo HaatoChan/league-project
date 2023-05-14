@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import './routesearch.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
+import { championIds } from '../../../../Data/Objects'
 
 /**
  * Defines a route search component.
@@ -61,7 +62,23 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 			name: nameOfRoute,
 			side: 'All',
 			route: null,
-			champions: null
+			champions: null,
+			gameData: {
+				totalWr: '-%',
+				totalGames: 0,
+				totalWins: 0,
+				totalLosses: 0,
+				// Champion specific entries
+				vsChampion: Object.entries(championIds).map(([key, value]) => ({
+					[key]: {
+						name: value.name,
+						totalWr: '-%',
+						totalGames: 0,
+						totalWins: 0,
+						totalLosses: 0
+					}
+				}))
+			}
 		}
 		const error = document.getElementById('routenameerror')
 		const data = await window.api.readRoutesFile()

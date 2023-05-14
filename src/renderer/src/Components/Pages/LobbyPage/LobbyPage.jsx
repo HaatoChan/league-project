@@ -16,8 +16,8 @@ import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName} = useContext(CampSelectionContext)
-	const {championIds, teamArray, imgArray, gameStarting} = useContext(LobbyContext)
+	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
+	const {championIds, teamArray, imgArray, gameStarting, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 
 	return ( 
@@ -34,7 +34,26 @@ const LobbyPage = () => {
 				))}
 			</div>
 			<div className="statistics">
-				{gameStarting && <h1 className="gamestarting">In game!</h1> }
+				<h1 className="gamestarting">{gameStarting && 'Ingame!'}</h1>
+				<p className="totalwr" style={{color: 'white'}}>{routeGameData && `Overall winrate: ${routeGameData.totalWr}`}</p>
+				<p className="testingmatches" style={{color: 'white'}}>{`Total Games: ${routeGameData.totalGames}. Total losses ${routeGameData.totalLosses}. Total Wins ${routeGameData.totalWins}`}</p>
+				{routeGameData.vsChampion && enemyTeam && <p className="testingvschampions">{routeGameData?.vsChampion.filter((vsChampObj) => {
+					for (let i = 0; i < enemyTeam.length; i++) {
+						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+							return vsChampObj
+						}
+					}
+				}).map(vsChampObj => {
+					const champKey = Object.keys(vsChampObj)[0]
+					return (
+						<div key={champKey}>
+							<p>Champion name: {vsChampObj[champKey].name}</p>
+							<p>Winrate: {vsChampObj[champKey].totalWr}</p>
+						</div>
+					)})
+				}
+				</p>
+				}
 			</div>
 			<div className="mapdiv">
 				<Map padding='0rem' />
@@ -48,7 +67,7 @@ const LobbyPage = () => {
 				}}
 				optionsStyle={{
 					top: '83.5%',
-					width: '56.5%'
+					width: '100%'
 				}}
 				deleteAreaStyle={{
 					top: '73%',
@@ -69,7 +88,7 @@ const LobbyPage = () => {
 				}}
 				deleteButtonStyle={{
 					position: 'fixed',
-					top: '78%',
+					top: '79%',
 					left: '59.5%',
 					padding: '0.5rem'
 				}}
@@ -93,6 +112,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={() => console.log(enemyTeam)}></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{

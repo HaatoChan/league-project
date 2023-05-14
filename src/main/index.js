@@ -169,7 +169,6 @@ const lcuConnect = async () => {
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
-				console.log(data)
 				if(data.timer.phase !== 'GAME_STARTING') {
 					mainWindow.webContents.send('champ-select-info', data)
 				} else if (data.timer.phase === 'GAME_STARTING') {
@@ -177,8 +176,7 @@ const lcuConnect = async () => {
 				}
 			})
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
-				console.log('end of game: ' + JSON.stringify(data))
-				console.log(data.localPlayer)
+				mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
 		} 

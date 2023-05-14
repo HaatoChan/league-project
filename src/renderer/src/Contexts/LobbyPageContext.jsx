@@ -16,15 +16,21 @@ const LobbyContextProvider = ({children}) => {
 	const [teamArray, setTeamArray] = useState([])
 	const [imgArray, setImgArray] = useState([])
 	const [gameStarting, setGameStarting] = useState(false)
+	const [enemyTeam, setEnemyTeam] = useState(null)
 	// Receives information from the main process about state of champion select
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
+		console.log(value)
+		setEnemyTeam(value.theirTeam)
 		const combinedTeamArray = [...value.theirTeam, ...value.myTeam]
-		console.log('Summoner Spell One: ' + combinedTeamArray[0].spell1Id)
-		console.log('Summoner spell Two: ' + combinedTeamArray[0].spell2Id)
 		if(combinedTeamArray.length > 0) {
 			setTeamArray(combinedTeamArray)
 		}
+	})
+
+	// Receives information from main process that the game has ended
+	window.LCUApi.gameEnded(() => {
+		setGameStarting(false)
 	})
 
 	// Receives information from main process that the game has started
@@ -56,7 +62,8 @@ const LobbyContextProvider = ({children}) => {
 			championIds: championIds,
 			teamArray: teamArray,
 			imgArray: imgArray,
-			gameStarting: gameStarting
+			gameStarting: gameStarting,
+			enemyTeam: enemyTeam
 		}}
 	>
 		{children}
