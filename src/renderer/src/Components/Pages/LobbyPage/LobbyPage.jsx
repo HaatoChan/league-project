@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import './lobbypage.css'
 import { LobbyContext } from '../../../Contexts/LobbyPageContext'
 import ChampionSplash from './ChampionSplash/ChampionSplash'
@@ -9,6 +9,7 @@ import ExpDisplay from '../JungleToolPage/ExpDisplay/ExpDisplay'
 import SelectChamp from '../JungleToolPage/SelectChamp/SelectChamp'
 import { SideBarContext } from '../../../Contexts/SideBarContext'
 import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
+import { championNames } from '../../../Data/Arrays'
 
 /**
  * Defines the lobby page
@@ -21,9 +22,10 @@ const LobbyPage = () => {
 	//	enemyTeam
 	} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
-
+	const [enemyTeamImage, setEnemyTeamImages] = useState([])
 	// mock data for design
-	const enemyTeam = [
+	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
+	const [enemyTeam, setEnemyTeam] = useState([
 		{
 			championId: 1
 		},
@@ -39,7 +41,57 @@ const LobbyPage = () => {
 		{
 			championId: 44
 		}
-	]
+	])
+
+	/**
+	 * Adds the images of the enemy team to display.
+	 * @param {string} champName - The champName to grab image from.
+	 * @returns {string} - Returns the url in string format
+	 */
+	const addEnemyImages = async (champName) => {
+		for (let i = 0; i < championNames.length; i++) {
+			if (championNames[i].name === champName) {
+				const imgUrl = await championNames[i].image
+				if(!enemyTeamImage.includes(imgUrl)) {
+					return imgUrl
+				}
+			}
+		}
+	}
+
+	/*	<div key={champKey} className='championdata'>
+		<img src="" alt={vsChampObj[champKey].name} className="routeimg" />
+		<p className='championP'>{vsChampObj[champKey].name}</p>
+		<p>Winrate: {vsChampObj[champKey].totalWr}</p>
+	</div> */
+
+
+	// To use later
+	useEffect( () => {
+		if (enemyTeam && routeGameData) {
+			/**
+			 * Grabs the correct route statistics and adds the corresponding image.
+			 */
+			const grabEnemyTeam = async () => {
+				// eslint-disable-next-line no-unsafe-optional-chaining
+				const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
+					for (let i = 0; i < enemyTeam.length; i++) {
+						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+							const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
+							console.log(name, totalWr, totalGames, totalWins, totalLosses)
+							return {name, totalWr, totalGames, totalWins, totalLosses}
+						}
+					}
+				})).filter(Boolean)				
+				console.log(enemyArray)
+				for(const champion of enemyArray) {
+					champion.imgUrl = await addEnemyImages(champion.name)
+				}
+				setEnemyTeamDisplay(enemyArray)
+			}
+			grabEnemyTeam()
+		}
+	},[routeGameData])
 
 	return ( 
 		<div className="lobbypagecontainer">
@@ -56,23 +108,11 @@ const LobbyPage = () => {
 			</div>
 			<div className="statistics">
 				<h1 className="gamestarting">{!gameStarting && 'Ingame!'}</h1>
-				<div className="split">
-					{routeGameData.vsChampion && enemyTeam && <div className="championSpec">
-						{routeGameData?.vsChampion.filter((vsChampObj) => {
-							for (let i = 0; i < enemyTeam.length; i++) {
-								if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
-									return vsChampObj
-								}
-							}
-						}).map(vsChampObj => {
-							const champKey = Object.keys(vsChampObj)[0]
-							return (
-								<div key={champKey}>
-									<p>Champion name: {vsChampObj[champKey].name}</p>
-									<p>Winrate: {vsChampObj[champKey].totalWr}</p>
-								</div>
-							)})
-						}
+				<div className="enemyteamdata">
+					{routeGameData.vsChampion && enemyTeamDisplay && <div className="championSpec">
+						{enemyTeamDisplay.map((champion) => {
+							console.log(champion)
+						})}
 					</div>
 					}
 				</div>

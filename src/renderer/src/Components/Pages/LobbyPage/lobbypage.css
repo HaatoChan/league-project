@@ -106,11 +106,22 @@
     margin-left: 4%;
 }
 
-.split {
-    display: flex;
-    justify-content: center;
-    gap: 5%;
+.enemyteamdata {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    margin-top: 5%;
+    text-align: left;
+    margin-left: 5%;
 }
+
+.championdata > p {
+    display: inline;
+    margin-right: 5%;
+}
+
+.championP {
+    font-size: 1.5rem;
+}
+
 .overalldiv {
     color: white;
     position: absolute;
