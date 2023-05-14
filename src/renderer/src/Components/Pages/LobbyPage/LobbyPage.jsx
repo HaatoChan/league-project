@@ -83,7 +83,9 @@ const LobbyPage = () => {
 			<div className="routeselector">
 				<div className="overalldiv">
 					<p className="totalwr">Winrate: {routeGameData.totalWr}</p>
+					<br />
 					<p className="totalGames">Games: {routeGameData.totalGames}</p>
+					<br />
 					<p className="totalWins">Wins {routeGameData.totalWins}</p>
 					<p className="totalLosses">Losses {routeGameData.totalLosses}</p>
 				</div>
