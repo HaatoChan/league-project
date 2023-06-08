@@ -83,6 +83,7 @@ const LobbyPage = () => {
 						}
 					}
 				})).filter(Boolean)				
+				
 				console.log(enemyArray)
 				for(const champion of enemyArray) {
 					champion.imgUrl = await addEnemyImages(champion.name)

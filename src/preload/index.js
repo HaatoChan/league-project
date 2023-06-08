@@ -69,6 +69,13 @@ const LCUApi = {
 	 */
 	gameEnded: (callback) => {
 		ipcRenderer.on('game-ended', callback)
+	},
+	/**
+	 * Receives information that the user has entered a lobby
+	 * @param {Function} callback - The callback function to execute	 
+	 */
+	lobbyEntered: (callback) => {
+		ipcRenderer.on('lobby-entered', callback)
 	}
 }
 

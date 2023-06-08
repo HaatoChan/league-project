@@ -168,13 +168,34 @@ const lcuConnect = async () => {
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
+
+			// Listen to events
+			
+			/*	ws.on('message', message => {
+				const buffer = Buffer.from(message)
+				try {
+					const payload = JSON.parse(buffer.toString())
+					console.log(payload)
+				} catch (error) {
+					console.log('error parsing data')
+				}
+			}) */
+
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
+				// Triggers when user firsts enter the lobby
+				if(data.timer.phase === '' && data.timer.totalTimeInPhase === 0 && data.myTeam.length > 0) {
+					console.log('sending to client')
+					mainWindow.webContents.send('lobby-entered')
+				}
+				// Send info about lobby state
 				if(data.timer.phase !== 'GAME_STARTING') {
 					mainWindow.webContents.send('champ-select-info', data)
-				} else if (data.timer.phase === 'GAME_STARTING') {
+				} 
+				// Send information that the game is starting
+				else if (data.timer.phase === 'GAME_STARTING') {
 					mainWindow.webContents.send('game-starting')
 				}
-			})
+			}) 
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
 				mainWindow.webContents.send('game-ended', data)
 			})
