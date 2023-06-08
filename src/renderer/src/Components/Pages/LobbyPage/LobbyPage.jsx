@@ -111,9 +111,12 @@ const LobbyPage = () => {
 				<h1 className="gamestarting">{!gameStarting && 'Ingame!'}</h1>
 				<div className="enemyteamdata">
 					{routeGameData.vsChampion && enemyTeamDisplay && <div className="championSpec">
-						{enemyTeamDisplay.map((champion) => {
-							console.log(champion)
-						})}
+						{enemyTeamDisplay.map((champion) => (
+							<div className="champSpecInfo" key={champion.name + 'div'}>
+								<img src={champion.imgUrl} alt="" className='enemyJglStatisticImg'/>
+								<p className="" key={champion.name}>{champion.name}</p>
+							</div>
+						))}
 					</div>
 					}
 				</div>

@@ -40,7 +40,7 @@ const ElectronSideBar = () => {
 
 	return ( 
 		<div className="elesidebar" onMouseEnter={mouseEnter} id='elesidebar' onMouseLeave={mouseLeave}>
-			{ inLobby && <SideBarButton imgSource={LeagueIcon} style={{ filter: 'none'}} text='Lobby' linkHref='lobby-screen'/> }
+			{ !inLobby && <SideBarButton imgSource={LeagueIcon} style={{ filter: 'none'}} text='Lobby' linkHref='lobby-screen'/> }
 			<SideBarButton text='Home' imgSource={Home} linkHref='/' />
 			<SideBarButton text='Jungle Tool' imgSource={JungleIcon} linkHref='jungletool' id='jungleA'/>
 			<SideBarButton text='Settings' imgSource={settings} linkHref='settings' id="settingsA"/>

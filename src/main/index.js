@@ -196,7 +196,6 @@ const lcuConnect = async () => {
 				else if (data.timer.phase === 'GAME_STARTING') {
 					mainWindow.webContents.send('game-starting')
 				}
-				console.log(data)
 			}) 
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
 				mainWindow.webContents.send('game-ended', data)

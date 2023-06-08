@@ -143,3 +143,15 @@
 .championSpec {
     white-space: normal;
 }
+
+.champSpecInfo {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    gap: 2%;
+}
+
+.enemyJglStatisticImg {
+    width: 10%;
+    height: 10%;
+    margin-bottom: 0.5%;
+}
