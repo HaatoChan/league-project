@@ -184,8 +184,9 @@ const lcuConnect = async () => {
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				// Triggers when user firsts enter the lobby
 				if(data.timer.phase === '' && data.timer.totalTimeInPhase === 0 && data.myTeam.length > 0) {
-					console.log('sending to client')
 					mainWindow.webContents.send('lobby-entered')
+				} else if (data.timer.phase === '' && data.timer.totalTimeInPhase === 0 && data.myTeam.length === 0) {
+					mainWindow.webContents.send('lobby-exited')
 				}
 				// Send info about lobby state
 				if(data.timer.phase !== 'GAME_STARTING') {
@@ -195,6 +196,7 @@ const lcuConnect = async () => {
 				else if (data.timer.phase === 'GAME_STARTING') {
 					mainWindow.webContents.send('game-starting')
 				}
+				console.log(data)
 			}) 
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
 				mainWindow.webContents.send('game-ended', data)

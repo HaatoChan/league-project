@@ -11,14 +11,13 @@ import { useState } from 'react'
  * @returns {HTMLElement} - Returns a sidebar.
  */
 const ElectronSideBar = () => {
-    
-
-	//window.LCUApi.lobbyEntered(async () => {
-	//	console.log('lobby entered')
-	//})
 
 	window.LCUApi.lobbyEntered(async () => {
 		setInLobby(true)
+	})
+
+	window.LCUApi.lobbyExited(async () => {
+		setInLobby(false)
 	})
 
 	const [inLobby, setInLobby] = useState(false)
