@@ -13,10 +13,12 @@ import { useState } from 'react'
 const ElectronSideBar = () => {
 
 	window.LCUApi.lobbyEntered(async () => {
+		console.log('lobby entered')
 		setInLobby(true)
 	})
 
 	window.LCUApi.lobbyExited(async () => {
+		console.log('lobby exited')
 		setInLobby(false)
 	})
 

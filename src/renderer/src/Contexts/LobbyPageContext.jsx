@@ -20,7 +20,6 @@ const LobbyContextProvider = ({children}) => {
 	// Receives information from the main process about state of champion select
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
-		console.log(value)
 		setEnemyTeam(value.theirTeam)
 		const combinedTeamArray = [...value.theirTeam, ...value.myTeam]
 		if(combinedTeamArray.length > 0) {

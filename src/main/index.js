@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, ipcRenderer } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -75,6 +75,7 @@ async function createWindow() {
 		return mainWindow.getSize()
 	}) 
 
+	// For reading and writing to file
 	ipcMain.handle('readRoutesFile', async () => {
 		return readFile(path.join(app.getPath('userData'), 'routes.json'))
 	})
@@ -82,6 +83,7 @@ async function createWindow() {
 	ipcMain.on('writeRoutesFile', async (event, data) => {
 		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
+	
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
@@ -132,6 +134,26 @@ app.whenReady().then(() => {
 		// dock icon is clicked and there are no other windows open.
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
+
+	ipcMain.on('update-route-winrate', async (_event, route, localPlayerData) => {
+		if(route) {		
+			// Find matching route
+			const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
+			const matchedRoute = allRoutes.routes.find(matchingRoute => route.name === matchingRoute.name)
+			// Update the data
+			matchedRoute.gameData.totalGames++
+			if(localPlayerData.stats.LOSE) { 
+				matchedRoute.gameData.totalLosses++ 
+			} else if (localPlayerData.stats.WIN) {
+				matchedRoute.gameData.totalWins++
+			} 
+			matchedRoute.gameData.totalWr = `${(matchedRoute.gameData.totalWins / matchedRoute.gameData.totalGames) * 100}%`
+			// Write to file
+			writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+
+			mainWindow.webContents.send('winrate-updated')
+		}
+	})
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -149,14 +171,12 @@ app.on('window-all-closed', () => {
 
 // LCU connection
 let ws
-
 /**
  * Function for connecting to the LCU
  */
 const lcuConnect = async () => {
 	try {
 		credentials = await authenticate()
-		console.log(credentials)
 		client = new LeagueClient(credentials)
 		// If client connects then declare the event emitters
 		if (client) {
@@ -180,12 +200,12 @@ const lcuConnect = async () => {
 					console.log('error parsing data')
 				}
 			}) */
-
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
+
 				// Triggers when user firsts enter the lobby
-				if(data.timer.phase === '' && data.timer.totalTimeInPhase === 0 && data.myTeam.length > 0) {
+				if(data.timer.phase === 'PLANNING' && data.myTeam.length > 0) {
 					mainWindow.webContents.send('lobby-entered')
-				} else if (data.timer.phase === '' && data.timer.totalTimeInPhase === 0 && data.myTeam.length === 0) {
+				} else if (data.timer.phase === '' && data.myTeam.length === 0) {
 					mainWindow.webContents.send('lobby-exited')
 				}
 				// Send info about lobby state
@@ -199,6 +219,7 @@ const lcuConnect = async () => {
 			}) 
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
 				mainWindow.webContents.send('game-ended', data)
+				mainWindow.webContents.send('lobby-exited')
 			})
 			clearInterval(interval)
 		} 

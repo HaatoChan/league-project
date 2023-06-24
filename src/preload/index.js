@@ -83,6 +83,21 @@ const LCUApi = {
 	 */
 	lobbyExited: (callback) => {
 		ipcRenderer.on('lobby-exited', callback)
+	},
+	/**
+	 * Tells the renderer to update its route data.
+	 * @param {Function} callback - The callback function to execute	 
+	 */
+	updateRoutesCache: (callback) => {
+		ipcRenderer.on('winrate-updated', callback)
+	},
+	/**
+	 *
+	 * @param route
+	 * @param localPlayer
+	 */
+	updateWinrate: (route, localPlayer) => {
+		ipcRenderer.send('update-route-winrate', route, localPlayer)
 	}
 }
 

@@ -17,31 +17,47 @@ import { championNames } from '../../../Data/Arrays'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
-	const {championIds, teamArray, imgArray, gameStarting, 
-	//	enemyTeam
-	} = useContext(LobbyContext)
+	const {exportObject, routeName, routeGameData, setRouteGameData, allRoutes, getRoutes, setRouteName} = useContext(CampSelectionContext)
+	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
-	const [enemyTeamImage, setEnemyTeamImages] = useState([])
-	// mock data for design
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
-	const [enemyTeam, setEnemyTeam] = useState([
-		{
-			championId: 1
-		},
-		{
-			championId: 103
-		},
-		{
-			championId: 13
-		},
-		{
-			championId: 134
-		},
-		{
-			championId: 44
+	//	let selectedRoute = null
+	// Receives information from the main process that the game is starting
+	/*	window.LCUApi.gameStarting(async () => {
+		if (routeName) {
+			selectedRoute = allRoutes.find(route => route?.name === routeName)
 		}
-	])
+	})
+	// Receives information from the main process that the game ended
+	window.LCUApi.gameEnded(async (event, value) => {
+
+		if(selectedRoute) {
+			// Find matching route
+			const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
+			const matchedRoute = allRoutes.routes.find(matchingRoute => route.name === matchingRoute.name)
+			// Update the data
+			matchedRoute.gameData.totalGames++
+			if(localPlayerData.stats.LOSE) { 
+				matchedRoute.gameData.totalLosses++ 
+			} else if (localPlayerData.stats.WIN) {
+				matchedRoute.gameData.totalWins++
+			} 
+			matchedRoute.gameData.totalWr = `${(matchedRoute.gameData.totalWins / matchedRoute.gameData.totalGames) * 100}%`
+			// Write to file
+			window.api.writeRoutesFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+		}
+		// Return to main for wr update
+	//	event.sender.send('update-route-winrate', selectedRoute, value.localPlayer)
+	})
+	
+	window.LCUApi.updateRoutesCache(async () => {
+		const data = await window.api.readRoutesFile()
+		const selected = data.routes.find(route => selectedRoute?.name === route?.name)
+		console.log(selected)
+		setRouteGameData(selected.gameData)
+		setRouteName(selected?.name)
+		selectedRoute = null
+	}) */
 
 	/**
 	 * Adds the images of the enemy team to display.
@@ -52,21 +68,11 @@ const LobbyPage = () => {
 		for (let i = 0; i < championNames.length; i++) {
 			if (championNames[i].name === champName) {
 				const imgUrl = await championNames[i].image
-				if(!enemyTeamImage.includes(imgUrl)) {
-					return imgUrl
-				}
+				return imgUrl
 			}
 		}
 	}
 
-	/*	<div key={champKey} className='championdata'>
-		<img src="" alt={vsChampObj[champKey].name} className="routeimg" />
-		<p className='championP'>{vsChampObj[champKey].name}</p>
-		<p>Winrate: {vsChampObj[champKey].totalWr}</p>
-	</div> */
-
-
-	// To use later
 	useEffect( () => {
 		if (enemyTeam && routeGameData) {
 			/**
@@ -78,13 +84,11 @@ const LobbyPage = () => {
 					for (let i = 0; i < enemyTeam.length; i++) {
 						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
 							const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
-							console.log(name, totalWr, totalGames, totalWins, totalLosses)
 							return {name, totalWr, totalGames, totalWins, totalLosses}
 						}
 					}
 				})).filter(Boolean)				
 				
-				console.log(enemyArray)
 				for(const champion of enemyArray) {
 					champion.imgUrl = await addEnemyImages(champion.name)
 				}
@@ -92,7 +96,7 @@ const LobbyPage = () => {
 			}
 			grabEnemyTeam()
 		}
-	},[routeGameData])
+	},[enemyTeam])
 
 	return ( 
 		<div className="lobbypagecontainer">
@@ -108,7 +112,7 @@ const LobbyPage = () => {
 				))}
 			</div>
 			<div className="statistics">
-				<h1 className="gamestarting">{!gameStarting && 'Ingame!'}</h1>
+				<h1 className="gamestarting">{routeName}</h1>
 				<div className="enemyteamdata">
 					{routeGameData.vsChampion && enemyTeamDisplay && <div className="championSpec">
 						{enemyTeamDisplay.map((champion) => (
@@ -170,7 +174,7 @@ const LobbyPage = () => {
 				{routeName && <button className="saveButton" onClick={async () => {
 					if (routeName) {
 						const data = await window.api.readRoutesFile()
-						const matchingRoute = data.routes.find(route => route.name === routeName)
+						const matchingRoute = data.routes.find(route => route?.name === routeName)
 						matchingRoute.side = exportObject.side
 						matchingRoute.route = exportObject.route
 						matchingRoute.champions = exportObject.champions
@@ -186,7 +190,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={() => console.log(enemyTeam)}></button> }
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => console.log(routeGameData)}></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{

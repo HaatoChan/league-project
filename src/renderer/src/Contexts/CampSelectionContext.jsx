@@ -32,12 +32,13 @@ const CampSelectionContextProvider = ({children}) => {
 	const [totalWr, setTotalWr] = useState(null)
 	const [gameSelectedRoute, setGameSelectedRoute] = useState(null)
 	const [routeGameData, setRouteGameData] = useState({})
+	const [allRoutes, setAllRoutes] = useState([])
 
 	// Receives information from the main process that the game is starting
 	window.LCUApi.gameStarting(async () => {
-		if (routeName) {
+		if (routeGameData.name) {
 			const data = await window.api.readRoutesFile()
-			const selectedRoute = data.routes.find(route => route.name === routeName)
+			const selectedRoute = data.routes.find(route => route.name === routeGameData.name)
 			setGameSelectedRoute(selectedRoute)
 			console.log('Game starting selected: ')
 			console.log(selectedRoute)
@@ -50,13 +51,12 @@ const CampSelectionContextProvider = ({children}) => {
 		// Update the winrate
 		updateWinrate(value.localPlayer)
 	})
-
+	
 	/**
 	 * Updates the winrate after the game has ended
 	 * @param {object} localPlayerData - The local players winrate on game end.
 	 */
 	const updateWinrate = async (localPlayerData) => {
-		console.log('total games: ' + gameSelectedRoute.gameData.totalGames)
 		if (gameSelectedRoute.gameData) {
 			gameSelectedRoute.gameData.totalGames++
 			if(localPlayerData.stats.LOSE) {
@@ -64,11 +64,8 @@ const CampSelectionContextProvider = ({children}) => {
 			} else if (localPlayerData.stats.WIN) {
 				gameSelectedRoute.gameData.totalWins++
 			}
-			// Assign / calculate the winrate
-			gameSelectedRoute.gameData.totalWr = `${(gameSelectedRoute.gameData.totalWins / gameSelectedRoute.gameData.totalGames) * 100}%`
-			console.log(gameSelectedRoute.gameData.totalWr)
 			const data = await window.api.readRoutesFile()
-
+	
 			// Find the index and replace
 			const selectedRouteIndex = data.routes.findIndex(route => route.name === gameSelectedRoute.name)
 			if (selectedRouteIndex !== -1) {
@@ -77,12 +74,14 @@ const CampSelectionContextProvider = ({children}) => {
 				data.routes[selectedRouteIndex] = selectedRoute
 				await window.api.writeRoutesFile(data)
 			}
-
+	
 			if (gameSelectedRoute.name === routeName) {
 				setRouteGameData(gameSelectedRoute.gameData)
 			}
 		}
 	}
+	
+
 
 	/**
 	 * Adds experience to the totalExp state.
@@ -149,6 +148,8 @@ const CampSelectionContextProvider = ({children}) => {
 			const championArray = importData?.champions?.split(':')
 			if(championArray) {
 				championArray[0]?.length > 0 ? setSelectedChampions(championArray) : setSelectedChampions([])
+			} else {
+				setSelectedChampions([])
 			}
 			// Set the camps
 			await resetAll()
@@ -171,7 +172,9 @@ const CampSelectionContextProvider = ({children}) => {
 				setRouteName(importData.name)
 			}
 			if(importData.gameData) {
-				setRouteGameData(importData.gameData)
+				const copy = importData.gameData
+				copy.name = importData?.name
+				setRouteGameData(copy)
 			}
 		} catch (error) {
 			console.error(error)
@@ -207,12 +210,21 @@ const CampSelectionContextProvider = ({children}) => {
 			await resetAll()
 			setSideSelected('All')
 			setSelectedChampions([])
-			console.log(allRoutes)
 			setRouteName('')
 			setTotalWr(null)
 			setAllRoutes(allRoutes.routes)
 		}
 	}
+
+	/**
+	 * Gets the current routes.
+	 */
+	const getRoutes = async () => {
+		const data = await window.api.readRoutesFile()
+		setAllRoutes(data.routes)
+	}
+	
+
 
 	return <CampSelectionContext.Provider
 		value={{
@@ -259,7 +271,12 @@ const CampSelectionContextProvider = ({children}) => {
 			exportObject: exportObject,
 			deleteOnClick: deleteOnClick,
 			totalWr: totalWr,
-			routeGameData: routeGameData
+			routeGameData: routeGameData,
+			setRouteGameData: setRouteGameData,
+			allRoutes: allRoutes,
+			getRoutes: getRoutes,
+			setAllRoutes: setAllRoutes,
+			setRouteName: setRouteName
 		}}
 	>
 		{children}
