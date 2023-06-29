@@ -239,6 +239,7 @@ const lcuConnect = async () => {
 								foundRoute.gameData.totalWins++
 								foundRoute.gameData.totalGames++
 							}
+							foundRoute.gameData.totalWr = `${(foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100}%`
 							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
 						}
 					}
