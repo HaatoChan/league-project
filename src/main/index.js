@@ -15,6 +15,7 @@ let mainWindow
 let credentials
 let client
 let interval
+let selectedRoute = null
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
@@ -154,6 +155,10 @@ app.whenReady().then(() => {
 			mainWindow.webContents.send('winrate-updated')
 		}
 	})
+
+	ipcMain.on('setRoute', async (_event, route) => {
+		selectedRoute = route
+	})
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -171,6 +176,7 @@ app.on('window-all-closed', () => {
 
 // LCU connection
 let ws
+let gameEnded = 0
 /**
  * Function for connecting to the LCU
  */
@@ -214,12 +220,32 @@ const lcuConnect = async () => {
 				} 
 				// Send information that the game is starting
 				else if (data.timer.phase === 'GAME_STARTING') {
+					gameEnded = 0
 					mainWindow.webContents.send('game-starting')
 				}
 			}) 
-			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
-				mainWindow.webContents.send('game-ended', data)
+			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', async (data) => {
 				mainWindow.webContents.send('lobby-exited')
+				if(gameEnded === 0) {
+					if (selectedRoute) {
+						const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
+						const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
+						if (selectedRouteIndex !== 1) {
+							const foundRoute = allRoutes.routes[selectedRouteIndex]
+							if (data.localPlayer.stats.LOSE) {
+								foundRoute.gameData.totalLosses++
+								foundRoute.gameData.totalGames++
+							} else if (data.localPlayer.stats.WIN) {
+								foundRoute.gameData.totalWins++
+								foundRoute.gameData.totalGames++
+							}
+							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+						}
+					}
+					selectedRoute = null
+					gameEnded++
+				}
+				mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
 		} 

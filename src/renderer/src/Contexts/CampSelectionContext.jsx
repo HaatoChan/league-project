@@ -34,55 +34,6 @@ const CampSelectionContextProvider = ({children}) => {
 	const [routeGameData, setRouteGameData] = useState({})
 	const [allRoutes, setAllRoutes] = useState([])
 
-	// Receives information from the main process that the game is starting
-	window.LCUApi.gameStarting(async () => {
-		if (routeGameData.name) {
-			const data = await window.api.readRoutesFile()
-			const selectedRoute = data.routes.find(route => route.name === routeGameData.name)
-			setGameSelectedRoute(selectedRoute)
-			console.log('Game starting selected: ')
-			console.log(selectedRoute)
-		}
-	})
-	// Receives information from the main process that the game ended
-	window.LCUApi.gameEnded((_event, value) => {
-		console.log('Game ending all data from renderer: ')
-		console.log(value)
-		// Update the winrate
-		updateWinrate(value.localPlayer)
-	})
-	
-	/**
-	 * Updates the winrate after the game has ended
-	 * @param {object} localPlayerData - The local players winrate on game end.
-	 */
-	const updateWinrate = async (localPlayerData) => {
-		if (gameSelectedRoute.gameData) {
-			gameSelectedRoute.gameData.totalGames++
-			if(localPlayerData.stats.LOSE) {
-				gameSelectedRoute.gameData.totalLosses++
-			} else if (localPlayerData.stats.WIN) {
-				gameSelectedRoute.gameData.totalWins++
-			}
-			const data = await window.api.readRoutesFile()
-	
-			// Find the index and replace
-			const selectedRouteIndex = data.routes.findIndex(route => route.name === gameSelectedRoute.name)
-			if (selectedRouteIndex !== -1) {
-				const selectedRoute = data.routes[selectedRouteIndex]
-				Object.assign(selectedRoute, gameSelectedRoute)
-				data.routes[selectedRouteIndex] = selectedRoute
-				await window.api.writeRoutesFile(data)
-			}
-	
-			if (gameSelectedRoute.name === routeName) {
-				setRouteGameData(gameSelectedRoute.gameData)
-			}
-		}
-	}
-	
-
-
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.
@@ -276,7 +227,9 @@ const CampSelectionContextProvider = ({children}) => {
 			allRoutes: allRoutes,
 			getRoutes: getRoutes,
 			setAllRoutes: setAllRoutes,
-			setRouteName: setRouteName
+			setRouteName: setRouteName,
+			setGameSelectedRoute: setGameSelectedRoute,
+			gameSelectedRoute: gameSelectedRoute
 		}}
 	>
 		{children}

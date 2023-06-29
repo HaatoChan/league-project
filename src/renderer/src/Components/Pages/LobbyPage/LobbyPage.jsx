@@ -17,47 +17,18 @@ import { championNames } from '../../../Data/Arrays'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName, routeGameData, setRouteGameData, allRoutes, getRoutes, setRouteName} = useContext(CampSelectionContext)
+	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
-	//	let selectedRoute = null
-	// Receives information from the main process that the game is starting
-	/*	window.LCUApi.gameStarting(async () => {
-		if (routeName) {
-			selectedRoute = allRoutes.find(route => route?.name === routeName)
-		}
-	})
-	// Receives information from the main process that the game ended
-	window.LCUApi.gameEnded(async (event, value) => {
 
-		if(selectedRoute) {
-			// Find matching route
-			const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
-			const matchedRoute = allRoutes.routes.find(matchingRoute => route.name === matchingRoute.name)
-			// Update the data
-			matchedRoute.gameData.totalGames++
-			if(localPlayerData.stats.LOSE) { 
-				matchedRoute.gameData.totalLosses++ 
-			} else if (localPlayerData.stats.WIN) {
-				matchedRoute.gameData.totalWins++
-			} 
-			matchedRoute.gameData.totalWr = `${(matchedRoute.gameData.totalWins / matchedRoute.gameData.totalGames) * 100}%`
-			// Write to file
-			window.api.writeRoutesFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-		}
-		// Return to main for wr update
-	//	event.sender.send('update-route-winrate', selectedRoute, value.localPlayer)
+	window.LCUApi.gameStarting(async () => {
+		window.LCUApi.setRoute(routeGameData)
 	})
-	
-	window.LCUApi.updateRoutesCache(async () => {
-		const data = await window.api.readRoutesFile()
-		const selected = data.routes.find(route => selectedRoute?.name === route?.name)
-		console.log(selected)
-		setRouteGameData(selected.gameData)
-		setRouteName(selected?.name)
-		selectedRoute = null
-	}) */
+
+	window.LCUApi.gameEnded(async (_event, data) => {
+		console.log('game ended!')
+	})
 
 	/**
 	 * Adds the images of the enemy team to display.
@@ -190,7 +161,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => console.log(routeGameData)}></button> }
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData)}></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{

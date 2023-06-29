@@ -98,6 +98,13 @@ const LCUApi = {
 	 */
 	updateWinrate: (route, localPlayer) => {
 		ipcRenderer.send('update-route-winrate', route, localPlayer)
+	},
+	/**
+	 *
+	 * @param route
+	 */
+	setRoute: (route) => {
+		ipcRenderer.send('setRoute', route)
 	}
 }
 
