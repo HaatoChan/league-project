@@ -17,7 +17,7 @@ import { championNames } from '../../../Data/Arrays'
  */
 const LobbyPage = () => {
 
-	const {exportObject, routeName, routeGameData} = useContext(CampSelectionContext)
+	const {exportObject, routeName, routeGameData, setRouteGameData, setRouteName} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
@@ -26,8 +26,13 @@ const LobbyPage = () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
 
+	window.LCUApi.gameEnded(async (_event, data) => {
+		console.log(data)
+	})
+
 	window.LCUApi.updateRouteData(async (_event, routeData) => {
-		console.log(routeData)
+		setRouteGameData(routeData.gameData)
+		setRouteName(routeData.name)
 	})
 
 	/**

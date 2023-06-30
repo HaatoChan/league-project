@@ -136,30 +136,8 @@ app.whenReady().then(() => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
 
-	ipcMain.on('update-route-winrate', async (_event, route, localPlayerData) => {
-		if(route) {		
-			// Find matching route
-			const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
-			const matchedRoute = allRoutes.routes.find(matchingRoute => route.name === matchingRoute.name)
-			// Update the data
-			matchedRoute.gameData.totalGames++
-			if(localPlayerData.stats.LOSE) { 
-				matchedRoute.gameData.totalLosses++ 
-			} else if (localPlayerData.stats.WIN) {
-				matchedRoute.gameData.totalWins++
-			} 
-			matchedRoute.gameData.totalWr = `${(matchedRoute.gameData.totalWins / matchedRoute.gameData.totalGames) * 100}%`
-			// Write to file
-			writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-
-			mainWindow.webContents.send('winrate-updated')
-		}
-	})
-
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		console.log(selectedRoute)
-		mainWindow.webContents.send('update-route-data', selectedRoute)
 	})
 })
 
@@ -243,7 +221,7 @@ const lcuConnect = async () => {
 							}
 							foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
 							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-							mainWindow.webContents.send('update-route-data', foundRoute.gameData)
+							mainWindow.webContents.send('update-route-data', foundRoute)
 						}
 					}
 					selectedRoute = null
