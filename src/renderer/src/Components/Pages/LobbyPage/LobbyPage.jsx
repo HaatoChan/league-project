@@ -26,8 +26,8 @@ const LobbyPage = () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
 
-	window.LCUApi.gameEnded(async (_event, data) => {
-		console.log('game ended!')
+	window.LCUApi.updateRouteData(async (_event, routeData) => {
+		console.log(routeData)
 	})
 
 	/**

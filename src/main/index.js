@@ -158,6 +158,8 @@ app.whenReady().then(() => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
+		console.log(selectedRoute)
+		mainWindow.webContents.send('update-route-data', selectedRoute)
 	})
 })
 
@@ -239,8 +241,9 @@ const lcuConnect = async () => {
 								foundRoute.gameData.totalWins++
 								foundRoute.gameData.totalGames++
 							}
-							foundRoute.gameData.totalWr = `${(foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100}%`
+							foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
 							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+							mainWindow.webContents.send('update-route-data', foundRoute.gameData)
 						}
 					}
 					selectedRoute = null

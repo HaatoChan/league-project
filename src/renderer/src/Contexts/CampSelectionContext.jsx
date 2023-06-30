@@ -34,6 +34,10 @@ const CampSelectionContextProvider = ({children}) => {
 	const [routeGameData, setRouteGameData] = useState({})
 	const [allRoutes, setAllRoutes] = useState([])
 
+	window.LCUApi.gameEnded(async () => {
+		getRoutes()
+	}) 
+
 	/**
 	 * Adds experience to the totalExp state.
 	 * @param {number} expvalue - The exp value to work with.

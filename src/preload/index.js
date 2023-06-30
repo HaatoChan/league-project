@@ -92,20 +92,28 @@ const LCUApi = {
 		ipcRenderer.on('winrate-updated', callback)
 	},
 	/**
-	 *
-	 * @param route
-	 * @param localPlayer
+	 * Tells the main process to update the winrate
+	 * @param {object} route - The object in question
+	 * @param {object} localPlayer - The localPlayer data from the league client
 	 */
 	updateWinrate: (route, localPlayer) => {
 		ipcRenderer.send('update-route-winrate', route, localPlayer)
 	},
 	/**
-	 *
-	 * @param route
+	 * Sets the route in the main process.
+	 * @param {object} route - The route to set
 	 */
 	setRoute: (route) => {
 		ipcRenderer.send('setRoute', route)
+	},
+	/**
+	 * Tells the renderer to update the displayed winrate on game end.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	updateRouteData: (callback) => {
+		ipcRenderer.on('update-route-data', callback)
 	}
+
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
