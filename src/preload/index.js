@@ -69,7 +69,51 @@ const LCUApi = {
 	 */
 	gameEnded: (callback) => {
 		ipcRenderer.on('game-ended', callback)
+	},
+	/**
+	 * Receives information that the user has entered a lobby
+	 * @param {Function} callback - The callback function to execute	 
+	 */
+	lobbyEntered: (callback) => {
+		ipcRenderer.on('lobby-entered', callback)
+	},
+	/**
+	 * Receives information that the user has exited the lobby
+	 * @param {Function} callback - The callback function to execute	 
+	 */
+	lobbyExited: (callback) => {
+		ipcRenderer.on('lobby-exited', callback)
+	},
+	/**
+	 * Tells the renderer to update its route data.
+	 * @param {Function} callback - The callback function to execute	 
+	 */
+	updateRoutesCache: (callback) => {
+		ipcRenderer.on('winrate-updated', callback)
+	},
+	/**
+	 * Tells the main process to update the winrate
+	 * @param {object} route - The object in question
+	 * @param {object} localPlayer - The localPlayer data from the league client
+	 */
+	updateWinrate: (route, localPlayer) => {
+		ipcRenderer.send('update-route-winrate', route, localPlayer)
+	},
+	/**
+	 * Sets the route in the main process.
+	 * @param {object} route - The route to set
+	 */
+	setRoute: (route) => {
+		ipcRenderer.send('setRoute', route)
+	},
+	/**
+	 * Tells the renderer to update the displayed winrate on game end.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	updateRouteData: (callback) => {
+		ipcRenderer.on('update-route-data', callback)
 	}
+
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

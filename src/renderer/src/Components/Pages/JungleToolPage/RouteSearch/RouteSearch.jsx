@@ -11,9 +11,8 @@ import { championIds } from '../../../../Data/Objects'
 const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonStyle, confirmDeletionStyle, createButtonStyle}) => {
 
 	const [namingRoute, setNamingRoute] = useState(false)
-	const [allRoutes, setAllRoutes] = useState([])
 	const [matches, setMatches] = useState([])
-	const {routeName, createImport, deleteOnClick} = useContext(CampSelectionContext)
+	const {routeName, createImport, deleteOnClick, allRoutes, getRoutes, setAllRoutes} = useContext(CampSelectionContext)
 	const [displayConfirmation, setDisplayConfirmation] = useState(false)
 	const confirmRef = useRef(null)
 
@@ -42,13 +41,6 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 	}
 
 	useEffect(() => {
-		/**
-		 * Gets the current routes.
-		 */
-		const getRoutes = async () => {
-			const data = await window.api.readRoutesFile()
-			setAllRoutes(data.routes)
-		}
 		getRoutes()
 	},[])
 

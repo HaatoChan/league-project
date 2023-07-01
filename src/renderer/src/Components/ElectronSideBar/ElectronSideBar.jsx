@@ -4,13 +4,26 @@ import settings from '../../assets/settings-gear-icon.svg'
 import Home from '../../assets/home-icon.svg'
 import JungleIcon from '../../assets/garden-grass-solid-icon.svg'
 import LeagueIcon from '../../assets/LoL_icon.svg.png'
+import { useState } from 'react'
 
 /**
  * Defines a sidebar for the electron app.
  * @returns {HTMLElement} - Returns a sidebar.
  */
 const ElectronSideBar = () => {
-    
+
+	window.LCUApi.lobbyEntered(async () => {
+		console.log('lobby entered')
+		setInLobby(true)
+	})
+
+	window.LCUApi.lobbyExited(async () => {
+		console.log('lobby exited')
+		setInLobby(false)
+	})
+
+	const [inLobby, setInLobby] = useState(false)
+
 	/**
 	 * Fired when user mouses over the sidebar.
 	 */
@@ -27,10 +40,9 @@ const ElectronSideBar = () => {
 		sidebar.style.width = '4%'
 	}
 
-
 	return ( 
 		<div className="elesidebar" onMouseEnter={mouseEnter} id='elesidebar' onMouseLeave={mouseLeave}>
-			<SideBarButton imgSource={LeagueIcon} style={{ filter: 'none'}} text='Lobby' linkHref='lobby-screen'/>
+			{ inLobby && <SideBarButton imgSource={LeagueIcon} style={{ filter: 'none'}} text='Lobby' linkHref='lobby-screen'/> }
 			<SideBarButton text='Home' imgSource={Home} linkHref='/' />
 			<SideBarButton text='Jungle Tool' imgSource={JungleIcon} linkHref='jungletool' id='jungleA'/>
 			<SideBarButton text='Settings' imgSource={settings} linkHref='settings' id="settingsA"/>

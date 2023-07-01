@@ -93,10 +93,12 @@ describe('application loading', () => {
 			await expect(await screen.getByTestId('Zacimage')).toExist()
 			const imageArray = []
 			imageArray.push(await screen.getByTestId('Zacimage'))
+			await sleepForX(2000)
 			await champInput.clearValue()
 			await champInput.addValue('Ezreal')
 			const ezrealLi = await screen.getByTestId('Ezreal')
 			await ezrealLi.click()
+			await sleepForX(2000)
 			await expect(await screen.getByTestId('Ezrealimage')).toExist()
 			imageArray.push(await screen.getByTestId('Ezrealimage'))
 

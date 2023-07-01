@@ -15,6 +15,7 @@ let mainWindow
 let credentials
 let client
 let interval
+let selectedRoute = null
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
@@ -75,6 +76,7 @@ async function createWindow() {
 		return mainWindow.getSize()
 	}) 
 
+	// For reading and writing to file
 	ipcMain.handle('readRoutesFile', async () => {
 		return readFile(path.join(app.getPath('userData'), 'routes.json'))
 	})
@@ -82,6 +84,7 @@ async function createWindow() {
 	ipcMain.on('writeRoutesFile', async (event, data) => {
 		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
+	
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
@@ -132,6 +135,10 @@ app.whenReady().then(() => {
 		// dock icon is clicked and there are no other windows open.
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
+
+	ipcMain.on('setRoute', async (_event, route) => {
+		selectedRoute = route
+	})
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -149,14 +156,13 @@ app.on('window-all-closed', () => {
 
 // LCU connection
 let ws
-
+let gameEnded = 0
 /**
  * Function for connecting to the LCU
  */
 const lcuConnect = async () => {
 	try {
 		credentials = await authenticate()
-		console.log(credentials)
 		client = new LeagueClient(credentials)
 		// If client connects then declare the event emitters
 		if (client) {
@@ -168,14 +174,59 @@ const lcuConnect = async () => {
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
+
+			// Listen to events
+			
+			/*	ws.on('message', message => {
+				const buffer = Buffer.from(message)
+				try {
+					const payload = JSON.parse(buffer.toString())
+					console.log(payload)
+				} catch (error) {
+					console.log('error parsing data')
+				}
+			}) */
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
+
+				// Triggers when user firsts enter the lobby
+				if(data.timer.phase === 'PLANNING' && data.myTeam.length > 0) {
+					mainWindow.webContents.send('lobby-entered')
+				} else if (data.timer.phase === '' && data.myTeam.length === 0) {
+					mainWindow.webContents.send('lobby-exited')
+				}
+				// Send info about lobby state
 				if(data.timer.phase !== 'GAME_STARTING') {
 					mainWindow.webContents.send('champ-select-info', data)
-				} else if (data.timer.phase === 'GAME_STARTING') {
+				} 
+				// Send information that the game is starting
+				else if (data.timer.phase === 'GAME_STARTING') {
+					gameEnded = 0
 					mainWindow.webContents.send('game-starting')
 				}
-			})
-			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', (data) => {
+			}) 
+			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', async (data) => {
+				mainWindow.webContents.send('lobby-exited')
+				if(gameEnded === 0) {
+					if (selectedRoute) {
+						const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
+						const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
+						if (selectedRouteIndex !== 1) {
+							const foundRoute = allRoutes.routes[selectedRouteIndex]
+							if (data.localPlayer.stats.LOSE) {
+								foundRoute.gameData.totalLosses++
+								foundRoute.gameData.totalGames++
+							} else if (data.localPlayer.stats.WIN) {
+								foundRoute.gameData.totalWins++
+								foundRoute.gameData.totalGames++
+							}
+							foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
+							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+							mainWindow.webContents.send('update-route-data', foundRoute)
+						}
+					}
+					selectedRoute = null
+					gameEnded++
+				}
 				mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
