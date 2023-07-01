@@ -186,13 +186,19 @@ const lcuConnect = async () => {
 					console.log('error parsing data')
 				}
 			}) */
-			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 
+			// Used to determine hether game has started or not
+			let gameStarted = false
+
+			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				// Triggers when user firsts enter the lobby
+				console.log(data.timer.phase)
 				if(data.timer.phase === 'PLANNING' && data.myTeam.length > 0) {
 					mainWindow.webContents.send('lobby-entered')
 				} else if (data.timer.phase === '' && data.myTeam.length === 0) {
-					mainWindow.webContents.send('lobby-exited')
+					if (!gameStarted) {
+						mainWindow.webContents.send('lobby-exited')
+					}
 				}
 				// Send info about lobby state
 				if(data.timer.phase !== 'GAME_STARTING') {
@@ -201,10 +207,12 @@ const lcuConnect = async () => {
 				// Send information that the game is starting
 				else if (data.timer.phase === 'GAME_STARTING') {
 					gameEnded = 0
+					gameStarted = true
 					mainWindow.webContents.send('game-starting')
 				}
 			}) 
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', async (data) => {
+				gameStarted = false
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
 					if (selectedRoute) {
