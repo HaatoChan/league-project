@@ -138,6 +138,7 @@ app.whenReady().then(() => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
+		console.log(selectedRoute)
 	})
 })
 
@@ -187,12 +188,11 @@ const lcuConnect = async () => {
 				}
 			}) */
 
-			// Used to determine hether game has started or not
+			// Used to determine whether game has started or not
 			let gameStarted = false
 
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				// Triggers when user firsts enter the lobby
-				console.log(data.timer.phase)
 				if(data.timer.phase === 'PLANNING' && data.myTeam.length > 0) {
 					mainWindow.webContents.send('lobby-entered')
 				} else if (data.timer.phase === '' && data.myTeam.length === 0) {
@@ -215,26 +215,34 @@ const lcuConnect = async () => {
 				gameStarted = false
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
-					if (selectedRoute) {
-						const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
-						const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
-						if (selectedRouteIndex !== 1) {
-							const foundRoute = allRoutes.routes[selectedRouteIndex]
-							if (data.localPlayer.stats.LOSE) {
-								foundRoute.gameData.totalLosses++
-								foundRoute.gameData.totalGames++
-							} else if (data.localPlayer.stats.WIN) {
-								foundRoute.gameData.totalWins++
-								foundRoute.gameData.totalGames++
+					try {
+						if (selectedRoute && data?.localPlayer) {
+							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
+							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
+							if (selectedRouteIndex !== 1) {
+								const foundRoute = allRoutes.routes[selectedRouteIndex]
+								if (data.localPlayer.stats.LOSE) {
+									foundRoute.gameData.totalLosses++
+									foundRoute.gameData.totalGames++
+								} else if (data.localPlayer.stats.WIN) {
+									foundRoute.gameData.totalWins++
+									foundRoute.gameData.totalGames++
+								}
+								foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
+								writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+								mainWindow.webContents.send('update-route-data', foundRoute)
 							}
-							foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
-							writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-							mainWindow.webContents.send('update-route-data', foundRoute)
 						}
+						selectedRoute = null
+						gameEnded++
+					} catch (err) {
+						console.log(err)
+						console.log('Data: \n')
+						console.log(data)
+						console.log('selected route: \n')
+						console.log(selectedRoute)
 					}
-					selectedRoute = null
-					gameEnded++
-				}
+				} 
 				mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
