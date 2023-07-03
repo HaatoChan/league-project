@@ -102,9 +102,10 @@ const LCUApi = {
 	/**
 	 * Sets the route in the main process.
 	 * @param {object} route - The route to set
+	 * @param {Array} enemyTeam - An array of objects containing the enemy team
 	 */
-	setRoute: (route) => {
-		ipcRenderer.send('setRoute', route)
+	setRoute: (route, enemyTeam) => {
+		ipcRenderer.send('setRoute', route, enemyTeam)
 	},
 	/**
 	 * Tells the renderer to update the displayed winrate on game end.

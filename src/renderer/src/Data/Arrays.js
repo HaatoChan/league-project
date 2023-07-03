@@ -204,7 +204,7 @@ export const championNames = [
 		image: (async () => (await import('../assets/championimages/Jinx.png')).default)()
 	},
 	{
-		name: 'KSante',
+		name: 'K\'Sante',
 		image: (async () => (await import('../assets/championimages/KSante.png')).default)()
 	},
 	{

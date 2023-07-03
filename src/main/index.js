@@ -16,6 +16,7 @@ let credentials
 let client
 let interval
 let selectedRoute = null
+let enemyArray = []
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
@@ -136,9 +137,9 @@ app.whenReady().then(() => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
 
-	ipcMain.on('setRoute', async (_event, route) => {
+	ipcMain.on('setRoute', async (_event, route, enemyTeam) => {
 		selectedRoute = route
-		console.log(selectedRoute.name)
+		enemyTeam ? enemyArray = enemyTeam : {}
 	})
 })
 
@@ -221,6 +222,19 @@ const lcuConnect = async () => {
 							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
 							if (selectedRouteIndex !== 1) {
 								const foundRoute = allRoutes.routes[selectedRouteIndex]
+								// Parse data and find enemy team index
+								let enemyTeamDataArray = []
+								data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
+								// Find and assign win/loss to champion specific enemy jungle
+								const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
+								if (enemyJgl) {
+									for (const champion of foundRoute.gameData.vsChampion) {
+										if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
+											console.log(champion)
+										}
+									}
+								}
+								// Overall winrate
 								if (data.localPlayer.stats.LOSE) {
 									foundRoute.gameData.totalLosses++
 									foundRoute.gameData.totalGames++
@@ -235,16 +249,13 @@ const lcuConnect = async () => {
 							}
 						}
 						selectedRoute = null
+						enemyArray = []
 						gameEnded++
 					} catch (err) {
 						console.log(err)
-						console.log('Data: \n')
-						console.log(data)
-						console.log('selected route: \n')
-						console.log(selectedRoute)
 					}
 				} 
-				mainWindow.webContents.send('game-ended', data)
+				data && mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
 		} 
@@ -252,6 +263,18 @@ const lcuConnect = async () => {
 		credentials = null
 	}
 }
+
+// Find Jungler
+
+function findEnemyJgl(enemyTeamPlayers) {
+	let jungler
+	for(let i = 0; i < enemyTeamPlayers.length; i++) {
+		if (enemyTeamPlayers[i].detectedTeamPosition === 'JUNGLE' && (enemyTeamPlayers[i].spell1Id === 11 || enemyTeamPlayers[i].spell2Id === 11)) {
+			jungler = enemyTeamPlayers[i]
+		}
+	}	
+	return jungler
+} 
 
 /// Write to files
 

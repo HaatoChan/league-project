@@ -23,9 +23,10 @@ const LobbyPage = () => {
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
 
 	window.LCUApi.gameStarting(async () => {
-		window.LCUApi.setRoute(routeGameData)
+		window.LCUApi.setRoute(routeGameData, enemyTeamDisplay)
 	})
 
+	
 	window.LCUApi.gameEnded(async (_event, data) => {
 		console.log(data)
 	})
@@ -55,20 +56,21 @@ const LobbyPage = () => {
 			 * Grabs the correct route statistics and adds the corresponding image.
 			 */
 			const grabEnemyTeam = async () => {
+				if (routeGameData && enemyTeam) {
 				// eslint-disable-next-line no-unsafe-optional-chaining
-				const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
-					for (let i = 0; i < enemyTeam.length; i++) {
-						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
-							const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
-							return {name, totalWr, totalGames, totalWins, totalLosses}
+					const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
+						for (let i = 0; i < enemyTeam.length; i++) {
+							if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+								const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
+								return {name, totalWr, totalGames, totalWins, totalLosses}
+							}
 						}
+					})).filter(Boolean)				
+					for(const champion of enemyArray) {
+						champion.imgUrl = await addEnemyImages(champion.name)
 					}
-				})).filter(Boolean)				
-				
-				for(const champion of enemyArray) {
-					champion.imgUrl = await addEnemyImages(champion.name)
+					setEnemyTeamDisplay(enemyArray)
 				}
-				setEnemyTeamDisplay(enemyArray)
 			}
 			grabEnemyTeam()
 		}
@@ -95,6 +97,7 @@ const LobbyPage = () => {
 							<div className="champSpecInfo" key={champion.name + 'div'}>
 								<img src={champion.imgUrl} alt="" className='enemyJglStatisticImg'/>
 								<p className="" key={champion.name}>{champion.name}</p>
+								<p>{champion.totalWr}</p>
 							</div>
 						))}
 					</div>
@@ -166,7 +169,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => console.log(routeGameData)}></button> }
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData, 103) }></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{
