@@ -23,7 +23,7 @@ const LobbyPage = () => {
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
 
 	window.LCUApi.gameStarting(async () => {
-		window.LCUApi.setRoute(routeGameData, enemyTeamDisplay)
+		window.LCUApi.setRoute(routeGameData)
 	})
 
 	

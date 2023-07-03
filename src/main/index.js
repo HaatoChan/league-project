@@ -16,7 +16,6 @@ let credentials
 let client
 let interval
 let selectedRoute = null
-let enemyArray = []
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
@@ -137,9 +136,8 @@ app.whenReady().then(() => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
 
-	ipcMain.on('setRoute', async (_event, route, enemyTeam) => {
+	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		enemyTeam ? enemyArray = enemyTeam : {}
 	})
 })
 
@@ -249,7 +247,6 @@ const lcuConnect = async () => {
 							}
 						}
 						selectedRoute = null
-						enemyArray = []
 						gameEnded++
 					} catch (err) {
 						console.log(err)
