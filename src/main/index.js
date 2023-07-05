@@ -96,7 +96,6 @@ async function createWindow() {
 app.whenReady().then(() => {
 
 	// Connect to league client
-	//	interval = setInterval(lcuConnect, 10000)
 	interval = setInterval(lcuConnect, 5000)
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
@@ -226,9 +225,17 @@ const lcuConnect = async () => {
 								// Find and assign win/loss to champion specific enemy jungle
 								const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
 								if (enemyJgl) {
-									for (const champion of foundRoute.gameData.vsChampion) {
+									// eslint-disable-next-line no-unused-vars
+									for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
 										if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
-											console.log(champion)
+											if (data.localPlayer.stats.LOSE){
+												champion[Object.keys(champion)[0]].totalLosses++
+												champion[Object.keys(champion)[0]].totalGames++
+											} else if (data.localPlayer.stats.WIN) {
+												champion[Object.keys(champion)[0]].totalWins++
+												champion[Object.keys(champion)[0]].totalGames++
+											}
+											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins++ / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 										}
 									}
 								}
