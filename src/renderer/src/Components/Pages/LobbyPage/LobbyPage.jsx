@@ -56,7 +56,7 @@ const LobbyPage = () => {
 			 * Grabs the correct route statistics and adds the corresponding image.
 			 */
 			const grabEnemyTeam = async () => {
-				if (routeGameData && enemyTeam) {
+				if (routeGameData && enemyTeam.length > 0) {
 				// eslint-disable-next-line no-unsafe-optional-chaining
 					const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
 						for (let i = 0; i < enemyTeam.length; i++) {
