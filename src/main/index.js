@@ -169,6 +169,9 @@ const lcuConnect = async () => {
 			client.on('connect', (newCredentials) => {
 				console.log(newCredentials)
 			})
+			client.on('disconnect', () => {
+				interval = setInterval(lcuConnect, 5000)
+			})
 			// Atempt to open websocket
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
