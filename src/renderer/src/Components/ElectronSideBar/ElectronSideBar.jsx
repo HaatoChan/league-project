@@ -20,6 +20,10 @@ const ElectronSideBar = () => {
 		setInLobby(false)
 	})
 
+	window.LCUApi.gameEnded(async (_event, data) => {
+		console.log(data)
+	})
+
 	const [inLobby, setInLobby] = useState(false)
 
 	/**

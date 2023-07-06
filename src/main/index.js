@@ -209,6 +209,7 @@ const lcuConnect = async () => {
 					mainWindow.webContents.send('game-starting')
 				}
 			}) 
+			let test  = 0
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', async (data) => {
 				gameStarted = false
 				mainWindow.webContents.send('lobby-exited')
@@ -235,7 +236,7 @@ const lcuConnect = async () => {
 												champion[Object.keys(champion)[0]].totalWins++
 												champion[Object.keys(champion)[0]].totalGames++
 											}
-											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins++ / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
+											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 										}
 									}
 								}
@@ -252,6 +253,8 @@ const lcuConnect = async () => {
 								writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
 								mainWindow.webContents.send('update-route-data', foundRoute)
 							}
+							data && mainWindow.webContents.send('game-ended', `test times sent: ${test}`)
+							test++
 						}
 						selectedRoute = null
 						gameEnded++
@@ -259,7 +262,6 @@ const lcuConnect = async () => {
 						console.log(err)
 					}
 				} 
-				data && mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
 		} 
