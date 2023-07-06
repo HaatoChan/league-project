@@ -170,14 +170,13 @@ const lcuConnect = async () => {
 				console.log(newCredentials)
 			})
 			client.on('disconnect', () => {
+				// Attempt to reconnect upon disconnect
 				interval = setInterval(lcuConnect, 5000)
 			})
 			// Atempt to open websocket
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
-
-			// Listen to events
 			
 			/*	ws.on('message', message => {
 				const buffer = Buffer.from(message)
@@ -212,13 +211,13 @@ const lcuConnect = async () => {
 					mainWindow.webContents.send('game-starting')
 				}
 			}) 
-			let test  = 0
 			ws.subscribe('/lol-end-of-game/v1/eog-stats-block', async (data) => {
 				gameStarted = false
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
 					try {
-						if (selectedRoute && data?.localPlayer) {
+						if (Object.keys(selectedRoute).length > 0 && data?.localPlayer) {
+							mainWindow.webContents.send('game-ended', data)
 							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
 							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
 							if (selectedRouteIndex !== 1) {
@@ -256,8 +255,6 @@ const lcuConnect = async () => {
 								writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
 								mainWindow.webContents.send('update-route-data', foundRoute)
 							}
-							data && mainWindow.webContents.send('game-ended', `test times sent: ${test}`)
-							test++
 						}
 						selectedRoute = null
 						gameEnded++

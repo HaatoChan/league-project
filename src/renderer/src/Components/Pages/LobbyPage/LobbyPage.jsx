@@ -47,12 +47,12 @@ const LobbyPage = () => {
 	}
 
 	useEffect( () => {
-		if (enemyTeam && routeGameData) {
+		if (enemyTeam && Object.keys(routeGameData).length > 0) {
 			/**
 			 * Grabs the correct route statistics and adds the corresponding image.
 			 */
 			const grabEnemyTeam = async () => {
-				if (routeGameData && enemyTeam.length > 0) {
+				if (Object.keys(routeGameData).length > 0 && enemyTeam.length > 0) {
 				// eslint-disable-next-line no-unsafe-optional-chaining
 					const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
 						for (let i = 0; i < enemyTeam.length; i++) {
@@ -165,7 +165,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData, 103) }></button> }
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData) }></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{
