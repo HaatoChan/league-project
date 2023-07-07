@@ -136,7 +136,8 @@ app.whenReady().then(() => {
 	})
 
 	ipcMain.on('setRoute', async (_event, route) => {
-		selectedRoute = route
+	//	selectedRoute = route
+		mainWindow.webContents.send('game-ended', 'test')
 	})
 })
 

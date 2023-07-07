@@ -40,7 +40,6 @@ const api = {
 		ipcRenderer.send('writeRoutesFile', data)
 	},
 }
-
 const LCUApi = {
 	/**
 	 * Listens to if the lcu was connected

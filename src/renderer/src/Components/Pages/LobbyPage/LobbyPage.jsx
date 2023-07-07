@@ -26,7 +26,6 @@ const LobbyPage = () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
 
-
 	window.LCUApi.updateRouteData(async (_event, routeData) => {
 		setRouteGameData(routeData.gameData)
 		setRouteName(routeData.name)

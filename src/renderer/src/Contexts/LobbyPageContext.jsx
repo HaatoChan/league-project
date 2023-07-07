@@ -59,7 +59,7 @@ const LobbyContextProvider = ({children}) => {
 				setImgArray(copiedArray)
 			}
 		}
-		resolveImages()
+		teamArray ?	resolveImages() : {}
 	},[teamArray])
 
 	return <LobbyContext.Provider
