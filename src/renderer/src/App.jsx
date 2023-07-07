@@ -15,6 +15,7 @@ function App() {
 	window.LCUApi.gameEnded(async (_event, data) => {
 		console.log('app:' + data)
 	})
+	
 	return (
 		<HashRouter>
 			<div className="container">

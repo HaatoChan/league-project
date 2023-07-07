@@ -32,6 +32,10 @@ const LobbyPage = () => {
 		setRouteName(routeData.name)
 	})
 
+	window.LCUApi.lobbyExited(async () => {
+		setEnemyTeamDisplay(null)
+	})
+
 	/**
 	 * Adds the images of the enemy team to display.
 	 * @param {string} champName - The champName to grab image from.
@@ -75,7 +79,7 @@ const LobbyPage = () => {
 	return ( 
 		<div className="lobbypagecontainer">
 			<div className="teamcomp">
-				{teamArray.map((player, index) => (
+				{teamArray && teamArray.map((player, index) => (
 					<ChampionSplash 
 						key={player.cellId}
 						champName={championIds[player?.championId]?.name}

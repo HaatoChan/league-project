@@ -39,6 +39,10 @@ const LobbyContextProvider = ({children}) => {
 		setGameStarting(true)
 	})
 
+	window.LCUApi.lobbyExited(() => {
+		setTeamArray(null)
+	})
+
 	useEffect(() => {
 		/**
 		 * Resolves all the images
