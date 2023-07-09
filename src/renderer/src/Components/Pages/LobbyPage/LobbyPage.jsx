@@ -21,18 +21,17 @@ const LobbyPage = () => {
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
-
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
-	})
-
-	window.LCUApi.gameEnded(async (_event, data) => {
-		console.log(data)
 	})
 
 	window.LCUApi.updateRouteData(async (_event, routeData) => {
 		setRouteGameData(routeData.gameData)
 		setRouteName(routeData.name)
+	})
+
+	window.LCUApi.lobbyExited(async () => {
+		setEnemyTeamDisplay(null)
 	})
 
 	/**
@@ -50,25 +49,26 @@ const LobbyPage = () => {
 	}
 
 	useEffect( () => {
-		if (enemyTeam && routeGameData) {
+		if (enemyTeam && Object.keys(routeGameData).length > 0) {
 			/**
 			 * Grabs the correct route statistics and adds the corresponding image.
 			 */
 			const grabEnemyTeam = async () => {
+				if (Object.keys(routeGameData).length > 0 && enemyTeam.length > 0) {
 				// eslint-disable-next-line no-unsafe-optional-chaining
-				const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
-					for (let i = 0; i < enemyTeam.length; i++) {
-						if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
-							const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
-							return {name, totalWr, totalGames, totalWins, totalLosses}
+					const enemyArray = (routeGameData?.vsChampion.map((vsChampObj) => {
+						for (let i = 0; i < enemyTeam.length; i++) {
+							if (Object.keys(vsChampObj)[0] === enemyTeam[i].championId.toString()) {
+								const {name, totalWr, totalGames, totalWins, totalLosses} = vsChampObj[Object.keys(vsChampObj)[0]]
+								return {name, totalWr, totalGames, totalWins, totalLosses}
+							}
 						}
+					})).filter(Boolean)				
+					for(const champion of enemyArray) {
+						champion.imgUrl = await addEnemyImages(champion.name)
 					}
-				})).filter(Boolean)				
-				
-				for(const champion of enemyArray) {
-					champion.imgUrl = await addEnemyImages(champion.name)
+					setEnemyTeamDisplay(enemyArray)
 				}
-				setEnemyTeamDisplay(enemyArray)
 			}
 			grabEnemyTeam()
 		}
@@ -77,7 +77,7 @@ const LobbyPage = () => {
 	return ( 
 		<div className="lobbypagecontainer">
 			<div className="teamcomp">
-				{teamArray.map((player, index) => (
+				{teamArray && teamArray.map((player, index) => (
 					<ChampionSplash 
 						key={player.cellId}
 						champName={championIds[player?.championId]?.name}
@@ -95,6 +95,7 @@ const LobbyPage = () => {
 							<div className="champSpecInfo" key={champion.name + 'div'}>
 								<img src={champion.imgUrl} alt="" className='enemyJglStatisticImg'/>
 								<p className="" key={champion.name}>{champion.name}</p>
+								<p>{champion.totalWr}</p>
 							</div>
 						))}
 					</div>
@@ -166,7 +167,7 @@ const LobbyPage = () => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => console.log(routeGameData)}></button> }
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData) }></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{

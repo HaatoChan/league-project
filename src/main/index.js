@@ -96,7 +96,6 @@ async function createWindow() {
 app.whenReady().then(() => {
 
 	// Connect to league client
-	//	interval = setInterval(lcuConnect, 10000)
 	interval = setInterval(lcuConnect, 5000)
 	// Set app user model id for windows
 	electronApp.setAppUserModelId('com.electron')
@@ -138,7 +137,7 @@ app.whenReady().then(() => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		console.log(selectedRoute.name)
+		mainWindow.webContents.send('game-ended', 'test')
 	})
 })
 
@@ -171,12 +170,14 @@ const lcuConnect = async () => {
 			client.on('connect', (newCredentials) => {
 				console.log(newCredentials)
 			})
+			client.on('disconnect', () => {
+				// Attempt to reconnect upon disconnect
+				interval = setInterval(lcuConnect, 5000)
+			})
 			// Atempt to open websocket
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
 			// Declare event subscriptions
-
-			// Listen to events
 			
 			/*	ws.on('message', message => {
 				const buffer = Buffer.from(message)
@@ -216,11 +217,33 @@ const lcuConnect = async () => {
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
 					try {
-						if (selectedRoute && data?.localPlayer) {
+						if (Object.keys(selectedRoute).length > 0 && data?.localPlayer) {
+							mainWindow.webContents.send('game-ended', data)
 							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
 							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
 							if (selectedRouteIndex !== 1) {
 								const foundRoute = allRoutes.routes[selectedRouteIndex]
+								// Parse data and find enemy team index
+								let enemyTeamDataArray = []
+								data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
+								// Find and assign win/loss to champion specific enemy jungle
+								const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
+								if (enemyJgl) {
+									// eslint-disable-next-line no-unused-vars
+									for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
+										if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
+											if (data.localPlayer.stats.LOSE){
+												champion[Object.keys(champion)[0]].totalLosses++
+												champion[Object.keys(champion)[0]].totalGames++
+											} else if (data.localPlayer.stats.WIN) {
+												champion[Object.keys(champion)[0]].totalWins++
+												champion[Object.keys(champion)[0]].totalGames++
+											}
+											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
+										}
+									}
+								}
+								// Overall winrate
 								if (data.localPlayer.stats.LOSE) {
 									foundRoute.gameData.totalLosses++
 									foundRoute.gameData.totalGames++
@@ -238,13 +261,8 @@ const lcuConnect = async () => {
 						gameEnded++
 					} catch (err) {
 						console.log(err)
-						console.log('Data: \n')
-						console.log(data)
-						console.log('selected route: \n')
-						console.log(selectedRoute)
 					}
 				} 
-				mainWindow.webContents.send('game-ended', data)
 			})
 			clearInterval(interval)
 		} 
@@ -252,6 +270,18 @@ const lcuConnect = async () => {
 		credentials = null
 	}
 }
+
+// Find Jungler
+
+function findEnemyJgl(enemyTeamPlayers) {
+	let jungler
+	for(let i = 0; i < enemyTeamPlayers.length; i++) {
+		if (enemyTeamPlayers[i].detectedTeamPosition === 'JUNGLE' && (enemyTeamPlayers[i].spell1Id === 11 || enemyTeamPlayers[i].spell2Id === 11)) {
+			jungler = enemyTeamPlayers[i]
+		}
+	}	
+	return jungler
+} 
 
 /// Write to files
 
