@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { championIds, summonerIds } from '../Data/Objects'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
 import React from 'react'
 
 export const LobbyContext = createContext()
@@ -19,6 +19,7 @@ const LobbyContextProvider = ({children}) => {
 	const [gameStarting, setGameStarting] = useState(false)
 	const [enemyTeam, setEnemyTeam] = useState(null)
 	const navigate = useNavigate()
+	const location = useLocation()
 	// Receives information from the main process about state of champion select
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
@@ -32,8 +33,8 @@ const LobbyContextProvider = ({children}) => {
 	})
 
 	// Receives information from main process that the game has ended
-	window.LCUApi.gameEnded(() => {
-		navigate('/lobby-screen')
+	window.LCUApi.gameEnded((_event, data) => {
+		location.pathname === '/lobby-screen' ? {} : navigate('/lobby-screen')
 		setGameStarting(false)
 	})
 
@@ -43,7 +44,7 @@ const LobbyContextProvider = ({children}) => {
 	})
 
 	window.LCUApi.lobbyExited(() => {
-		setTeamArray(null)
+		setTeamArray([])
 	})
 
 	useEffect(() => {

@@ -137,7 +137,8 @@ app.whenReady().then(() => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		mainWindow.webContents.send('game-ended', 'test')
+		const dummyData =  JSON.parse(await readFile(path.join(app.getPath('userData'), 'dummydata.json')))
+		mainWindow.webContents.send('game-ended', dummyData)
 	})
 })
 

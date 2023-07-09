@@ -19,6 +19,7 @@ const HomePage = () => {
 		<div className="homepagecontainer">
 			<div className="titleholder">			
 				<Title titleText='Pashas League App'/>
+				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute() }></button> }
 			</div>
 			<div className="about">
 				<h1 id="abouth1">About</h1>

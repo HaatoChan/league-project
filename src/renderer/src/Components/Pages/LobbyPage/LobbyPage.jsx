@@ -13,14 +13,18 @@ import { championNames } from '../../../Data/Arrays'
 
 /**
  * Defines the lobby page
+ * @param {object} root0 - The React props object.
+ * @param {object} root0.endOfGameData - The end of game data provided by app
  * @returns {HTMLElement} - Returns the lobby page.
  */
-const LobbyPage = () => {
+const LobbyPage = ({endOfGameData}) => {
 
 	const {exportObject, routeName, routeGameData, setRouteGameData, setRouteName} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
+	const [endOfGameTeamOne, setEndOfGameTeamOne] = useState([])
+	const [endOfGameTeamTwo, setEndOfGameTeamTwo] = useState([])
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
@@ -47,6 +51,17 @@ const LobbyPage = () => {
 			}
 		}
 	}
+
+	useEffect(() => {
+		if(endOfGameData !== null) {
+			console.log(endOfGameData)
+			console.log(endOfGameData.teams)
+			setEndOfGameTeamOne(endOfGameData.teams[0])
+			setEndOfGameTeamTwo(endOfGameData.teams[1])
+			console.log(endOfGameTeamOne)
+			console.log(endOfGameTeamTwo)
+		}
+	},[endOfGameData])
 
 	useEffect( () => {
 		if (enemyTeam && Object.keys(routeGameData).length > 0) {
@@ -86,6 +101,7 @@ const LobbyPage = () => {
 						summonerSpellTwo={imgArray[index]?.spell2Id}
 					/>
 				))}
+				{}
 			</div>
 			<div className="statistics">
 				<h1 className="gamestarting">{routeName}</h1>
