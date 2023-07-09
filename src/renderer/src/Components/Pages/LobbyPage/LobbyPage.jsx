@@ -21,7 +21,6 @@ const LobbyPage = () => {
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
-
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
