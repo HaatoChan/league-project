@@ -1,0 +1,6 @@
+.teamcontainer {
+    background-color: aquamarine;
+    height: 75%;
+    border: 1px solid black;
+    width: calc(50% - 2px);
+}

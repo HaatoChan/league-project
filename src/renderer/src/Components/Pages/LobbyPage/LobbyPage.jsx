@@ -10,6 +10,7 @@ import SelectChamp from '../JungleToolPage/SelectChamp/SelectChamp'
 import { SideBarContext } from '../../../Contexts/SideBarContext'
 import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 import { championNames } from '../../../Data/Arrays'
+import EndOfGameTeamSide from './EndOfGameTeamSide/EndOfGameTeamSide'
 
 /**
  * Defines the lobby page
@@ -23,8 +24,8 @@ const LobbyPage = ({endOfGameData}) => {
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
-	const [endOfGameTeamOne, setEndOfGameTeamOne] = useState([])
-	const [endOfGameTeamTwo, setEndOfGameTeamTwo] = useState([])
+	const [endOfGameTeamOne, setEndOfGameTeamOne] = useState(null)
+	const [endOfGameTeamTwo, setEndOfGameTeamTwo] = useState(null)
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
@@ -58,8 +59,10 @@ const LobbyPage = ({endOfGameData}) => {
 			console.log(endOfGameData.teams)
 			setEndOfGameTeamOne(endOfGameData.teams[0])
 			setEndOfGameTeamTwo(endOfGameData.teams[1])
-			console.log(endOfGameTeamOne)
-			console.log(endOfGameTeamTwo)
+		} else {
+			// Need to test
+			setEndOfGameTeamOne(null)
+			setEndOfGameTeamTwo(null)
 		}
 	},[endOfGameData])
 
@@ -101,7 +104,16 @@ const LobbyPage = ({endOfGameData}) => {
 						summonerSpellTwo={imgArray[index]?.spell2Id}
 					/>
 				))}
-				{}
+				{(endOfGameTeamOne && endOfGameTeamTwo) && 
+				<>
+					<EndOfGameTeamSide 
+						playerArray={endOfGameTeamOne.players}
+					/>
+					<EndOfGameTeamSide 
+						playerArray={endOfGameTeamTwo.players}
+					/>
+				</>
+				}
 			</div>
 			<div className="statistics">
 				<h1 className="gamestarting">{routeName}</h1>

@@ -33,7 +33,7 @@ const LobbyContextProvider = ({children}) => {
 	})
 
 	// Receives information from main process that the game has ended
-	window.LCUApi.gameEnded((_event, data) => {
+	window.LCUApi.gameEnded(() => {
 		location.pathname === '/lobby-screen' ? {} : navigate('/lobby-screen')
 		setGameStarting(false)
 	})
