@@ -13,8 +13,7 @@ import './playerframe.css'
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
 const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket}) => {
-	console.log(itemArray)
-	console.log(trinket)
+	console.log(stats)
 	return ( 
 		<div className="playercontainer">
 			<div className="champImgContainer">
@@ -25,6 +24,9 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 				<ImgBox />
 			</div>
 			<p className='playername'>{summonerName}</p>
+			<div className="csing">
+				<p className="csmin">{stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED} CS</p>
+			</div>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
 			<div className="itemcontainer">
 				{itemArray.map((item) => (

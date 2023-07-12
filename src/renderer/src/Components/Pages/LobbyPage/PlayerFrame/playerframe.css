@@ -56,3 +56,11 @@
     height: 50%;
     width: 33%;
 }
+
+.csing {
+    color: white;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
