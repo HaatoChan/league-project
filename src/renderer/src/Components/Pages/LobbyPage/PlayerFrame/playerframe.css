@@ -16,8 +16,8 @@
     position: absolute;
     background-color: aqua;
     width: 15%;
-    height: 45%;
-    top: 35%;
+    height: 60%;
+    top: 30%;
     left: 5%;
     border-radius: 50%;
 }
@@ -28,4 +28,31 @@
     top: 50%;
     transform: translate(-50%, -50%);
     left: 50%;
+}
+.summonerspellcontainer {
+    position: absolute;
+    left: 23%;
+    top: 33%;
+    width: 8%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+}
+
+.itemcontainer {
+    background-color: azure;
+    width: 35%;
+    height: 60%;
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.boxcontainer {
+    height: 50%;
+    width: 33%;
 }

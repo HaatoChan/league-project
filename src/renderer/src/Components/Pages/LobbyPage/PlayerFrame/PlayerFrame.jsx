@@ -1,3 +1,4 @@
+import ImgBox from '../ImgBox/ImgBox'
 import './playerframe.css'
 
 /**
@@ -8,17 +9,30 @@ import './playerframe.css'
  * @param {object} root0.stats - Object holding the players stats.
  * @param {number} root0.summonerOne - The first summoner spell id.
  * @param {number} root0.summonerTwo - The second summoner spell id.
+ * @param {number} root0.trinket - The trinket of the player.
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
-const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo}) => {
-	console.log(stats)
+const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket}) => {
+	console.log(itemArray)
+	console.log(trinket)
 	return ( 
 		<div className="playercontainer">
 			<div className="champImgContainer">
 				<img src="" alt="" />
 			</div>
+			<div className="summonerspellcontainer">
+				<ImgBox />
+				<ImgBox />
+			</div>
 			<p className='playername'>{summonerName}</p>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
+			<div className="itemcontainer">
+				{itemArray.map((item) => (
+					<div className="boxcontainer" key={item}>
+						<ImgBox />
+					</div>
+				))}
+			</div>
 		</div>
 	)
 }

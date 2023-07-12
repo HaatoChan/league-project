@@ -16,6 +16,8 @@ const EndOfGameTeamSide = ({playerArray}) => {
 					key={player.summonerId}
 					summonerName={player.summonerName}
 					stats={player.stats}
+					trinket={player.items[player.items.length - 1]}
+					itemArray={player.items.slice(0, -1)}
 				/>
 			))}
 		</div>
