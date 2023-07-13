@@ -18,6 +18,9 @@ const EndOfGameTeamSide = ({playerArray}) => {
 					stats={player.stats}
 					trinket={player.items[player.items.length - 1]}
 					itemArray={player.items.slice(0, -1)}
+					championName={player.championName}
+					summonerOne={player.spell1Id}
+					summonerTwo={player.spell2Id}
 				/>
 			))}
 		</div>
