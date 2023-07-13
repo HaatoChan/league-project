@@ -5,6 +5,8 @@ import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
+import { itemStuff } from '../renderer/src/Data/Objects'
+import fetch from 'node-fetch'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -16,6 +18,7 @@ let credentials
 let client
 let interval
 let selectedRoute = null
+let leaguePatch = '13.13.1'
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
@@ -115,11 +118,8 @@ app.whenReady().then(() => {
 			height: 900
 		}
 	}
-
-
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
-
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
 	// see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
@@ -128,6 +128,9 @@ app.whenReady().then(() => {
 	})
 
 	createWindow()
+
+	fixItemData(itemStuff)
+
 
 	app.on('activate', function () {
 		// On macOS it's common to re-create a window in the app when the
@@ -328,4 +331,16 @@ function writeFile(data, path) {
 		}
 		console.log('File rewritten successfully!')
 	})
+}
+
+async function fixItemData(itemObject) {
+	let url = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/data/en_GB/item.json`
+	try {
+		const response = await fetch(url)
+		itemObject = await response.json()
+		console.log(itemObject.data)
+	} catch (err) {
+		// Need to come up with a backup plan?
+		console.log(err)
+	}
 }
