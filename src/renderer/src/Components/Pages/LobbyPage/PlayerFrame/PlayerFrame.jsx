@@ -1,8 +1,7 @@
 import ImgBox from '../ImgBox/ImgBox'
 import './playerframe.css'
-import Ahri from '../../../../assets/championimages/Ahri.png'
 import Ward from '../../../../assets/item/3340.png'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { championNames } from '../../../../Data/Arrays'
 import { summonerIds } from '../../../../Data/Objects'
 

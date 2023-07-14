@@ -39,6 +39,11 @@ const api = {
 	writeRoutesFile: (data) => {
 		ipcRenderer.send('writeRoutesFile', data)
 	},
+	/**
+	 * Passes the itemdata from the main process to the renderer.
+	 * @returns {object} - A javasript object holding all the item data.
+	 */
+	itemData: async () => await ipcRenderer.invoke('itemData')
 }
 const LCUApi = {
 	/**

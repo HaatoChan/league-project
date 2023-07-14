@@ -18,6 +18,7 @@ const LobbyContextProvider = ({children}) => {
 	const [imgArray, setImgArray] = useState([])
 	const [gameStarting, setGameStarting] = useState(false)
 	const [enemyTeam, setEnemyTeam] = useState(null)
+	const [itemData, setItemData] = useState()
 	const navigate = useNavigate()
 	const location = useLocation()
 	// Receives information from the main process about state of champion select
@@ -66,13 +67,27 @@ const LobbyContextProvider = ({children}) => {
 		teamArray ?	resolveImages() : {}
 	},[teamArray])
 
+	useEffect(() => {
+		/**
+		 * Pulls the item data from main and sets a state.
+		 */
+		const getItemsFromMain = async () => {
+			const holder = await window.api.itemData()
+			setItemData(holder)
+		}
+		if(!itemData) {
+			getItemsFromMain()
+		}
+	},[itemData])
+
 	return <LobbyContext.Provider
 		value={{
 			championIds: championIds,
 			teamArray: teamArray,
 			imgArray: imgArray,
 			gameStarting: gameStarting,
-			enemyTeam: enemyTeam
+			enemyTeam: enemyTeam,
+			itemData: itemData
 		}}
 	>
 		{children}

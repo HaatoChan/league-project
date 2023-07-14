@@ -5,7 +5,6 @@ import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
-import { itemStuff } from '../renderer/src/Data/Objects'
 import fetch from 'node-fetch'
 
 if (isTest) {
@@ -41,7 +40,7 @@ async function createWindow() {
 	})
 
 	// Open the webtools
-	//mainWindow.webContents.openDevTools()
+	mainWindow.webContents.openDevTools()
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow.show()
@@ -89,6 +88,19 @@ async function createWindow() {
 	})
 	
 
+
+	let itemData
+	const itemPath = path.join(app.getPath('userData'), 'item.json')
+	if (!checkIfFileExists(itemPath)) {
+		itemData = await fetchItemData()
+	} else {
+		itemData = JSON.parse(await readFile(path.join(app.getPath('userData'), 'item.json')))
+	}
+
+	ipcMain.handle('itemData', () => {
+		return itemData
+	})
+
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
 }
@@ -96,7 +108,7 @@ async function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 
 	// Connect to league client
 	interval = setInterval(lcuConnect, 5000)
@@ -120,6 +132,7 @@ app.whenReady().then(() => {
 	}
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
+
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
 	// see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
@@ -128,9 +141,6 @@ app.whenReady().then(() => {
 	})
 
 	createWindow()
-
-	fixItemData(itemStuff)
-
 
 	app.on('activate', function () {
 		// On macOS it's common to re-create a window in the app when the
@@ -333,14 +343,28 @@ function writeFile(data, path) {
 	})
 }
 
-async function fixItemData(itemObject) {
+// SAVE MODIFIED OBJECT AS JSON IN APPDATA IF IT DOES NOT EXIST
+async function fetchItemData() {
 	let url = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/data/en_GB/item.json`
 	try {
 		const response = await fetch(url)
-		itemObject = await response.json()
-		console.log(itemObject.data)
+		const holder = await response.json()
+		addImagePaths(holder.data)
+		writeFile(holder.data, path.join(app.getPath('userData'), 'item.json'))
+		return holder.data
 	} catch (err) {
-		// Need to come up with a backup plan?
+		// TODO send error message to renderer
 		console.log(err)
+	}
+}
+
+
+/**
+ * Adds an image path url to riots datadragon CDN.
+ * @param {object} itemObject - Object containing all item objects
+ */
+async function addImagePaths (itemObject) {
+	for (const [key, value] of Object.entries(itemObject)) {
+		value.img = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/img/item/${key}.png`
 	}
 }
