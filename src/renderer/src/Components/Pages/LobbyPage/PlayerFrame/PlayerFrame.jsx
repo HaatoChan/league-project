@@ -19,7 +19,6 @@ import { LobbyContext } from '../../../../Contexts/LobbyPageContext'
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
 const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket, championName}) => {
-
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
@@ -55,6 +54,9 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 		<div className="playercontainer">
 			<div className="champImgContainer">
 				<img src={champImg} alt="" className='playerFrameChampion'/>
+				<div className="levelcontainer">
+					<p className="level">{stats.LEVEL}</p>
+				</div>
 			</div>
 			<div className="summonerspellcontainer">
 				<ImgBox 
@@ -79,7 +81,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 				))}
 			</div>
 			<div className="trinket">
-				<img src={Ward} alt="" className='trinketimg'/>
+				<img src={itemData[trinket].img} alt="" className='trinketimg'/>
 			</div>
 		</div>
 	)
