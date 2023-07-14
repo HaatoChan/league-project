@@ -6,6 +6,7 @@ import path from 'path'
 import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 import fetch from 'node-fetch'
+import { leaguePatch } from '../renderer/src/Data/PatchInfo'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -17,7 +18,6 @@ let credentials
 let client
 let interval
 let selectedRoute = null
-let leaguePatch = '13.13.1'
 
 async function createWindow() {
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution

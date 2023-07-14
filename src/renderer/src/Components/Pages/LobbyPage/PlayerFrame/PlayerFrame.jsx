@@ -1,9 +1,10 @@
 import ImgBox from '../ImgBox/ImgBox'
 import './playerframe.css'
 import Ward from '../../../../assets/item/3340.png'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { championNames } from '../../../../Data/Arrays'
 import { summonerIds } from '../../../../Data/Objects'
+import { LobbyContext } from '../../../../Contexts/LobbyPageContext'
 
 /**
  * Renders information about an individual player at the end of a game.
@@ -22,6 +23,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
+	const { itemData } = useContext(LobbyContext)
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
 	 * @param {string} champName - The name of the champion.
@@ -70,7 +72,9 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			<div className="itemcontainer">
 				{itemArray.map((item) => (
 					<div className="boxcontainer" key={item}>
-						<ImgBox />
+						<ImgBox 
+							imgUrl={itemData[item].img}
+						/>
 					</div>
 				))}
 			</div>
