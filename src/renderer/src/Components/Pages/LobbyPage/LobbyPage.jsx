@@ -55,8 +55,6 @@ const LobbyPage = ({endOfGameData}) => {
 
 	useEffect(() => {
 		if(endOfGameData !== null) {
-			console.log(endOfGameData)
-			console.log(endOfGameData.teams)
 			setEndOfGameTeamOne(endOfGameData.teams[0])
 			setEndOfGameTeamTwo(endOfGameData.teams[1])
 		} else {
@@ -108,9 +106,11 @@ const LobbyPage = ({endOfGameData}) => {
 				<>
 					<EndOfGameTeamSide 
 						playerArray={endOfGameTeamOne.players}
+						gameLength={endOfGameData.gameLength}
 					/>
 					<EndOfGameTeamSide 
 						playerArray={endOfGameTeamTwo.players}
+						gameLength={endOfGameData.gameLength}
 					/>
 				</>
 				}

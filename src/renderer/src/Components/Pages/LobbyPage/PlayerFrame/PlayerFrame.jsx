@@ -17,15 +17,17 @@ import arrowLeft from '../../../../assets/Arrows/arrow left.svg'
  * @param {number} root0.summonerTwo - The second summoner spell id.
  * @param {number} root0.trinket - The trinket of the player.
  * @param {string} root0.championName - Name of the champion.
+ * @param {number} root0.gameLength - The number of total seconds in the game
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
-const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket, championName}) => {
+const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket, championName, gameLength}) => {
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
 	const [csDisplay, setCsDisplay] = useState(0)
 	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
+	console.log(gameLength)
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
 	 * @param {string} champName - The name of the champion.
@@ -64,8 +66,6 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 		} else if ( adjust < 0 && ((csDisplay - 1) < 0)) {
 			setCsDisplay(displayableItems - 1)
 		}
-		console.log(csDisplay)
-		console.log(adjust)
 	}
 	if (!resolvedSmnOne && !resolvedSmnTwo) {
 		grabSummoners(summonerOne, summonerTwo)
@@ -94,7 +94,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			<div className="csing">
 				<img src={arrowLeft} alt="left" className="arrow" id='arrowLeft' onClick={() => CsDisplay(-1)}/>
 				{ csDisplay === 0 && <p className="totalcs">{stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED} CS </p> }
-				{ csDisplay === 1 && <p  className='csmin'>TEST</p>}
+				{ csDisplay === 1 && <p  className='csmin'>{(((stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED) / gameLength) * 60).toFixed(1)} CS/m</p>}
 				<img src={arrowRight} alt="right" className="arrow" id='arrowRight' onClick={() => CsDisplay(1)}/>
 			</div>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
