@@ -1,10 +1,11 @@
 import ImgBox from '../ImgBox/ImgBox'
 import './playerframe.css'
-import Ward from '../../../../assets/item/3340.png'
 import { useContext, useState } from 'react'
 import { championNames } from '../../../../Data/Arrays'
 import { summonerIds } from '../../../../Data/Objects'
 import { LobbyContext } from '../../../../Contexts/LobbyPageContext'
+import arrowRight from '../../../../assets/Arrows/arrow right.svg'
+import arrowLeft from '../../../../assets/Arrows/arrow left.svg'
 
 /**
  * Renders information about an individual player at the end of a game.
@@ -22,6 +23,8 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
+	const [csDisplay, setCsDisplay] = useState(0)
+	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
@@ -42,16 +45,37 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	 * @param {number} summonerTwo - The id of the second selected summoner spell-
 	 */
 	const grabSummoners = async (summonerOne, summonerTwo) => {
+		console.log('grabbing')
 		setResolvedSmnOne(await summonerIds[summonerOne].image)
 		setResolvedSmnTwo(await summonerIds[summonerTwo].image)
 	}
 
-	grabSummoners(summonerOne, summonerTwo)
-	grabChampionImage(championName)
-	
+	/**
+	 * Handles which statistics to show when the arrows are pressed.
+	 * @param {number} adjust - A positive or a negative number telling the function whether to increment or decrement the state.
+	 */
+	const CsDisplay = (adjust) => {
+		if (adjust > 0 && !((csDisplay + 1) > (displayableItems - 1))) {
+			setCsDisplay(csDisplay + 1)
+		} else if (adjust < 0 && !((csDisplay - 1) < 0)) {
+			setCsDisplay(csDisplay -1)
+		} else if (adjust > 0 && ((csDisplay + 1) > (displayableItems - 1))) {
+			setCsDisplay(0)
+		} else if ( adjust < 0 && ((csDisplay - 1) < 0)) {
+			setCsDisplay(displayableItems - 1)
+		}
+		console.log(csDisplay)
+		console.log(adjust)
+	}
+	if (!resolvedSmnOne && !resolvedSmnTwo) {
+		grabSummoners(summonerOne, summonerTwo)
+	}
+	if(!champImg) {
+		grabChampionImage(championName)
+	}
 
 	return ( 
-		<div className="playercontainer">
+		<div className="playercontainer" style={stats.WIN ? { backgroundColor: 'black'} : {backgroundColor: 'black'}}>
 			<div className="champImgContainer">
 				<img src={champImg} alt="" className='playerFrameChampion'/>
 				<div className="levelcontainer">
@@ -68,7 +92,10 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			</div>
 			<p className='playername'>{summonerName}</p>
 			<div className="csing">
-				<p className="csmin">{stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED} CS</p>
+				<img src={arrowLeft} alt="left" className="arrow" id='arrowLeft' onClick={() => CsDisplay(-1)}/>
+				{ csDisplay === 0 && <p className="totalcs">{stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED} CS </p> }
+				{ csDisplay === 1 && <p  className='csmin'>TEST</p>}
+				<img src={arrowRight} alt="right" className="arrow" id='arrowRight' onClick={() => CsDisplay(1)}/>
 			</div>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
 			<div className="itemcontainer">

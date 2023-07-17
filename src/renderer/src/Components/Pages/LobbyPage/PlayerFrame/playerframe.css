@@ -17,7 +17,7 @@
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    left: 50%;
+    left: 48%;
 }
 .summonerspellcontainer {
     position: absolute;
@@ -51,8 +51,10 @@
     color: white;
     position: absolute;
     bottom: 10%;
-    left: 50%;
+    left: 48%;
     transform: translateX(-50%);
+    width: 30%;
+    text-align: center;
 }
 
 .trinket {
@@ -105,4 +107,21 @@
 
 .level {
     text-align: center;
+    user-select: none;
+}
+
+.arrow {
+    filter: invert(100%);
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+#arrowLeft {
+    left: 2%;
+}
+
+#arrowRight {
+    right: 2%;
 }
