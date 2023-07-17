@@ -27,7 +27,6 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	const [csDisplay, setCsDisplay] = useState(0)
 	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
-	console.log(gameLength)
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
 	 * @param {string} champName - The name of the champion.
@@ -73,9 +72,9 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	if(!champImg) {
 		grabChampionImage(championName)
 	}
-
+	// style={stats.WIN ? { backgroundColor: 'rgb(17, 19, 54)'} : {backgroundColor: 'rgb(61, 26, 26)'}
 	return ( 
-		<div className="playercontainer" style={stats.WIN ? { backgroundColor: 'black'} : {backgroundColor: 'black'}}>
+		<div className="playercontainer" style={stats.WIN ? { backgroundColor: 'rgb(17, 19, 54)'} : {backgroundColor: 'rgb(61, 26, 26)'}}>
 			<div className="champImgContainer">
 				<img src={champImg} alt="" className='playerFrameChampion'/>
 				<div className="levelcontainer">

@@ -104,6 +104,9 @@ const LobbyPage = ({endOfGameData}) => {
 				))}
 				{(endOfGameTeamOne && endOfGameTeamTwo) && 
 				<>
+					<div className="gameinfo">
+						<p className='winLose' style={endOfGameData.localPlayer.WIN ? {color: 'blue'} : {color: 'red'}}>{endOfGameData.localPlayer.WIN ? 'VICTORY' : 'DEFEAT'}</p>
+					</div>
 					<EndOfGameTeamSide 
 						playerArray={endOfGameTeamOne.players}
 						gameLength={endOfGameData.gameLength}
