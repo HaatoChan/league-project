@@ -46,7 +46,6 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	 * @param {number} summonerTwo - The id of the second selected summoner spell-
 	 */
 	const grabSummoners = async (summonerOne, summonerTwo) => {
-		console.log('grabbing')
 		setResolvedSmnOne(await summonerIds[summonerOne].image)
 		setResolvedSmnTwo(await summonerIds[summonerTwo].image)
 	}
@@ -72,7 +71,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	if(!champImg) {
 		grabChampionImage(championName)
 	}
-	// style={stats.WIN ? { backgroundColor: 'rgb(17, 19, 54)'} : {backgroundColor: 'rgb(61, 26, 26)'}
+
 	return ( 
 		<div className="playercontainer" style={stats.WIN ? { backgroundColor: 'rgb(17, 19, 54)'} : {backgroundColor: 'rgb(61, 26, 26)'}}>
 			<div className="champImgContainer">

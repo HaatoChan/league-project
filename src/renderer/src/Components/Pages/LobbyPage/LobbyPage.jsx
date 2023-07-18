@@ -26,6 +26,8 @@ const LobbyPage = ({endOfGameData}) => {
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
 	const [endOfGameTeamOne, setEndOfGameTeamOne] = useState(null)
 	const [endOfGameTeamTwo, setEndOfGameTeamTwo] = useState(null)
+	const [minutes, setMinutes] = useState()
+	const [seconds, setSeconds] = useState()
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
@@ -57,6 +59,9 @@ const LobbyPage = ({endOfGameData}) => {
 		if(endOfGameData !== null) {
 			setEndOfGameTeamOne(endOfGameData.teams[0])
 			setEndOfGameTeamTwo(endOfGameData.teams[1])
+			const unSplit = (endOfGameData.gameLength/60).toFixed(2)
+			setMinutes(unSplit.toString().split('.')[0])
+			setSeconds(unSplit.toString().split('.')[1])
 		} else {
 			// Need to test
 			setEndOfGameTeamOne(null)
@@ -105,6 +110,7 @@ const LobbyPage = ({endOfGameData}) => {
 				{(endOfGameTeamOne && endOfGameTeamTwo) && 
 				<>
 					<div className="gameinfo">
+						<p className="time">{minutes}m {seconds}s</p>
 						<p className='winLose' style={endOfGameData.localPlayer.WIN ? {color: 'blue'} : {color: 'red'}}>{endOfGameData.localPlayer.WIN ? 'VICTORY' : 'DEFEAT'}</p>
 					</div>
 					<EndOfGameTeamSide 
@@ -187,8 +193,6 @@ const LobbyPage = ({endOfGameData}) => {
 						matchingRoute.route = exportObject.route
 						matchingRoute.champions = exportObject.champions
 						window.api.writeRoutesFile(data)
-					} else {
-						// Make something that appears
 					}
 				}}>
 					SAVE
