@@ -650,6 +650,10 @@ export const championIds = {
 	143: {
 		name: 'Zyra',
 		image: (async () => (await import('../assets/championSplashArt/Zyra_0.jpg')).default)()	
+	},
+	950: {
+		name: 'Naafiri',
+		image: (async () => (await import('../assets/championSplashArt/Naafiri_0.jpg')).default)()
 	}
 }
 

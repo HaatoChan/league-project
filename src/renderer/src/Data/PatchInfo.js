@@ -1,1 +1,1 @@
-export const leaguePatch = '13.13.1'
+export const leaguePatch = '13.14.1'
