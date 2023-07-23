@@ -93,7 +93,11 @@ async function createWindow() {
 	
 	const itemData = await fetchItemData()
 
-
+	// eslint-disable-next-line no-unused-vars
+	for (const [key, value] of Object.entries(itemData)) {
+		value.description = parseTextToJSON(value.description)
+	}
+	
 	ipcMain.handle('itemData', () => {
 		return itemData
 	})
@@ -129,17 +133,6 @@ app.whenReady().then(async () => {
 	}
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
-
-
-	//const text = '<mainText><stats><attention>90</attention> Ability Power<br><attention>300</attention> Health<br><attention>25</attention> Ability Haste</stats><br><li><passive>Soulrend:</passive> Damaging a champion deals additional magic damage and grants you Move Speed.<br><br><rarityMythic>Mythic Passive:</rarityMythic> Grants all other <rarityLegendary>Legendary</rarityLegendary> items Ability Haste.</mainText><br>'
-
-	//const text = '<mainText><stats><attention>45</attention> Attack Damage<br><attention>30%</attention> Attack Speed<br><attention>20%</attention> Critical Strike Chance</stats><br><li><passive>Energized:</passive> Moving and Attacking will generate an Energized Attack.<li><passive>Electroshock:</passive> Fires chain lightning that bounces to nearby enemies, dealing increased damage to minions.</mainText><br>'
-
-	const text = '<mainText><stats><attention>40</attention> Attack Damage<br><attention>33%</attention> Attack Speed<br><attention>300</attention> Health<br><attention>20</attention> Ability Haste</stats><br><li><passive>Threefold Strike:</passive> Attacks grant Move Speed. If the target is a champion, increase your base Attack Damage, stacking.<li><passive>Spellblade:</passive> After using an Ability, your next Attack is enhanced with additional damage.<br><br><rarityMythic>Mythic Passive:</rarityMythic> Grants all other <rarityLegendary>Legendary</rarityLegendary> items Attack Damage, Ability Haste, and Move Speed.</mainText><br>'
-
-  
-	const json = parseTextToJSON(text)
-	console.log(json)
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -369,8 +362,9 @@ async function addImagePaths (itemObject) {
 
 
 /**
- *
- * @param text
+ * Grabs item data from riots item.json item description and converts it to a javascript object.
+ * @param {HTMLElement} text - The HTML element to grab the data from.
+ * @returns {object} - Returns an object containing the item data.
  */
 const parseTextToJSON = (text) => {
 	const $ = load(text)
@@ -420,6 +414,6 @@ const parseTextToJSON = (text) => {
 		},
 	}
   
-	return result
+	return JSON.stringify(result)
 }
   
