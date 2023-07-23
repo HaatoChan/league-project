@@ -131,7 +131,12 @@ app.whenReady().then(async () => {
 	createFileIfNotExists(routesfilepath, routesData)
 
 
-	const text = '<mainText><stats><attention>400</attention> Health<br><attention>60</attention> Armor</stats><br><br><active>Active -</active> <active>Humility:</active> <status>Slow</status> nearby enemies.<br><li><passive>Rock Solid:</passive> Reduce incoming damage from Attacks.<li><passive>Critical Resilience:</passive> Critical Strikes deal 25% less damage to you.</mainText><br>'
+	//const text = '<mainText><stats><attention>90</attention> Ability Power<br><attention>300</attention> Health<br><attention>25</attention> Ability Haste</stats><br><li><passive>Soulrend:</passive> Damaging a champion deals additional magic damage and grants you Move Speed.<br><br><rarityMythic>Mythic Passive:</rarityMythic> Grants all other <rarityLegendary>Legendary</rarityLegendary> items Ability Haste.</mainText><br>'
+
+	//const text = '<mainText><stats><attention>45</attention> Attack Damage<br><attention>30%</attention> Attack Speed<br><attention>20%</attention> Critical Strike Chance</stats><br><li><passive>Energized:</passive> Moving and Attacking will generate an Energized Attack.<li><passive>Electroshock:</passive> Fires chain lightning that bounces to nearby enemies, dealing increased damage to minions.</mainText><br>'
+
+	const text = '<mainText><stats><attention>40</attention> Attack Damage<br><attention>33%</attention> Attack Speed<br><attention>300</attention> Health<br><attention>20</attention> Ability Haste</stats><br><li><passive>Threefold Strike:</passive> Attacks grant Move Speed. If the target is a champion, increase your base Attack Damage, stacking.<li><passive>Spellblade:</passive> After using an Ability, your next Attack is enhanced with additional damage.<br><br><rarityMythic>Mythic Passive:</rarityMythic> Grants all other <rarityLegendary>Legendary</rarityLegendary> items Attack Damage, Ability Haste, and Move Speed.</mainText><br>'
+
   
 	const json = parseTextToJSON(text)
 	console.log(json)
@@ -392,15 +397,26 @@ const parseTextToJSON = (text) => {
 	}
 	
 	// Grab passive text
+	let mythicPassive
 	const passives = []
 	$('li').each((index, element) => {
-		passives.push($(element).text().trim())
+		const $li = $(element)
+
+		if ($li.find('rarityMythic').length > 0) {
+			const text = $(element).text().trim()
+			const splitText = text.split('Mythic Passive')
+			passives.push(splitText[0])
+			mythicPassive = 'Mythic Passive' + splitText[1]
+		} else {
+			passives.push($(element).text().trim())
+		}
 	})
   
 	const result = {
 		mainText: {
 			stats,
 			passives,
+			mythicPassive,
 		},
 	}
   
