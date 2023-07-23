@@ -7,6 +7,7 @@ import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 import fetch from 'node-fetch'
 import { leaguePatch } from '../renderer/src/Data/PatchInfo'
+import { load } from 'cheerio'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -89,13 +90,9 @@ async function createWindow() {
 	
 
 
-	let itemData
-	const itemPath = path.join(app.getPath('userData'), 'item.json')
-	if (!checkIfFileExists(itemPath)) {
-		itemData = await fetchItemData()
-	} else {
-		itemData = JSON.parse(await readFile(path.join(app.getPath('userData'), 'item.json')))
-	}
+	
+	const itemData = await fetchItemData()
+
 
 	ipcMain.handle('itemData', () => {
 		return itemData
@@ -132,6 +129,12 @@ app.whenReady().then(async () => {
 	}
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
+
+
+	const text = '<mainText><stats><attention>45</attention> Attack Damage<br><attention>30%</attention> Attack Speed<br><attention>20%</attention> Critical Strike Chance</stats><br><li><passive>Energized:</passive> Moving and Attacking will generate an Energized Attack.<li><passive>Electroshock:</passive> Fires chain lightning that bounces to nearby enemies, dealing increased damage to minions.</mainText><br>'
+  
+	const json = parseTextToJSON(text)
+	console.log(json)
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -191,20 +194,11 @@ const lcuConnect = async () => {
 			// Atempt to open websocket
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
-			// Declare event subscriptions
-			
-			/*	ws.on('message', message => {
-				const buffer = Buffer.from(message)
-				try {
-					const payload = JSON.parse(buffer.toString())
-					console.log(payload)
-				} catch (error) {
-					console.log('error parsing data')
-				}
-			}) */
 
+		
 			// Used to determine whether game has started or not
 			let gameStarted = false
+			// Declare event subscriptions
 
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				// Triggers when user firsts enter the lobby
@@ -350,7 +344,6 @@ async function fetchItemData() {
 		const response = await fetch(url)
 		const holder = await response.json()
 		addImagePaths(holder.data)
-		writeFile(holder.data, path.join(app.getPath('userData'), 'item.json'))
 		return holder.data
 	} catch (err) {
 		// TODO send error message to renderer
@@ -368,3 +361,49 @@ async function addImagePaths (itemObject) {
 		value.img = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/img/item/${key}.png`
 	}
 }
+
+
+/**
+ *
+ * @param text
+ */
+const parseTextToJSON = (text) => {
+	const $ = load(text)
+  
+
+	// Grab the stat values
+	const stats = {}
+	const statValueHolder = []
+	const statsTextNodes = $('stats').contents().filter(function () { // Making it an arrow function makes it not work?
+		return this.nodeType === 3 // Filter text nodes
+	})
+
+	const statsNameArray = statsTextNodes.map((index, element) => {
+		return $(element).text().trim()
+	}).get()
+
+	$('stats').children('attention').each((index, element) => {
+		const statValue = $(element).text().trim()
+		statValueHolder.push(statValue)
+	})
+
+	for(let i = 0; i < statValueHolder.length; i++) {
+		stats[statsNameArray[i]] = statValueHolder[i]
+	}
+	
+	// Grab passive text
+	const passives = []
+	$('passive').each((index, element) => {
+		passives.push($(element).text().trim())
+	})
+  
+	const result = {
+		mainText: {
+			stats,
+			passives,
+		},
+	}
+  
+	return result
+}
+  

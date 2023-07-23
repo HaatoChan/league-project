@@ -8,8 +8,9 @@
 
 .playername {
     color: white;
-    text-align: center;
-    margin-top: 1%;
+    text-align: left;
+    margin-left: 4%;
+    margin-top: 2%;
 }
 
 .kda {
@@ -24,7 +25,7 @@
     left: 23%;
     bottom: 40%;
     width: 8%;
-    height: 30%;
+    height: 27%;
     display: flex;
     flex-direction: column;
     gap: 3%;
@@ -33,7 +34,7 @@
 .itemcontainer {
     background-color: azure;
     width: 25%;
-    height: 65%;
+    height: 62%;
     position: absolute;
     right: 12%;
     bottom: 5%;
