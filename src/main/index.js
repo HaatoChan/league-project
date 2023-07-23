@@ -131,7 +131,7 @@ app.whenReady().then(async () => {
 	createFileIfNotExists(routesfilepath, routesData)
 
 
-	const text = '<mainText><stats><attention>45</attention> Attack Damage<br><attention>30%</attention> Attack Speed<br><attention>20%</attention> Critical Strike Chance</stats><br><li><passive>Energized:</passive> Moving and Attacking will generate an Energized Attack.<li><passive>Electroshock:</passive> Fires chain lightning that bounces to nearby enemies, dealing increased damage to minions.</mainText><br>'
+	const text = '<mainText><stats><attention>400</attention> Health<br><attention>60</attention> Armor</stats><br><br><active>Active -</active> <active>Humility:</active> <status>Slow</status> nearby enemies.<br><li><passive>Rock Solid:</passive> Reduce incoming damage from Attacks.<li><passive>Critical Resilience:</passive> Critical Strikes deal 25% less damage to you.</mainText><br>'
   
 	const json = parseTextToJSON(text)
 	console.log(json)
@@ -393,7 +393,7 @@ const parseTextToJSON = (text) => {
 	
 	// Grab passive text
 	const passives = []
-	$('passive').each((index, element) => {
+	$('li').each((index, element) => {
 		passives.push($(element).text().trim())
 	})
   
