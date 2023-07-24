@@ -17,7 +17,7 @@
 .kda {
     color: white;
     position: absolute;
-    top: 57%;
+    top: 25%;
     transform: translate(-50%, -50%);
     left: 48%;
 }
@@ -120,10 +120,29 @@
     cursor: pointer;
 }
 
-#arrowLeft {
-    left: 2%;
+#arrowCsLeft {
+    left: 0%;
 }
 
-#arrowRight {
-    right: 2%;
+#arrowCsRight {
+    right: 0%;
+}
+
+
+.damagedealt {
+    position: absolute;
+    left: 48%;
+    top: 42%;
+    text-align: center;
+    transform: translateX(-50%);
+    color: white;
+    width: 30%;
+}
+
+#arrowDmgRight {
+    right: 0%;
+}
+
+#arrowDmgLeft {
+    left: 0%;
 }

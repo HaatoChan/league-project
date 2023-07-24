@@ -21,10 +21,12 @@ import arrowLeft from '../../../../assets/Arrows/arrow left.svg'
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
 const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket, championName, gameLength}) => {
+	console.log(stats)
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
 	const [csDisplay, setCsDisplay] = useState(0)
+	const [dmgDisplay, setDmgDisplay] = useState(true)
 	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
 	/**
@@ -51,6 +53,20 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	}
 
 	/**
+	 * Modify damage number for readability.
+	 * @param {string} str - The string to modify.
+	 * @returns {string} - Returns modified or unmodified string.
+	 */
+	const modifyDamageString = (str) => {
+		console.log(typeof str)
+		if (str.length === 5) {
+			const firstTwoDigits = str.slice(0, 2)
+			const remainingDigits = str.slice(2)
+			return firstTwoDigits + '.' + remainingDigits
+		}
+		return str // Return the original string if it's not 5 digits long
+	}
+	/**
 	 * Handles which statistics to show when the arrows are pressed.
 	 * @param {number} adjust - A positive or a negative number telling the function whether to increment or decrement the state.
 	 */
@@ -65,6 +81,17 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			setCsDisplay(displayableItems - 1)
 		}
 	}
+	/**
+	 * Controls the dmg display on the player frame.
+	 */
+	const DmgDisplay = () => {
+		if (dmgDisplay) {
+			setDmgDisplay(false)
+		} else {
+			setDmgDisplay(true)
+		}
+	}
+	
 	if (!resolvedSmnOne && !resolvedSmnTwo) {
 		grabSummoners(summonerOne, summonerTwo)
 	}
@@ -89,11 +116,17 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 				/>
 			</div>
 			<p className='playername'>{summonerName}</p>
+			<div className="damagedealt">
+				<img src={arrowRight} alt="right" className="arrow" id='arrowDmgRight' onClick={() => DmgDisplay()}/>
+				{dmgDisplay && <p className="totaldmg">{modifyDamageString(stats.TOTAL_DAMAGE_DEALT_TO_CHAMPIONS.toString())}</p> }
+				{!dmgDisplay && <p className="damageperminute">{((stats.TOTAL_DAMAGE_DEALT_TO_CHAMPIONS / gameLength) * 60).toFixed(0)} d/m</p> }
+				<img src={arrowLeft} alt="left" className="arrow" id='arrowDmgLeft' onClick={() => DmgDisplay()}/>
+			</div>
 			<div className="csing">
-				<img src={arrowLeft} alt="left" className="arrow" id='arrowLeft' onClick={() => CsDisplay(-1)}/>
+				<img src={arrowLeft} alt="left" className="arrow" id='arrowCsLeft' onClick={() => CsDisplay(-1)}/>
 				{ csDisplay === 0 && <p className="totalcs">{stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED} CS </p> }
 				{ csDisplay === 1 && <p  className='csmin'>{(((stats.MINIONS_KILLED + stats.NEUTRAL_MINIONS_KILLED) / gameLength) * 60).toFixed(1)} CS/m</p>}
-				<img src={arrowRight} alt="right" className="arrow" id='arrowRight' onClick={() => CsDisplay(1)}/>
+				<img src={arrowRight} alt="right" className="arrow" id='arrowCsRight' onClick={() => CsDisplay(1)}/>
 			</div>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
 			<div className="itemcontainer">

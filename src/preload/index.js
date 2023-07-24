@@ -43,7 +43,20 @@ const api = {
 	 * Passes the itemdata from the main process to the renderer.
 	 * @returns {object} - A javasript object holding all the item data.
 	 */
-	itemData: async () => await ipcRenderer.invoke('itemData')
+	itemData: async () => await ipcRenderer.invoke('itemData'),
+	/**
+	 * Tells the renderer that item data failed to fetch.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	failedFetch: (callback) => {
+		ipcRenderer.on('failed-to-fetch', callback)
+	},
+	/**
+	 * Tells the main to clear the main interval.
+	 */
+	clearMainInterval: () => {
+		ipcRenderer.send('clearInterval')
+	}
 }
 const LCUApi = {
 	/**

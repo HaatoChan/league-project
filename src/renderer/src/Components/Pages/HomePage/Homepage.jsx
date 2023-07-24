@@ -10,8 +10,12 @@ const HomePage = () => {
 
 	const [textState, setTextState] = useState()
 
-	window.LCUApi.lcuConnected((_event, value) => {
+	window.api.failedFetch((_event, value) => {
 		console.log(value)
+		window.api.clearMainInterval()
+	})
+
+	window.LCUApi.lcuConnected((_event, value) => {
 		setTextState(value)
 	})
 
