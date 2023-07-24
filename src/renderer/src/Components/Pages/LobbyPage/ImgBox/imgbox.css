@@ -17,7 +17,7 @@
     min-width: 300px;
     min-height: max-content;
     max-width: 300px;
-    max-height: 250px;
+    max-height: max-content;
     background-color: rgba(39, 39, 46, 0.9);
     right: -300%;
     top: 100%;

@@ -4,6 +4,7 @@
     height: 20%;
     border: 1px solid white;
     position: relative;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .playername {
