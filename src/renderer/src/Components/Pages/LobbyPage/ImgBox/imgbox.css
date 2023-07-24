@@ -20,7 +20,6 @@
     max-height: max-content;
     background-color: rgba(39, 39, 46, 0.9);
     right: -300%;
-    top: 100%;
     z-index: 500000;
     border: 1px solid white;
     padding: 0.5rem;

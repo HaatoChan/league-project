@@ -7,7 +7,6 @@ import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 import fetch from 'node-fetch'
 import { leaguePatch } from '../renderer/src/Data/PatchInfo'
-import { load } from 'cheerio'
 
 if (isTest) {
 	import('wdio-electron-service/main')
