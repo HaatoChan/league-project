@@ -88,17 +88,6 @@ async function createWindow() {
 	})
 	
 	const itemData = await fetchItemData()
-	let nullVall
-	if (!itemData) {
-		nullVall = setInterval(() => {
-			if (BrowserWindow.getAllWindows().length > 0) {
-				mainWindow.webContents.send('failed-to-fetch', 'testfromfetchitemdata')
-			}},1000)
-	}
-
-	ipcMain.on('clearInterval', () => {
-		clearInterval(nullVall)
-	})
 
 
 	ipcMain.handle('itemData', () => {
@@ -347,7 +336,15 @@ async function fetchItemData() {
 		addImagePaths(holder.data)
 		return holder.data
 	} catch (err) {
-		return null
+		const nullVall = setInterval(() => {
+			if (BrowserWindow.getAllWindows().length > 0) {
+				mainWindow.webContents.send('failed-to-fetch', 'testfromfetchitemdata')
+			}},1000)
+		
+	
+		ipcMain.on('clearInterval', () => {
+			clearInterval(nullVall)
+		})
 	}
 }
 

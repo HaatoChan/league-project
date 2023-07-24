@@ -41,6 +41,11 @@ const HomePage = () => {
 			<div className="empty">
 				{textState}
 			</div>
+			<div className="failedfetch">
+				<p className="failerror">
+					Something went wrong getting data from Riot CDN. <br></br> Certain functions may not work as expected. <br></br> To reattempt press the retry button in the sidebar.
+				</p>
+			</div>
 		</div>
 	)
 }

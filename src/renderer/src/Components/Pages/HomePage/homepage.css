@@ -6,6 +6,7 @@
     grid-column-gap: 20px;
     width: 100%;
     background-color: #0f0f11d7;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .titleholder {
@@ -21,8 +22,6 @@
     color: white;
     background-color: rgba(39, 39, 46);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.2);
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    
 }
 
 .toollinks {
@@ -62,6 +61,23 @@
     margin-bottom: 1em;
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .failedfetch {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    height: 10%;
+    z-index: 7000;
+    padding: 0.5rem;
+    padding-right: 1rem;
+    background-color: rgb(26, 26, 31);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .failerror {
+    color: white;
   }
 
   @media screen and (max-height: 900px) {

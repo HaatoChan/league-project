@@ -39,19 +39,17 @@
 
 .cancelimport {
     position: absolute;
-    top: 1%;
-    right: 2%;
+    background-color: rgba(161, 41, 41, 0.438);
+    border: none;
+    font-weight: bold;
+    height: 4.5%;
+    width: 5%;
+    top: 4%;
+    left: 92%;
+    transform: translateY(-50%);
     cursor: pointer;
-    background-color: red;
-    border: 2px solid rgba(0, 0, 0);
-    font-weight: bold;
-    width: 4%;
-    height: 4%;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    border-radius: 50%;
     color: white;
-    text-align: center;
-    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .importP {
