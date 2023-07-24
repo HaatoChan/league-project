@@ -88,16 +88,8 @@ async function createWindow() {
 		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
 	
-
-
-	
 	const itemData = await fetchItemData()
 
-	// eslint-disable-next-line no-unused-vars
-	for (const [key, value] of Object.entries(itemData)) {
-		value.description = parseTextToJSON(value.description)
-	}
-	
 	ipcMain.handle('itemData', () => {
 		return itemData
 	})
@@ -359,61 +351,3 @@ async function addImagePaths (itemObject) {
 		value.img = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/img/item/${key}.png`
 	}
 }
-
-
-/**
- * Grabs item data from riots item.json item description and converts it to a javascript object.
- * @param {HTMLElement} text - The HTML element to grab the data from.
- * @returns {object} - Returns an object containing the item data.
- */
-const parseTextToJSON = (text) => {
-	const $ = load(text)
-  
-
-	// Grab the stat values
-	const stats = {}
-	const statValueHolder = []
-	const statsTextNodes = $('stats').contents().filter(function () { // Making it an arrow function makes it not work?
-		return this.nodeType === 3 // Filter text nodes
-	})
-
-	const statsNameArray = statsTextNodes.map((index, element) => {
-		return $(element).text().trim()
-	}).get()
-
-	$('stats').children('attention').each((index, element) => {
-		const statValue = $(element).text().trim()
-		statValueHolder.push(statValue)
-	})
-
-	for(let i = 0; i < statValueHolder.length; i++) {
-		stats[statsNameArray[i]] = statValueHolder[i]
-	}
-	
-	// Grab passive text
-	let mythicPassive
-	const passives = []
-	$('li').each((index, element) => {
-		const $li = $(element)
-
-		if ($li.find('rarityMythic').length > 0) {
-			const text = $(element).text().trim()
-			const splitText = text.split('Mythic Passive')
-			passives.push(splitText[0])
-			mythicPassive = 'Mythic Passive' + splitText[1]
-		} else {
-			passives.push($(element).text().trim())
-		}
-	})
-  
-	const result = {
-		mainText: {
-			stats,
-			passives,
-			mythicPassive,
-		},
-	}
-  
-	return JSON.stringify(result)
-}
-  

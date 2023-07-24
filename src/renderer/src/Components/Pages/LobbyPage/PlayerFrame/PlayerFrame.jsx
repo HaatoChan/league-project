@@ -100,10 +100,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 				{itemArray.map((item) => (
 					<div className="boxcontainer" key={item}>
 						<ImgBox
-							onHover={() => {
-								console.log(itemData[item].description)
-								console.log(item)
-							}}
+							contextData={itemData[item]}
 							imgUrl={itemData[item].img}
 						/>
 					</div>
