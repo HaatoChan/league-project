@@ -80,6 +80,25 @@
     color: white;
   }
 
+  .closefetch {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 5%;
+    right: 2%;
+    width: 5%;
+    height: 18%;
+    background-color: rgba(161, 41, 41, 0.438);
+    border: 0.1px solid white;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    font-size: 1.1rem;
+    padding-top: 0.1rem;
+  }
+
   @media screen and (max-height: 900px) {
         .aboutP {
             font-size: 1.3rem;

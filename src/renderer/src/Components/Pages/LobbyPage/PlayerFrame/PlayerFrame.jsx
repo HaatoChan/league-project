@@ -21,7 +21,6 @@ import arrowLeft from '../../../../assets/Arrows/arrow left.svg'
  * @returns {HTMLElement} - Returns a HTML element with player information.
  */
 const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, trinket, championName, gameLength}) => {
-	console.log(stats)
 	const [champImg, setChampImg] = useState()
 	const [resolvedSmnOne, setResolvedSmnOne] = useState()
 	const [resolvedSmnTwo, setResolvedSmnTwo] = useState()
@@ -58,7 +57,6 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	 * @returns {string} - Returns modified or unmodified string.
 	 */
 	const modifyDamageString = (str) => {
-		console.log(typeof str)
 		if (str.length === 5) {
 			const firstTwoDigits = str.slice(0, 2)
 			const remainingDigits = str.slice(2)

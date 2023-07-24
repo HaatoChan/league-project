@@ -88,7 +88,9 @@ async function createWindow() {
 	})
 	
 	const itemData = await fetchItemData()
-
+	if (itemData) {
+		mainWindow.webContents.send('itemdata-to-renderer', itemData)
+	}
 
 	ipcMain.handle('itemData', () => {
 		return itemData
@@ -96,6 +98,14 @@ async function createWindow() {
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
+
+	ipcMain.on('retryFetch', async () => {
+		const itemData = await fetchItemData()
+		if (itemData) {
+			mainWindow.webContents.send('itemdata-to-renderer', itemData)
+			mainWindow.webContents.send('fetch-success')
+		}
+	})
 }
 
 // This method will be called when Electron has finished
@@ -338,7 +348,7 @@ async function fetchItemData() {
 	} catch (err) {
 		const nullVall = setInterval(() => {
 			if (BrowserWindow.getAllWindows().length > 0) {
-				mainWindow.webContents.send('failed-to-fetch', 'testfromfetchitemdata')
+				mainWindow.webContents.send('failed-to-fetch')
 			}},1000)
 		
 	

@@ -9,9 +9,9 @@ import { useState } from 'react'
 const HomePage = () => {
 
 	const [textState, setTextState] = useState()
-
-	window.api.failedFetch((_event, value) => {
-		console.log(value)
+	const [failedFetch, setFailedFetch] = useState(false)
+	window.api.failedFetch(() => {
+		setFailedFetch(true)
 		window.api.clearMainInterval()
 	})
 
@@ -23,8 +23,6 @@ const HomePage = () => {
 		<div className="homepagecontainer">
 			<div className="titleholder">			
 				<Title titleText='Pashas League App'/>
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () =>{ 
-				}}></button> }
 			</div>
 			<div className="about">
 				<h1 id="abouth1">About</h1>
@@ -41,11 +39,14 @@ const HomePage = () => {
 			<div className="empty">
 				{textState}
 			</div>
-			<div className="failedfetch">
-				<p className="failerror">
+			{ failedFetch &&
+				<div className="failedfetch">
+					<button className="closefetch" onClick={() => setFailedFetch(false)}>X</button>
+					<p className="failerror">
 					Something went wrong getting data from Riot CDN. <br></br> Certain functions may not work as expected. <br></br> To reattempt press the retry button in the sidebar.
-				</p>
-			</div>
+					</p>
+				</div>
+			}
 		</div>
 	)
 }

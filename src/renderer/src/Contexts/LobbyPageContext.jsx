@@ -33,6 +33,10 @@ const LobbyContextProvider = ({children}) => {
 		}
 	})
 
+	window.api.itemDataToRenderer((_event, value) => {
+		setItemData(value)
+	})
+
 	// Receives information from main process that the game has ended
 	window.LCUApi.gameEnded(() => {
 		location.pathname === '/lobby-screen' ? {} : navigate('/lobby-screen')
@@ -73,7 +77,9 @@ const LobbyContextProvider = ({children}) => {
 		 */
 		const getItemsFromMain = async () => {
 			const holder = await window.api.itemData()
-			setItemData(holder)
+			if (!itemData) {
+				setItemData(holder)
+			}
 		}
 		if(!itemData) {
 			getItemsFromMain()

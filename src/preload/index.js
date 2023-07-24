@@ -56,6 +56,26 @@ const api = {
 	 */
 	clearMainInterval: () => {
 		ipcRenderer.send('clearInterval')
+	},
+	/**
+	 * Fired when the user attempts to refetch the itemdata.
+	 */
+	reTryFetch: () => {
+		ipcRenderer.send('retryFetch')
+	},
+	/**
+	 * Sends the itemData to the renderer.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	itemDataToRenderer: (callback) => {
+		ipcRenderer.on('itemdata-to-renderer', callback)
+	},
+	/**
+	 * Executed when the fetch attempt succeeds.
+	 * @param {Function} callback - The callback function to execute.
+	 */
+	fetchSuccess: (callback) => {
+		ipcRenderer.on('fetch-success', callback)
 	}
 }
 const LCUApi = {
