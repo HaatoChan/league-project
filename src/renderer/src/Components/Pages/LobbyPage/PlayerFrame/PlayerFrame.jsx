@@ -28,6 +28,9 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	const [dmgDisplay, setDmgDisplay] = useState(true)
 	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
+
+	console.log(itemArray)
+
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
 	 * @param {string} champName - The name of the champion.
@@ -128,11 +131,11 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			</div>
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
 			<div className="itemcontainer">
-				{itemArray.map((item) => (
-					<div className="boxcontainer" key={item}>
+				{itemArray.map((item, index) => (
+					<div className="boxcontainer" key={(item + index) + summonerName}>
 						<ImgBox
 							contextData={itemData[item]}
-							imgUrl={itemData[item].img}
+							imgUrl={itemData[item]?.img ? itemData[item].img : undefined}
 						/>
 					</div>
 				))}

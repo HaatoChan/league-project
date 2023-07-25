@@ -153,8 +153,7 @@ app.whenReady().then(async () => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		const dummyData =  JSON.parse(await readFile(path.join(app.getPath('userData'), 'dummydata.json')))
-		mainWindow.webContents.send('game-ended', dummyData)
+		console.log(selectedRoute)
 	})
 })
 
@@ -225,44 +224,46 @@ const lcuConnect = async () => {
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
 					try {
+						data && mainWindow.webContents.send('game-ended', data)
 						if (Object.keys(selectedRoute).length > 0 && data?.localPlayer) {
-							mainWindow.webContents.send('game-ended', data)
 							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
-							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
-							if (selectedRouteIndex !== 1) {
-								const foundRoute = allRoutes.routes[selectedRouteIndex]
-								// Parse data and find enemy team index
-								let enemyTeamDataArray = []
-								data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
-								// Find and assign win/loss to champion specific enemy jungle
-								const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
-								if (enemyJgl) {
+							if (selectedRoute) {
+								const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
+								if (selectedRouteIndex !== 1) {
+									const foundRoute = allRoutes.routes[selectedRouteIndex]
+									// Parse data and find enemy team index
+									let enemyTeamDataArray = []
+									data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
+									// Find and assign win/loss to champion specific enemy jungle
+									const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
+									if (enemyJgl) {
 									// eslint-disable-next-line no-unused-vars
-									for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
-										if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
-											if (data.localPlayer.stats.LOSE){
-												champion[Object.keys(champion)[0]].totalLosses++
-												champion[Object.keys(champion)[0]].totalGames++
-											} else if (data.localPlayer.stats.WIN) {
-												champion[Object.keys(champion)[0]].totalWins++
-												champion[Object.keys(champion)[0]].totalGames++
+										for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
+											if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
+												if (data.localPlayer.stats.LOSE){
+													champion[Object.keys(champion)[0]].totalLosses++
+													champion[Object.keys(champion)[0]].totalGames++
+												} else if (data.localPlayer.stats.WIN) {
+													champion[Object.keys(champion)[0]].totalWins++
+													champion[Object.keys(champion)[0]].totalGames++
+												}
+												champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 											}
-											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 										}
 									}
+									// Overall winrate
+									if (data.localPlayer.stats.LOSE) {
+										foundRoute.gameData.totalLosses++
+										foundRoute.gameData.totalGames++
+									} else if (data.localPlayer.stats.WIN) {
+										foundRoute.gameData.totalWins++
+										foundRoute.gameData.totalGames++
+									}
+									foundRoute.gameData.name = selectedRoute.name
+									foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
+									writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+									mainWindow.webContents.send('update-route-data', foundRoute)
 								}
-								// Overall winrate
-								if (data.localPlayer.stats.LOSE) {
-									foundRoute.gameData.totalLosses++
-									foundRoute.gameData.totalGames++
-								} else if (data.localPlayer.stats.WIN) {
-									foundRoute.gameData.totalWins++
-									foundRoute.gameData.totalGames++
-								}
-								foundRoute.gameData.name = selectedRoute.name
-								foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
-								writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-								mainWindow.webContents.send('update-route-data', foundRoute)
 							}
 						}
 						selectedRoute = null

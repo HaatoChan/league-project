@@ -41,6 +41,11 @@ const LobbyPage = ({endOfGameData}) => {
 		setEnemyTeamDisplay(null)
 	})
 
+	window.LCUApi.lobbyEntered(async () => {
+		setEndOfGameTeamOne(null)
+		setEndOfGameTeamTwo(null)
+	})
+
 	/**
 	 * Adds the images of the enemy team to display.
 	 * @param {string} champName - The champName to grab image from.
@@ -62,10 +67,6 @@ const LobbyPage = ({endOfGameData}) => {
 			const unSplit = (endOfGameData.gameLength/60).toFixed(2)
 			setMinutes(unSplit.toString().split('.')[0])
 			setSeconds(unSplit.toString().split('.')[1])
-		} else {
-			// Need to test
-			setEndOfGameTeamOne(null)
-			setEndOfGameTeamTwo(null)
 		}
 	},[endOfGameData])
 

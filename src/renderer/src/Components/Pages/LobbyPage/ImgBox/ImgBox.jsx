@@ -34,7 +34,7 @@ const ImgBox = ({imgUrl, contextData}) => {
 				<p dangerouslySetInnerHTML={grabItemMarkup()}></p>
 			</div> 
 			}
-			<img src={imgUrl} alt="" className="boximg" onMouseEnter={() => {
+			<img src={imgUrl ? imgUrl : '' } alt="" className="boximg" onMouseEnter={() => {
 				if(contextData) {
 					setDisplayBox(true)
 				}
