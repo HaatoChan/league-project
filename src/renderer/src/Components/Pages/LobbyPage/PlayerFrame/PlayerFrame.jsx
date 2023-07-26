@@ -29,8 +29,6 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 	const displayableItems = 2
 	const { itemData } = useContext(LobbyContext)
 
-	console.log(itemArray)
-
 	/**
 	 * Grabs the square portrait of a champion and resolves image path.
 	 * @param {string} champName - The name of the champion.
