@@ -130,7 +130,7 @@ const PlayerFrame = ({summonerName, itemArray, stats, summonerOne, summonerTwo, 
 			{<p className="kda">{stats.CHAMPIONS_KILLED}/{stats.NUM_DEATHS}/{stats.ASSISTS}</p>}
 			<div className="itemcontainer">
 				{itemArray.map((item, index) => (
-					<div className="boxcontainer" key={(item + index) + summonerName}>
+					<div className="boxcontainer" key={item + summonerName + index}>
 						<ImgBox
 							contextData={itemData[item]}
 							imgUrl={itemData[item]?.img ? itemData[item].img : undefined}
