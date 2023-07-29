@@ -132,7 +132,7 @@ const CampSelectionContextProvider = ({children}) => {
 				setRouteGameData(copy)
 			}
 		} catch (error) {
-			console.error(error)
+			return
 		}
 	}
 

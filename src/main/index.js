@@ -31,13 +31,14 @@ async function createWindow() {
 		height: height,
 		show: false,
 		icon: appIcon,
-		//	title: 'PAL',
 		autoHideMenuBar: true,
+		fullscreenable: false,
 		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
-			nodeIntegrationInWorker: true
+			nodeIntegrationInWorker: true,
+			devTools: !app.isPackaged,
 		},
 		resizable: false,
 	})
@@ -108,10 +109,6 @@ async function createWindow() {
 			mainWindow.webContents.send('itemdata-to-renderer', itemData)
 			mainWindow.webContents.send('fetch-success')
 		}
-	})
-
-	ipcMain.handle('appicon', () => {
-		return appIcon
 	})
 }
 

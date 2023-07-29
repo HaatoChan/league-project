@@ -21,8 +21,6 @@ const HomePage = () => {
 
 	return ( 
 		<div className="homepagecontainer">
-			<button style={{ width: '50px', height: '50px', position: 'absolute', right: '10%'}} onClick={async () => {
-				console.log(await window.api.appIcon())}}></button>
 			<div className="titleholder">			
 				<Title titleText='Pashas League App'/>
 			</div>

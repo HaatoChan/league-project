@@ -47,7 +47,7 @@ const SideBar = () => {
 											setCopiedActive(false)
 										}, 2000)
 									} catch (err) {
-										console.log('fail')
+										return
 									}
 								}} 
 								urlClick={async () => {
@@ -58,7 +58,7 @@ const SideBar = () => {
 											setCopiedActive(false)
 										}, 2000)
 									} catch (err) {
-										console.log('fail')
+										return
 									} 
 								}}/>
 						</>

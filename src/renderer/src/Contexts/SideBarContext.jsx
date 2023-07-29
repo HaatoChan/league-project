@@ -54,7 +54,6 @@ const SideBarContextProvider = ({children}) => {
 	 * Shows the import field when clicked.
 	 */
 	const importOnClick = () => {
-		console.log('opening import')
 		setImportActive(true)
 	}
 
@@ -70,7 +69,7 @@ const SideBarContextProvider = ({children}) => {
 				setCopiedActive(false)
 			}, 2000)
 		} catch (err) {
-			console.log('fail')
+			return
 		} 
 	}
 	
