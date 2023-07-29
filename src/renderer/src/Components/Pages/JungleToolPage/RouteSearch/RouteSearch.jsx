@@ -16,6 +16,7 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 	const {routeName, createImport, deleteOnClick, allRoutes, getRoutes, setAllRoutes} = useContext(CampSelectionContext)
 	const [displayConfirmation, setDisplayConfirmation] = useState(false)
 	const confirmRef = useRef(null)
+	const [errorMessage, setErrorMessage] = useState()
 
 	useEffect(() => {
 		/**
@@ -50,40 +51,46 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 	 */
 	const createOnClick = async () => {
 		const input = document.getElementById('routename')
-		const nameOfRoute = input.value
-		const routeObject = {
-			name: nameOfRoute,
-			side: 'All',
-			route: null,
-			champions: null,
-			patch: patchInfo.currentPatch,
-			gameData: {
-				totalWr: '-%',
-				totalGames: 0,
-				totalWins: 0,
-				totalLosses: 0,
-				// Champion specific entries
-				vsChampion: Object.entries(championIds).map(([key, value]) => ({
-					[key]: {
-						name: value.name,
-						totalWr: '-%',
-						totalGames: 0,
-						totalWins: 0,
-						totalLosses: 0
-					}
-				}))
-			}
-		}
 		const error = document.getElementById('routenameerror')
-		const data = await window.api.readRoutesFile()
-		if (!data.routes.find(route => route.name === routeObject.name)) {
-			error.style.display = 'none'
-			data.routes.push(routeObject)
-			window.api.writeRoutesFile(data)
-			setAllRoutes(data.routes)
-			createImport(JSON.stringify(routeObject))
-			setNamingRoute(false)
+		if(input.value.length < 16) {
+			const nameOfRoute = input.value
+			const routeObject = {
+				name: nameOfRoute,
+				side: 'All',
+				route: null,
+				champions: null,
+				patch: patchInfo.currentPatch,
+				gameData: {
+					totalWr: '-%',
+					totalGames: 0,
+					totalWins: 0,
+					totalLosses: 0,
+					// Champion specific entries
+					vsChampion: Object.entries(championIds).map(([key, value]) => ({
+						[key]: {
+							name: value.name,
+							totalWr: '-%',
+							totalGames: 0,
+							totalWins: 0,
+							totalLosses: 0
+						}
+					}))
+				}
+			}
+			const data = await window.api.readRoutesFile()
+			if (!data.routes.find(route => route.name === routeObject.name)) {
+				error.style.display = 'none'
+				data.routes.push(routeObject)
+				window.api.writeRoutesFile(data)
+				setAllRoutes(data.routes)
+				createImport(JSON.stringify(routeObject))
+				setNamingRoute(false)
+			} else {
+				setErrorMessage('A route with that name already exists')
+				error.style.display = 'Inline'
+			}
 		} else {
+			setErrorMessage('Your route name is too long, 16 characters max.')
 			error.style.display = 'Inline'
 		}
 	}
@@ -152,26 +159,24 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 				data-testid="addRouteButton"
 				style={createButtonStyle ? createButtonStyle : {}}
 			>+</button>
-			{ //matches.length > 0 &&
-				<div className="routeoptions"
-					style={optionsStyle ? optionsStyle : {}}
-				>
-					<ul className="routeul">
-						{
-							matches.map((route, index) => (
-								<li className="routeli" key={route.name + index} data-testid={route.name} data-value={route.name} onClick={() => liClick(matches[index]) }>
-									<div className="routelitext" data-value={route.name}>{route.name}</div>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			}
+			<div className="routeoptions"
+				style={optionsStyle ? optionsStyle : {}}
+			>
+				<ul className="routeul">
+					{
+						matches.map((route, index) => (
+							<li className="routeli" key={route.name + index} data-testid={route.name} data-value={route.name} onClick={() => liClick(matches[index]) }>
+								<div className="routelitext" data-value={route.name}>{route.name}</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
 			{namingRoute && <div className='nameRoute' onClick={() => setNamingRoute(false)}>
 				<div className="namingSpace" onClick={(e) => e.stopPropagation()}>
 					<p className="popupP">Name your route</p>
 					<input type="text" name="" id="routename" className="namerouteinput" placeholder='Name your route' required data-testid="nameRouteInput"/>
-					<p className="errormessage" id="routenameerror">A route with that name already exists</p>
+					<p className="errormessage" id="routenameerror">{errorMessage}</p>
 					<button className='create' onClick={createOnClick} data-testid="createButton">Create</button>
 					<button className="cancel" onClick={() => setNamingRoute(false)}>X</button>
 				</div>

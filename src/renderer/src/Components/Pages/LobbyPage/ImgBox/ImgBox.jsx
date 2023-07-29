@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import './imgbox.css'
+import  placeholder from '../../../../assets/square-48.png'
 
 /**
  * A box for displaying an image.
@@ -34,7 +35,7 @@ const ImgBox = ({imgUrl, contextData}) => {
 				<p dangerouslySetInnerHTML={grabItemMarkup()}></p>
 			</div> 
 			}
-			<img src={imgUrl ? imgUrl : '' } alt="" className="boximg" onMouseEnter={() => {
+			<img src={imgUrl ? imgUrl : placeholder } alt="" className="boximg" onMouseEnter={() => {
 				if(contextData) {
 					setDisplayBox(true)
 				}

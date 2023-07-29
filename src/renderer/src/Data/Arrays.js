@@ -356,7 +356,7 @@ export const championNames = [
 		image: (async () => (await import('../assets/championimages/Nocturne.png')).default)()
 	},
 	{
-		name: 'Nunu',
+		name: 'Nunu & Willump',
 		image: (async () => (await import('../assets/championimages/Nunu.png')).default)()
 	},
 	{

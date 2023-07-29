@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeImage } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -8,11 +8,11 @@ import { authenticate, LeagueClient, createWebSocketConnection } from 'league-co
 import fetch from 'node-fetch'
 import { patchInfo } from '../renderer/src/Data/PatchInfo'
 import { updateRoute } from './routesUpdater'
+import appIcon from '../public/FavIcon.png?asset'
 
 if (isTest) {
 	import('wdio-electron-service/main')
 }
-
 let mainWindow
 // LCU variables
 let credentials
@@ -21,13 +21,16 @@ let interval
 let selectedRoute = null
 
 async function createWindow() {
-	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
 
+	const iconImage = await nativeImage.createThumbnailFromPath(appIcon, { width: 64, height: 64})
+
+	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
 		show: false,
+		icon: iconImage,
 		autoHideMenuBar: true,
 		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
@@ -36,8 +39,6 @@ async function createWindow() {
 			nodeIntegrationInWorker: true
 		},
 		resizable: false,
-	// Make your own eventually?
-	//	frame: false
 	})
 
 	// Open the webtools
@@ -109,11 +110,11 @@ async function createWindow() {
 	})
 }
 
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
-
 	// Connect to league client
 	interval = setInterval(lcuConnect, 5000)
 	// Set app user model id for windows
@@ -291,8 +292,11 @@ const lcuConnect = async () => {
 	}
 }
 
-// Find Jungler
-
+/**
+ * Finds the enemy jungler among the enemy team players
+ * @param {Array} enemyTeamPlayers - The array of enemy  players
+ * @returns {object} - Returns the object matching the jungle player.
+ */
 function findEnemyJgl(enemyTeamPlayers) {
 	let jungler
 	for(let i = 0; i < enemyTeamPlayers.length; i++) {
@@ -303,7 +307,6 @@ function findEnemyJgl(enemyTeamPlayers) {
 	return jungler
 } 
 
-/// Write to files
 
 /**
  * Creates a file at the given filepath if it doesn't already exist.

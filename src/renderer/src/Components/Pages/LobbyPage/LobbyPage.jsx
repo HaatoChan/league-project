@@ -203,7 +203,6 @@ const LobbyPage = ({endOfGameData}) => {
 				<ImportDisplay /> 
 			</div>
 			<div className="camporder">
-				{<button className="test"style={{width: '50px', height: '50px', position: 'absolute', zIndex: '100000'}} onClick={async () => window.LCUApi.setRoute(routeGameData) }></button> }
 				<ExpDisplay 
 					displayTable={false}
 					undermapContainerStyle={{
