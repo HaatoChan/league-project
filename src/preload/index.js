@@ -9,6 +9,13 @@ if (isTest) {
 // Custom APIs for renderer
 const api = {
 	/**
+	 *
+	 */
+	appIcon: async () => {
+		const path = await ipcRenderer.invoke('appicon')
+		return path
+	},
+	/**
 	 * Testing thing.
 	 * @param {number} width - Thw width to resize the window.
 	 * @param {number} height - The height to resize the window to.

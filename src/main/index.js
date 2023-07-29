@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, nativeImage } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -22,7 +22,6 @@ let selectedRoute = null
 
 async function createWindow() {
 
-	const iconImage = await nativeImage.createThumbnailFromPath(appIcon, { width: 64, height: 64})
 
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
 
@@ -31,7 +30,8 @@ async function createWindow() {
 		width: width,
 		height: height,
 		show: false,
-		icon: iconImage,
+		icon: appIcon,
+		//	title: 'PAL',
 		autoHideMenuBar: true,
 		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
@@ -109,6 +109,10 @@ async function createWindow() {
 			mainWindow.webContents.send('fetch-success')
 		}
 	})
+
+	ipcMain.handle('appicon', () => {
+		return appIcon
+	})
 }
 
 
@@ -139,12 +143,14 @@ app.whenReady().then(async () => {
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
 
-	const jsonRoute = await readFile(path.join(app.getPath('userData'), 'routes.json'))
-	const routeData = JSON.parse(jsonRoute)
-	if (routeData.routes.length > 0) {
-		const doUpdate = updateRoute(routeData)
-		if (doUpdate) {
-			writeFile(routeData, path.join(app.getPath('userData'), 'routes.json'))
+	if (checkIfFileExists(routesfilepath)) {
+		const jsonRoute = await readFile(path.join(app.getPath('userData'), 'routes.json'))
+		const routeData = JSON.parse(jsonRoute)
+		if (routeData.routes.length > 0) {
+			const doUpdate = updateRoute(routeData)
+			if (doUpdate) {
+				writeFile(routeData, path.join(app.getPath('userData'), 'routes.json'))
+			}
 		}
 	}
 
@@ -312,7 +318,7 @@ function findEnemyJgl(enemyTeamPlayers) {
  * @param {*} data - The data to be written to the file if the file is created.
  * @returns {void}
  */
-function createFileIfNotExists(filepath, data) {
+async function createFileIfNotExists(filepath, data) {
 	if(!checkIfFileExists(filepath)) {
 		fs.writeFile(filepath, JSON.stringify(data), (err) => {
 			if (err) {

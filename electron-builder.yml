@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: electron-league-app
+productName: PAL
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ asarUnpack:
   - resources/**
 afterSign: build/notarize.js
 win:
-  executableName: electron-league-app
+  executableName: PAL
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
