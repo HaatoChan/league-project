@@ -9,13 +9,14 @@ import './sidebarbutton.css'
  * @param {string} root0.linkHref - The path to link to.
  * @param {object} root0.style - Style object.
  * @param {string} root0.id - The ID of the a-tag
+ * @param {Function} root0.onClick - Fired when the user presses the div.
  * @returns {HTMLElement} - Returns a HTML button element.
  */
-const SideBarButton = ({text, imgSource, linkHref, style, id}) => {
+const SideBarButton = ({text, imgSource, linkHref, style, id, onClick}) => {
 	return ( 
 		<>
-			<div className="sidebarbutton">
-				<Link className='sidebarA' to={linkHref} data-testid={id}>	
+			<div className="sidebarbutton" onClick={onClick}>
+				<Link className='sidebarA' to={linkHref || '#'} data-testid={id}>	
 					<img src={imgSource} alt="" className="buttonimg" style={style}/>
 					<p className='buttonText'>{text}</p>
 				</Link>

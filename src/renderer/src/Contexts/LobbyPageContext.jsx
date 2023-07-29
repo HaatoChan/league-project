@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { championIds, summonerIds } from '../Data/Objects'
+import { useNavigate, useLocation } from 'react-router'
 import React from 'react'
 
 export const LobbyContext = createContext()
@@ -17,6 +18,9 @@ const LobbyContextProvider = ({children}) => {
 	const [imgArray, setImgArray] = useState([])
 	const [gameStarting, setGameStarting] = useState(false)
 	const [enemyTeam, setEnemyTeam] = useState(null)
+	const [itemData, setItemData] = useState()
+	const navigate = useNavigate()
+	const location = useLocation()
 	// Receives information from the main process about state of champion select
 	window.LCUApi.lobbyInfo((_event, value) => {
 		value.myTeam.sort((a, b) => positionsOrder.indexOf(a.assignedPosition) - positionsOrder.indexOf(b.assignedPosition))
@@ -29,8 +33,13 @@ const LobbyContextProvider = ({children}) => {
 		}
 	})
 
+	window.api.itemDataToRenderer((_event, value) => {
+		setItemData(value)
+	})
+
 	// Receives information from main process that the game has ended
 	window.LCUApi.gameEnded(() => {
+		location.pathname === '/lobby-screen' ? {} : navigate('/lobby-screen')
 		setGameStarting(false)
 	})
 
@@ -40,7 +49,7 @@ const LobbyContextProvider = ({children}) => {
 	})
 
 	window.LCUApi.lobbyExited(() => {
-		setTeamArray(null)
+		setTeamArray([])
 	})
 
 	useEffect(() => {
@@ -62,13 +71,29 @@ const LobbyContextProvider = ({children}) => {
 		teamArray ?	resolveImages() : {}
 	},[teamArray])
 
+	useEffect(() => {
+		/**
+		 * Pulls the item data from main and sets a state.
+		 */
+		const getItemsFromMain = async () => {
+			const holder = await window.api.itemData()
+			if (!itemData) {
+				setItemData(holder)
+			}
+		}
+		if(!itemData) {
+			getItemsFromMain()
+		}
+	},[itemData])
+
 	return <LobbyContext.Provider
 		value={{
 			championIds: championIds,
 			teamArray: teamArray,
 			imgArray: imgArray,
 			gameStarting: gameStarting,
-			enemyTeam: enemyTeam
+			enemyTeam: enemyTeam,
+			itemData: itemData
 		}}
 	>
 		{children}

@@ -1,0 +1,148 @@
+.playercontainer {
+    background-color: rgb(17, 19, 54);
+    width: 100%;
+    height: 20%;
+    border: 1px solid white;
+    position: relative;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.playername {
+    color: white;
+    text-align: left;
+    margin-left: 4%;
+    margin-top: 2%;
+}
+
+.kda {
+    color: white;
+    position: absolute;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    left: 48%;
+}
+.summonerspellcontainer {
+    position: absolute;
+    left: 23%;
+    bottom: 40%;
+    width: 8%;
+    height: 27%;
+    display: flex;
+    flex-direction: column;
+    gap: 3%;
+}
+
+.itemcontainer {
+    background-color: azure;
+    width: 25%;
+    height: 62%;
+    position: absolute;
+    right: 12%;
+    bottom: 5%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.boxcontainer {
+    height: 50%;
+    width: 33%;
+}
+
+.csing {
+    color: white;
+    position: absolute;
+    bottom: 10%;
+    left: 48%;
+    transform: translateX(-50%);
+    width: 30%;
+    text-align: center;
+}
+
+.trinket {
+    background-color: azure;
+    width: 8%;
+    height: 30%;
+    position: absolute;
+    right: 2%;
+    bottom: 5%;
+    border-radius: 50%;
+}
+
+.trinketimg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid gold;
+}
+
+.playerFrameChampion {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.champImgContainer {
+    position: absolute;
+    width: 15%;
+    height: 50%;
+    top: 40%;
+    left: 5%;
+    border-radius: 50%;
+    border: 1px solid gold;
+}
+
+.levelcontainer {
+    background-color: purple;
+    width: 45%;
+    height: 45%;
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level {
+    text-align: center;
+    user-select: none;
+}
+
+.arrow {
+    filter: invert(100%);
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+#arrowCsLeft {
+    left: 0%;
+}
+
+#arrowCsRight {
+    right: 0%;
+}
+
+
+.damagedealt {
+    position: absolute;
+    left: 48%;
+    top: 42%;
+    text-align: center;
+    transform: translateX(-50%);
+    color: white;
+    width: 30%;
+}
+
+#arrowDmgRight {
+    right: 0%;
+}
+
+#arrowDmgLeft {
+    left: 0%;
+}

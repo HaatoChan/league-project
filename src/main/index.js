@@ -5,6 +5,9 @@ import fs from 'fs'
 import path from 'path'
 import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
+import fetch from 'node-fetch'
+import { patchInfo } from '../renderer/src/Data/PatchInfo'
+import { updateRoute } from './routesUpdater'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -38,7 +41,7 @@ async function createWindow() {
 	})
 
 	// Open the webtools
-	//mainWindow.webContents.openDevTools()
+	mainWindow.webContents.openDevTools()
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow.show()
@@ -85,15 +88,31 @@ async function createWindow() {
 		writeFile(data, path.join(app.getPath('userData'), 'routes.json'))
 	})
 	
+	const itemData = await fetchItemData()
+	if (itemData) {
+		mainWindow.webContents.send('itemdata-to-renderer', itemData)
+	}
+
+	ipcMain.handle('itemData', () => {
+		return itemData
+	})
 
 	// For testing
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
+
+	ipcMain.on('retryFetch', async () => {
+		const itemData = await fetchItemData()
+		if (itemData) {
+			mainWindow.webContents.send('itemdata-to-renderer', itemData)
+			mainWindow.webContents.send('fetch-success')
+		}
+	})
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 
 	// Connect to league client
 	interval = setInterval(lcuConnect, 5000)
@@ -115,10 +134,18 @@ app.whenReady().then(() => {
 			height: 900
 		}
 	}
-
-
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
+
+	const jsonRoute = await readFile(path.join(app.getPath('userData'), 'routes.json'))
+	const routeData = JSON.parse(jsonRoute)
+	if (routeData.routes.length > 0) {
+		const doUpdate = updateRoute(routeData)
+		if (doUpdate) {
+			writeFile(routeData, path.join(app.getPath('userData'), 'routes.json'))
+		}
+	}
+
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -137,7 +164,7 @@ app.whenReady().then(() => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		mainWindow.webContents.send('game-ended', 'test')
+		console.log(selectedRoute)
 	})
 })
 
@@ -177,20 +204,11 @@ const lcuConnect = async () => {
 			// Atempt to open websocket
 			ws = await createWebSocketConnection()
 			mainWindow.webContents.send('lcu-connected', 'LCU is connected')
-			// Declare event subscriptions
-			
-			/*	ws.on('message', message => {
-				const buffer = Buffer.from(message)
-				try {
-					const payload = JSON.parse(buffer.toString())
-					console.log(payload)
-				} catch (error) {
-					console.log('error parsing data')
-				}
-			}) */
 
+		
 			// Used to determine whether game has started or not
 			let gameStarted = false
+			// Declare event subscriptions
 
 			ws.subscribe('/lol-champ-select/v1/session', (data) => {
 				// Triggers when user firsts enter the lobby
@@ -217,44 +235,46 @@ const lcuConnect = async () => {
 				mainWindow.webContents.send('lobby-exited')
 				if(gameEnded === 0) {
 					try {
+						data && mainWindow.webContents.send('game-ended', data)
 						if (Object.keys(selectedRoute).length > 0 && data?.localPlayer) {
-							mainWindow.webContents.send('game-ended', data)
 							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
-							const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
-							if (selectedRouteIndex !== 1) {
-								const foundRoute = allRoutes.routes[selectedRouteIndex]
-								// Parse data and find enemy team index
-								let enemyTeamDataArray = []
-								data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
-								// Find and assign win/loss to champion specific enemy jungle
-								const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
-								if (enemyJgl) {
+							if (selectedRoute) {
+								const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
+								if (selectedRouteIndex !== 1) {
+									const foundRoute = allRoutes.routes[selectedRouteIndex]
+									// Parse data and find enemy team index
+									let enemyTeamDataArray = []
+									data.teams[0].isPlayerTeam === true ? enemyTeamDataArray = data.teams[1] : enemyTeamDataArray = data.teams[0]
+									// Find and assign win/loss to champion specific enemy jungle
+									const enemyJgl = findEnemyJgl(enemyTeamDataArray.players)
+									if (enemyJgl) {
 									// eslint-disable-next-line no-unused-vars
-									for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
-										if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
-											if (data.localPlayer.stats.LOSE){
-												champion[Object.keys(champion)[0]].totalLosses++
-												champion[Object.keys(champion)[0]].totalGames++
-											} else if (data.localPlayer.stats.WIN) {
-												champion[Object.keys(champion)[0]].totalWins++
-												champion[Object.keys(champion)[0]].totalGames++
+										for (const [key, champion] of Object.entries(foundRoute.gameData.vsChampion)) {
+											if (Object.keys(champion)[0] === enemyJgl.championId.toString()) {
+												if (data.localPlayer.stats.LOSE){
+													champion[Object.keys(champion)[0]].totalLosses++
+													champion[Object.keys(champion)[0]].totalGames++
+												} else if (data.localPlayer.stats.WIN) {
+													champion[Object.keys(champion)[0]].totalWins++
+													champion[Object.keys(champion)[0]].totalGames++
+												}
+												champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 											}
-											champion[Object.keys(champion)[0]].totalWr = `${Math.round((champion[Object.keys(champion)[0]].totalWins / champion[Object.keys(champion)[0]].totalGames) * 100)}%`
 										}
 									}
+									// Overall winrate
+									if (data.localPlayer.stats.LOSE) {
+										foundRoute.gameData.totalLosses++
+										foundRoute.gameData.totalGames++
+									} else if (data.localPlayer.stats.WIN) {
+										foundRoute.gameData.totalWins++
+										foundRoute.gameData.totalGames++
+									}
+									foundRoute.gameData.name = selectedRoute.name
+									foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
+									writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
+									mainWindow.webContents.send('update-route-data', foundRoute)
 								}
-								// Overall winrate
-								if (data.localPlayer.stats.LOSE) {
-									foundRoute.gameData.totalLosses++
-									foundRoute.gameData.totalGames++
-								} else if (data.localPlayer.stats.WIN) {
-									foundRoute.gameData.totalWins++
-									foundRoute.gameData.totalGames++
-								}
-								foundRoute.gameData.name = selectedRoute.name
-								foundRoute.gameData.totalWr = `${Math.round((foundRoute.gameData.totalWins / foundRoute.gameData.totalGames) * 100)}%`
-								writeFile(allRoutes, path.join(app.getPath('userData'), 'routes.json'))
-								mainWindow.webContents.send('update-route-data', foundRoute)
 							}
 						}
 						selectedRoute = null
@@ -285,6 +305,12 @@ function findEnemyJgl(enemyTeamPlayers) {
 
 /// Write to files
 
+/**
+ * Creates a file at the given filepath if it doesn't already exist.
+ * @param {string} filepath - The path of the file to create or check for existence.
+ * @param {*} data - The data to be written to the file if the file is created.
+ * @returns {void}
+ */
 function createFileIfNotExists(filepath, data) {
 	if(!checkIfFileExists(filepath)) {
 		fs.writeFile(filepath, JSON.stringify(data), (err) => {
@@ -297,6 +323,11 @@ function createFileIfNotExists(filepath, data) {
 	} 
 }
 
+/**
+ * Checks if a file exists at the given filepath.
+ * @param {string} filepath - The path of the file to check for existence.
+ * @returns {boolean} Returns true if the file exists, and false otherwise.
+ */
 function checkIfFileExists(filepath) {
 	try {
 		return fs.existsSync(filepath)
@@ -306,7 +337,12 @@ function checkIfFileExists(filepath) {
 	}
 }
   
-
+/**
+ * Reads data from a file.
+ * @param {string} path - The file path from which to read data.
+ * @returns {Promise<string>} A Promise that resolves with the data read from the file as a string.
+ * If an error occurs, the Promise will be rejected with the error.
+ */
 function readFile(path) {
 	return new Promise((resolve, reject) => {
 		fs.readFile(path, 'utf-8', (err, data) => {
@@ -319,7 +355,13 @@ function readFile(path) {
 	})
 }
 
-function writeFile(data, path) {
+/**
+ * Writes data to a file in JSON format.
+ * @param {*} data - The data to be written to the file.
+ * @param {string} path - The file path where the data will be written.
+ * @returns {void}
+ */
+export function writeFile(data, path) {
 	fs.writeFile(path, JSON.stringify(data), (err) => {
 		if (err) {
 			console.error(err)
@@ -327,4 +369,40 @@ function writeFile(data, path) {
 		}
 		console.log('File rewritten successfully!')
 	})
+}
+  
+
+/**
+ * Fetches data from the Riot CDN, processes it and returns it.
+ * @returns {object} - Returns a javascript object containing item data.
+ */
+async function fetchItemData() {
+	let url = `http://ddragon.leagueoflegends.com/cdn/${patchInfo.currentPatch}/data/en_GB/item.json`
+	try {
+		const response = await fetch(url)
+		const holder = await response.json()
+		addImagePaths(holder.data)
+		return holder.data
+	} catch (err) {
+		const nullVall = setInterval(() => {
+			if (BrowserWindow.getAllWindows().length > 0) {
+				mainWindow.webContents.send('failed-to-fetch')
+			}},1000)
+		
+	
+		ipcMain.on('clearInterval', () => {
+			clearInterval(nullVall)
+		})
+	}
+}
+
+
+/**
+ * Adds an image path url to riots datadragon CDN.
+ * @param {object} itemObject - Object containing all item objects
+ */
+async function addImagePaths (itemObject) {
+	for (const [key, value] of Object.entries(itemObject)) {
+		value.img = `http://ddragon.leagueoflegends.com/cdn/${patchInfo.currentPatch}/img/item/${key}.png`
+	}
 }

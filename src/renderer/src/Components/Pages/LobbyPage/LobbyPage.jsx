@@ -10,17 +10,24 @@ import SelectChamp from '../JungleToolPage/SelectChamp/SelectChamp'
 import { SideBarContext } from '../../../Contexts/SideBarContext'
 import ImportDisplay from '../JungleToolPage/ImportDisplay/ImportDisplay'
 import { championNames } from '../../../Data/Arrays'
+import EndOfGameTeamSide from './EndOfGameTeamSide/EndOfGameTeamSide'
 
 /**
  * Defines the lobby page
+ * @param {object} root0 - The React props object.
+ * @param {object} root0.endOfGameData - The end of game data provided by app
  * @returns {HTMLElement} - Returns the lobby page.
  */
-const LobbyPage = () => {
+const LobbyPage = ({endOfGameData}) => {
 
 	const {exportObject, routeName, routeGameData, setRouteGameData, setRouteName} = useContext(CampSelectionContext)
 	const {championIds, teamArray, imgArray, enemyTeam} = useContext(LobbyContext)
 	const {importOnClick} = useContext(SideBarContext)
 	const [enemyTeamDisplay, setEnemyTeamDisplay] = useState(null)
+	const [endOfGameTeamOne, setEndOfGameTeamOne] = useState(null)
+	const [endOfGameTeamTwo, setEndOfGameTeamTwo] = useState(null)
+	const [minutes, setMinutes] = useState()
+	const [seconds, setSeconds] = useState()
 	window.LCUApi.gameStarting(async () => {
 		window.LCUApi.setRoute(routeGameData)
 	})
@@ -32,6 +39,11 @@ const LobbyPage = () => {
 
 	window.LCUApi.lobbyExited(async () => {
 		setEnemyTeamDisplay(null)
+	})
+
+	window.LCUApi.lobbyEntered(async () => {
+		setEndOfGameTeamOne(null)
+		setEndOfGameTeamTwo(null)
 	})
 
 	/**
@@ -47,6 +59,16 @@ const LobbyPage = () => {
 			}
 		}
 	}
+
+	useEffect(() => {
+		if(endOfGameData !== null) {
+			setEndOfGameTeamOne(endOfGameData.teams[0])
+			setEndOfGameTeamTwo(endOfGameData.teams[1])
+			const unSplit = (endOfGameData.gameLength/60).toFixed(2)
+			setMinutes(unSplit.toString().split('.')[0])
+			setSeconds(unSplit.toString().split('.')[1])
+		}
+	},[endOfGameData])
 
 	useEffect( () => {
 		if (enemyTeam && Object.keys(routeGameData).length > 0) {
@@ -86,6 +108,22 @@ const LobbyPage = () => {
 						summonerSpellTwo={imgArray[index]?.spell2Id}
 					/>
 				))}
+				{(endOfGameTeamOne && endOfGameTeamTwo) && 
+				<>
+					<div className="gameinfo">
+						<p className="time">{minutes}m {seconds}s</p>
+						<p className='winLose' style={endOfGameData.localPlayer.WIN ? {color: 'blue'} : {color: 'red'}}>{endOfGameData.localPlayer.WIN ? 'VICTORY' : 'DEFEAT'}</p>
+					</div>
+					<EndOfGameTeamSide 
+						playerArray={endOfGameTeamOne.players}
+						gameLength={endOfGameData.gameLength}
+					/>
+					<EndOfGameTeamSide 
+						playerArray={endOfGameTeamTwo.players}
+						gameLength={endOfGameData.gameLength}
+					/>
+				</>
+				}
 			</div>
 			<div className="statistics">
 				<h1 className="gamestarting">{routeName}</h1>
@@ -156,8 +194,6 @@ const LobbyPage = () => {
 						matchingRoute.route = exportObject.route
 						matchingRoute.champions = exportObject.champions
 						window.api.writeRoutesFile(data)
-					} else {
-						// Make something that appears
 					}
 				}}>
 					SAVE

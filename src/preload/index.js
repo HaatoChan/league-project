@@ -39,6 +39,44 @@ const api = {
 	writeRoutesFile: (data) => {
 		ipcRenderer.send('writeRoutesFile', data)
 	},
+	/**
+	 * Passes the itemdata from the main process to the renderer.
+	 * @returns {object} - A javasript object holding all the item data.
+	 */
+	itemData: async () => await ipcRenderer.invoke('itemData'),
+	/**
+	 * Tells the renderer that item data failed to fetch.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	failedFetch: (callback) => {
+		ipcRenderer.on('failed-to-fetch', callback)
+	},
+	/**
+	 * Tells the main to clear the main interval.
+	 */
+	clearMainInterval: () => {
+		ipcRenderer.send('clearInterval')
+	},
+	/**
+	 * Fired when the user attempts to refetch the itemdata.
+	 */
+	reTryFetch: () => {
+		ipcRenderer.send('retryFetch')
+	},
+	/**
+	 * Sends the itemData to the renderer.
+	 * @param {Function} callback - The callback function to execute
+	 */
+	itemDataToRenderer: (callback) => {
+		ipcRenderer.on('itemdata-to-renderer', callback)
+	},
+	/**
+	 * Executed when the fetch attempt succeeds.
+	 * @param {Function} callback - The callback function to execute.
+	 */
+	fetchSuccess: (callback) => {
+		ipcRenderer.on('fetch-success', callback)
+	}
 }
 const LCUApi = {
 	/**

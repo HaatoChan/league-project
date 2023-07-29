@@ -9,9 +9,13 @@ import { useState } from 'react'
 const HomePage = () => {
 
 	const [textState, setTextState] = useState()
+	const [failedFetch, setFailedFetch] = useState(false)
+	window.api.failedFetch(() => {
+		setFailedFetch(true)
+		window.api.clearMainInterval()
+	})
 
 	window.LCUApi.lcuConnected((_event, value) => {
-		console.log(value)
 		setTextState(value)
 	})
 
@@ -35,6 +39,14 @@ const HomePage = () => {
 			<div className="empty">
 				{textState}
 			</div>
+			{ failedFetch &&
+				<div className="failedfetch">
+					<button className="closefetch" onClick={() => setFailedFetch(false)}>X</button>
+					<p className="failerror">
+					Something went wrong getting data from Riot CDN. <br></br> Certain functions may not work as expected. <br></br> To reattempt press the retry button in the sidebar.
+					</p>
+				</div>
+			}
 		</div>
 	)
 }

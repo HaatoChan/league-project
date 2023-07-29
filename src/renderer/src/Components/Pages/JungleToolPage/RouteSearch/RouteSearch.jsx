@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import './routesearch.css'
 import { CampSelectionContext } from '../../../../Contexts/CampSelectionContext'
 import { championIds } from '../../../../Data/Objects'
+import { patchInfo } from '../../../../Data/PatchInfo'
 
 /**
  * Defines a route search component.
@@ -55,6 +56,7 @@ const RouteSearch = ({inputStyle, optionsStyle, deleteAreaStyle, deleteButtonSty
 			side: 'All',
 			route: null,
 			champions: null,
+			patch: patchInfo.currentPatch,
 			gameData: {
 				totalWr: '-%',
 				totalGames: 0,

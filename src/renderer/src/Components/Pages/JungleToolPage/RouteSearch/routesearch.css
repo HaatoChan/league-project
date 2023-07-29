@@ -115,7 +115,7 @@
   }
 
 .routeoptions {
-    background-color: rgb(3, 58, 58);
+    background-color: #1a1a1f;
     position: absolute;
     width: 100%;
     max-height: 315%;
@@ -140,6 +140,7 @@
 }
 
 .routeli {
+    margin-top: 0;
     display: flex;
     align-items: center;
     border-bottom: 1px solid white;

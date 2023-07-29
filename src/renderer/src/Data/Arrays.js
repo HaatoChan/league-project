@@ -324,6 +324,10 @@ export const championNames = [
 		image: (async () => (await import('../assets/championimages/Morgana.png')).default)()
 	},
 	{
+		name: 'Naafiri',
+		image: (async () => (await import ('../assets/championimages/Naafiri.png')).default)()
+	},
+	{
 		name: 'Nami',
 		image: (async () => (await import('../assets/championimages/Nami.png')).default)()
 	},

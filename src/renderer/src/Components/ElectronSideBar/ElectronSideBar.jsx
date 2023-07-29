@@ -4,6 +4,7 @@ import settings from '../../assets/settings-gear-icon.svg'
 import Home from '../../assets/home-icon.svg'
 import JungleIcon from '../../assets/garden-grass-solid-icon.svg'
 import LeagueIcon from '../../assets/LoL_icon.svg.png'
+import RetryIcon from '../../assets/retry.svg'
 import { useState } from 'react'
 
 /**
@@ -12,12 +13,23 @@ import { useState } from 'react'
  */
 const ElectronSideBar = () => {
 
+	const [failedFetch, setFailedFetch] = useState(false)
+
 	window.LCUApi.lobbyEntered(async () => {
 		setInLobby(true)
 	})
 
 	window.LCUApi.lobbyExited(async () => {
 		setInLobby(false)
+	})
+
+	window.api.failedFetch(() => {
+		setFailedFetch(true)
+		window.api.clearMainInterval()
+	})
+	
+	window.api.fetchSuccess(() => {
+		setFailedFetch(false)
 	})
 
 	const [inLobby, setInLobby] = useState(false)
@@ -44,6 +56,8 @@ const ElectronSideBar = () => {
 			<SideBarButton text='Home' imgSource={Home} linkHref='/' />
 			<SideBarButton text='Jungle Tool' imgSource={JungleIcon} linkHref='jungletool' id='jungleA'/>
 			<SideBarButton text='Settings' imgSource={settings} linkHref='settings' id="settingsA"/>
+			{ failedFetch && <SideBarButton text='Retry' imgSource={RetryIcon} style={{ filter: 'none'}} id='retryButton' onClick={() => window.api.reTryFetch()}/>}
+
 		</div>
 	)
 }
