@@ -6,7 +6,8 @@ import path from 'path'
 import { isTest } from '../util'
 import { authenticate, LeagueClient, createWebSocketConnection } from 'league-connect'
 import fetch from 'node-fetch'
-import { leaguePatch } from '../renderer/src/Data/PatchInfo'
+import { patchInfo } from '../renderer/src/Data/PatchInfo'
+import { updateRoute } from './routesUpdater'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -135,6 +136,16 @@ app.whenReady().then(async () => {
 	}
 	createFileIfNotExists(settingsFilePath, settingsData)
 	createFileIfNotExists(routesfilepath, routesData)
+
+	const jsonRoute = await readFile(path.join(app.getPath('userData'), 'routes.json'))
+	const routeData = JSON.parse(jsonRoute)
+	if (routeData.routes.length > 0) {
+		const doUpdate = updateRoute(routeData)
+		if (doUpdate) {
+			writeFile(routeData, path.join(app.getPath('userData'), 'routes.json'))
+		}
+	}
+
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.
@@ -294,6 +305,12 @@ function findEnemyJgl(enemyTeamPlayers) {
 
 /// Write to files
 
+/**
+ * Creates a file at the given filepath if it doesn't already exist.
+ * @param {string} filepath - The path of the file to create or check for existence.
+ * @param {*} data - The data to be written to the file if the file is created.
+ * @returns {void}
+ */
 function createFileIfNotExists(filepath, data) {
 	if(!checkIfFileExists(filepath)) {
 		fs.writeFile(filepath, JSON.stringify(data), (err) => {
@@ -306,6 +323,11 @@ function createFileIfNotExists(filepath, data) {
 	} 
 }
 
+/**
+ * Checks if a file exists at the given filepath.
+ * @param {string} filepath - The path of the file to check for existence.
+ * @returns {boolean} Returns true if the file exists, and false otherwise.
+ */
 function checkIfFileExists(filepath) {
 	try {
 		return fs.existsSync(filepath)
@@ -315,7 +337,12 @@ function checkIfFileExists(filepath) {
 	}
 }
   
-
+/**
+ * Reads data from a file.
+ * @param {string} path - The file path from which to read data.
+ * @returns {Promise<string>} A Promise that resolves with the data read from the file as a string.
+ * If an error occurs, the Promise will be rejected with the error.
+ */
 function readFile(path) {
 	return new Promise((resolve, reject) => {
 		fs.readFile(path, 'utf-8', (err, data) => {
@@ -328,7 +355,13 @@ function readFile(path) {
 	})
 }
 
-function writeFile(data, path) {
+/**
+ * Writes data to a file in JSON format.
+ * @param {*} data - The data to be written to the file.
+ * @param {string} path - The file path where the data will be written.
+ * @returns {void}
+ */
+export function writeFile(data, path) {
 	fs.writeFile(path, JSON.stringify(data), (err) => {
 		if (err) {
 			console.error(err)
@@ -337,10 +370,14 @@ function writeFile(data, path) {
 		console.log('File rewritten successfully!')
 	})
 }
+  
 
-// SAVE MODIFIED OBJECT AS JSON IN APPDATA IF IT DOES NOT EXIST
+/**
+ * Fetches data from the Riot CDN, processes it and returns it.
+ * @returns {object} - Returns a javascript object containing item data.
+ */
 async function fetchItemData() {
-	let url = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/data/en_GB/item.json`
+	let url = `http://ddragon.leagueoflegends.com/cdn/${patchInfo.currentPatch}/data/en_GB/item.json`
 	try {
 		const response = await fetch(url)
 		const holder = await response.json()
@@ -366,6 +403,6 @@ async function fetchItemData() {
  */
 async function addImagePaths (itemObject) {
 	for (const [key, value] of Object.entries(itemObject)) {
-		value.img = `http://ddragon.leagueoflegends.com/cdn/${leaguePatch}/img/item/${key}.png`
+		value.img = `http://ddragon.leagueoflegends.com/cdn/${patchInfo.currentPatch}/img/item/${key}.png`
 	}
 }

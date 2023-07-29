@@ -1,1 +1,1 @@
-export const leaguePatch = '13.14.1'
+export const patchInfo = { currentPatch: '13.14.1'}
