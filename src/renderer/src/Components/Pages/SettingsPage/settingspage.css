@@ -1,4 +1,5 @@
 .settingspagecontainer {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     display: grid;
     grid-template-columns: 0.5fr repeat(2, 1fr) 0.5fr;
     background-color: #0f0f11d7;
@@ -22,7 +23,7 @@
     flex-direction: row;
     gap: 0.5%;
     font-size: 1.5rem;
-    justify-content: flex-start;
+    justify-content: center;
     /* Align flex items to the start */
     row-gap: 1%;
     position: relative;
@@ -41,12 +42,6 @@
     width: 50%;
     max-height: 25%;
     text-align: center;
-}
-
-.windowsize {
-}
-
-.othersetting {
 }
 
 .windowsize {
@@ -83,16 +78,18 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2);
     width: 150px;
     height: 50px;
     border: none;
-    background-color: blue;
+    background-color: rgb(15, 83, 30);
     color: white;
     font-size: 1.5rem;
-  }
+    transition: 0.5s linear;
+}
   
   #oksetting:hover {
-    background-color: green;
+    background-color: rgb(15, 95, 20);
     cursor: pointer;
   }
 

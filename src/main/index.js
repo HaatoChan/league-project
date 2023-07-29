@@ -25,6 +25,7 @@ async function createWindow() {
 	const iconImage = await nativeImage.createThumbnailFromPath(appIcon, { width: 64, height: 64})
 
 	const { width, height } = JSON.parse(await readFile(path.join(app.getPath('userData'), 'settings.json'))).resolution
+
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		width: width,
@@ -98,7 +99,7 @@ async function createWindow() {
 		return itemData
 	})
 
-	// For testing
+	// Used for wdio to be able to connect and open the electron window.
 	ipcMain.handle('wdio-electron', () => mainWindow.webContents.getURL())
 
 	ipcMain.on('retryFetch', async () => {
@@ -177,9 +178,6 @@ app.on('window-all-closed', () => {
 		app.quit()
 	}
 })
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
 
 
 // LCU connection

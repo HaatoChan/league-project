@@ -102,9 +102,6 @@ const SettingsPage = () => {
 						</ul>
 					</div>
 				</div>
-				<div className="othersetting">
-					<p>Description for other setting</p>
-				</div>
 				<input type="button" value="OK" id="oksetting" data-testid="okButton" onClick={() => {	
 					const [width, height] = getResolutions()
 					window.api.resizeWindow(width, height)
