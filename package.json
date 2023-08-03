@@ -1,9 +1,9 @@
 {
   "name": "pal-app",
   "version": "0.8.6",
-  "description": "An Electron application with React",
+  "description": "PAL App",
   "main": "./out/main/index.js",
-  "author": "Pasha",
+  "author": "HaatoChan",
   "homepage": "https://www.electronjs.org",
   "icon": "./src/public/FAVICON256.png",
   "scripts": {
