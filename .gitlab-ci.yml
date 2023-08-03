@@ -10,14 +10,6 @@ stages:
 - test
 - lint
 
-build:
-  stage: build
-  image: electronuserland/builder:wine
-  before_script:
-    - npm install
-  script:
-    - npm run build:win
-
 #unit-test:
 #  stage: test
 #  image: norf/node-electron-test:20.1.0

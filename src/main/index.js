@@ -32,13 +32,11 @@ async function createWindow() {
 		show: false,
 		icon: appIcon,
 		autoHideMenuBar: true,
-		fullscreenable: false,
 		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
 			nodeIntegrationInWorker: true,
-			devTools: !app.isPackaged,
 		},
 		resizable: false,
 	})
