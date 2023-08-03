@@ -33,11 +33,13 @@ async function createWindow() {
 		show: false,
 		icon: appIcon,
 		autoHideMenuBar: true,
+		fullscreenable: false,
 		...(process.platform === 'linux' ? { } : {}),
 		webPreferences: {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
 			nodeIntegrationInWorker: true,
+			devTools: is.dev ? true : false
 		},
 		resizable: false,
 	})
@@ -109,6 +111,11 @@ async function createWindow() {
 			mainWindow.webContents.send('fetch-success')
 		}
 	})
+
+	if (!is.dev) {
+		autoUpdater.checkForUpdates()
+	}
+
 }
 
 
@@ -420,7 +427,7 @@ autoUpdater.on('update-available', (_event, releaseNotes, releaseName) => {
 		message: process.platform === 'win32' ? releaseNotes : releaseName,
 		detail: 'A new version is being downloaded.'
 	}
-	dialog.showMessageBox(dialogOpts, (response) => {
+	dialog.showMessageBox(dialogOpts, () => {
 
 	})
 })
