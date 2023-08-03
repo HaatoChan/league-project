@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -9,6 +9,7 @@ import fetch from 'node-fetch'
 import { patchInfo } from '../renderer/src/Data/PatchInfo'
 import { updateRoute } from './routesUpdater'
 import appIcon from '../public/FavIcon.png?asset'
+import { autoUpdater } from 'electron-updater'
 
 if (isTest) {
 	import('wdio-electron-service/main')
@@ -408,3 +409,31 @@ async function addImagePaths (itemObject) {
 		value.img = `http://ddragon.leagueoflegends.com/cdn/${patchInfo.currentPatch}/img/item/${key}.png`
 	}
 }
+
+
+// Auto update
+autoUpdater.on('update-available', (_event, releaseNotes, releaseName) => {
+	const dialogOpts = {
+		type: 'info',
+		buttons: ['Ok'],
+		title: 'Application Update',
+		message: process.platform === 'win32' ? releaseNotes : releaseName,
+		detail: 'A new version is being downloaded.'
+	}
+	dialog.showMessageBox(dialogOpts, (response) => {
+
+	})
+})
+
+autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
+	const dialogOpts = {
+		type: 'info',
+		buttons: ['Restart', 'Later'],
+		title: 'Application Update',
+		message: process.platform === 'win32' ? releaseNotes : releaseName,
+		detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+	}
+	dialog.showMessageBox(dialogOpts).then((returnValue) => {
+		if (returnValue.response === 0) autoUpdater.quitAndInstall()
+	})
+})
