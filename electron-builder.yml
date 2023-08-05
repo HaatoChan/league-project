@@ -1,4 +1,4 @@
-appId: com.electron.${name}
+appId: com.electron.PAL
 productName: PAL
 directories:
   buildResources: build

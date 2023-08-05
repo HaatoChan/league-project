@@ -1,6 +1,6 @@
  @font-face {
     font-family: 'Rowdies-Regular';
-    src: url('../../../public/font/Rowdies-Regular.ttf');
+    src: url('../../../../assets/font/Rowdies-Regular.ttf');
     font-weight: normal;
     font-style: normal;
  }

@@ -39,7 +39,7 @@ async function createWindow() {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
 			nodeIntegrationInWorker: true,
-			devTools: is.dev ? true : false
+		//	devTools: is.dev ? true : false
 		},
 		resizable: false,
 	})
