@@ -8,21 +8,16 @@ import { useState } from 'react'
  */
 const HomePage = () => {
 
-	const [textState, setTextState] = useState()
 	const [failedFetch, setFailedFetch] = useState(false)
 	window.api.failedFetch(() => {
 		setFailedFetch(true)
 		window.api.clearMainInterval()
 	})
 
-	window.LCUApi.lcuConnected((_event, value) => {
-		setTextState(value)
-	})
-
 	return ( 
 		<div className="homepagecontainer">
 			<div className="titleholder">			
-				<Title titleText='Pashas League App'/>
+				<Title titleText='PAL'/>
 			</div>
 			<div className="about">
 				<h1 id="abouth1">About</h1>
@@ -32,12 +27,10 @@ const HomePage = () => {
 				<p className='aboutP'>ChampCalc is designed for League of Legends players who are serious about taking their gameplay to the next level. Whether you are a seasoned veteran or just starting out, ChampCalc has everything you need to become a champion jungler. So why wait? Get started with ChampCalc today and take the first step towards dominating the jungle!</p>
 			</div>
 			<div className="toollinks">
-				<p className="">TODO MAKE JGL TOOL IMAGE</p>
 				<img src="" alt="" className="jgltool" /> 
 				<img src="" alt="" className="simtool" />
 			</div>
 			<div className="empty">
-				{textState}
 			</div>
 			{ failedFetch &&
 				<div className="failedfetch">

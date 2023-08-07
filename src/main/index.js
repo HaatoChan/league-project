@@ -39,7 +39,7 @@ async function createWindow() {
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
 			nodeIntegrationInWorker: true,
-		//	devTools: is.dev ? true : false
+			devTools: is.dev ? true : false
 		},
 		resizable: false,
 	})
@@ -175,7 +175,6 @@ app.whenReady().then(async () => {
 
 	ipcMain.on('setRoute', async (_event, route) => {
 		selectedRoute = route
-		console.log(selectedRoute)
 	})
 })
 
@@ -248,7 +247,7 @@ const lcuConnect = async () => {
 							const allRoutes = JSON.parse(await readFile(path.join(app.getPath('userData'), 'routes.json')))
 							if (selectedRoute) {
 								const selectedRouteIndex = allRoutes.routes.findIndex(route => route.name === selectedRoute.name)
-								if (selectedRouteIndex !== 1) {
+								if (selectedRouteIndex !== -1) {
 									const foundRoute = allRoutes.routes[selectedRouteIndex]
 									// Parse data and find enemy team index
 									let enemyTeamDataArray = []

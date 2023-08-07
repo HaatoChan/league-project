@@ -94,6 +94,7 @@
 .gamestarting {
     height: 1.5rem;
     margin-top: 2%;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-size: 1.5rem;
     text-align: center;
     color: white;
