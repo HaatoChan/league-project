@@ -21,10 +21,11 @@ const HomePage = () => {
 			</div>
 			<div className="about">
 				<h1 id="abouth1">About</h1>
-				<p id="firstp" className='aboutP'>Welcome to Pashas League App! The thingi majig tool thingie for League of Legends junglers! ChampCalc is designed to help you take your gameplay to the next level. With its intuitive and user-friendly interface, ChampCalc provides you with easy access to jungle-specific tools and simulation tools that will help you plan your early routes and calculate champion stat values based on item builds and levels.</p>
-				<p className='aboutP'>Say goodbye to cumbersome in-game experimentation and confusing spreadsheets. With ChampCalc, you can quickly and efficiently plan your jungle routes, compare different itemization options, and stay up-to-date with the latest monthly patches and changes to the game.</p>
-				<p className='aboutP'>ChampCalc integrates with Riot Games API to provide you with accurate and up-to-date information on champions, items, and game state. You can also rest assured that ChampCalc is compliant with Riot Games&apos; policies and API usage guidelines.</p>
-				<p className='aboutP'>ChampCalc is designed for League of Legends players who are serious about taking their gameplay to the next level. Whether you are a seasoned veteran or just starting out, ChampCalc has everything you need to become a champion jungler. So why wait? Get started with ChampCalc today and take the first step towards dominating the jungle!</p>
+				<p id="firstp" className='aboutP'>Welcome to PAL: Plan and Analyze your Jungle Routes in League of Legends!</p>
+				<p className='aboutP'>Are you ready to take your jungling skills to the next level? Look no further! PAL is your ultimate companion in the Summoner's Rift, designed exclusively for League of Legends junglers like you. Our app is here to streamline your jungle routes, optimize your pathing, and elevate your winrate to new heights!</p>
+				<p className='aboutP'>PAL integrates with Riot Games API to provide you with accurate and up-to-date information on champions, items, and game state.</p>
+				<p className='aboutP'>PAL is designed for League of Legends players who are serious about taking their gameplay to the next level. Whether you are a seasoned veteran or just starting out, PAL has everything you need to become a champion jungler. So why wait? Get started with PAL today and take the first step towards dominating the jungle!</p>
+				<small className='api-note'>PAL is an independent third-party app and is not endorsed or affiliated with Riot Games, Inc. League of Legends is a registered trademark of Riot Games, Inc.</small>
 			</div>
 			<div className="toollinks">
 				<img src="" alt="" className="jgltool" /> 

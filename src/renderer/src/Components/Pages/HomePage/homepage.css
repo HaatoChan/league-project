@@ -18,6 +18,7 @@
 
 .about {
     grid-row: 2;
+    position: relative;
     grid-column: 2 / span 2;
     color: white;
     background-color: rgba(39, 39, 46);
@@ -97,6 +98,13 @@
     text-align: center;
     font-size: 1.1rem;
     padding-top: 0.1rem;
+  }
+
+  .api-note {
+    font-size: 0.6rem;
+    position: absolute;
+    bottom: 1%;
+    left: 10%;
   }
 
   @media screen and (max-height: 900px) {
