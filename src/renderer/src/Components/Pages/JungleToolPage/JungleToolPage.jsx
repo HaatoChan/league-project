@@ -17,7 +17,7 @@ const JungleToolPage = () => {
 	return ( 
 		<div className="jungletoolpagecontainer">
 			<div className="titleholder">
-				<Title titleText='Jungle Gap' color='white'></Title>
+				<Title titleText='PAL Routes' color='white'></Title>
 			</div>
 			<div className="mapcontainer">
 				<Map></Map>
