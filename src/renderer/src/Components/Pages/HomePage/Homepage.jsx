@@ -22,7 +22,7 @@ const HomePage = () => {
 			<div className="about">
 				<h1 id="abouth1">About</h1>
 				<p id="firstp" className='aboutP'>Welcome to PAL: Plan and Analyze your Jungle Routes in League of Legends!</p>
-				<p className='aboutP'>Are you ready to take your jungling skills to the next level? Look no further! PAL is your ultimate companion in the Summoner's Rift, designed exclusively for League of Legends junglers like you. Our app is here to streamline your jungle routes, optimize your pathing, and elevate your winrate to new heights!</p>
+				<p className='aboutP'>Are you ready to take your jungling skills to the next level? Look no further! PAL is your ultimate companion in the Summoner&apos;s Rift, designed exclusively for League of Legends junglers like you. Our app is here to streamline your jungle routes, optimize your pathing, and elevate your winrate to new heights!</p>
 				<p className='aboutP'>PAL integrates with Riot Games API to provide you with accurate and up-to-date information on champions, items, and game state.</p>
 				<p className='aboutP'>PAL is designed for League of Legends players who are serious about taking their gameplay to the next level. Whether you are a seasoned veteran or just starting out, PAL has everything you need to become a champion jungler. So why wait? Get started with PAL today and take the first step towards dominating the jungle!</p>
 				<small className='api-note'>PAL is an independent third-party app and is not endorsed or affiliated with Riot Games, Inc. League of Legends is a registered trademark of Riot Games, Inc.</small>

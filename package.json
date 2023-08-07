@@ -1,6 +1,6 @@
 {
   "name": "pal-app",
-  "version": "0.9.9.1",
+  "version": "0.9.91",
   "description": "PAL App",
   "main": "./out/main/index.js",
   "author": "HaatoChan",

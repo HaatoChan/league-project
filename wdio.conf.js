@@ -1,7 +1,5 @@
-const fs = require('fs')
 const dotenv = require('dotenv')
 dotenv.config()
-const packageJson = JSON.parse(fs.readFileSync('./package.json'))
 const productName = 'PAL'
 
 exports.config = {
