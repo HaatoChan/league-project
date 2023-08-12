@@ -26,7 +26,7 @@ const CampSelectionContextProvider = ({children}) => {
 	const [totalGold, setTotalGold] = useState(0)
 	const [level, setLevel] = useState(1)
 	const totalRequired = [ 280, 380, 480, 580, 680, 780, 880, 980, 1080, 1180, 1280, 1380, 1480, 1580, 1680, 1780, 1880]
-	const [exportUrl, setExportUrl] = useState('https://64d7c4b17b37a0206901a8f6--stalwart-gecko-e2474d.netlify.app/All//')
+	const [exportUrl, setExportUrl] = useState('https://64d803db7408bc3f8589ccf9--heartfelt-narwhal-383b16.netlify.app/All//')
 	const [exportObject, setExportObject] = useState({})
 	const [routeName, setRouteName] = useState('')
 	const [totalWr, setTotalWr] = useState(null)
@@ -62,7 +62,7 @@ const CampSelectionContextProvider = ({children}) => {
 		const selectedCampIds = selectedCamps.map((camp) => camp.id).join(':')
 		const selectedChamps = selectedChampions.map((champ) => champ).join(':')
 		const encodedIds = window.btoa(selectedCampIds)
-		let newUrl = `https://64d7c4b17b37a0206901a8f6--stalwart-gecko-e2474d.netlify.app/${sideSelected}/${encodedIds}/`
+		let newUrl = `https://64d803db7408bc3f8589ccf9--heartfelt-narwhal-383b16.netlify.app/${sideSelected}/${encodedIds}/`
 		if(selectedChamps) {
 			newUrl += `${selectedChamps}`
 		}
